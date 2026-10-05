@@ -13,7 +13,7 @@ SESSIONS={}; ATTEMPTS={}
 def connect():
  c=sqlite3.connect(DB,timeout=10);c.execute('PRAGMA journal_mode=WAL');return c
 def initial():
- p={'version':0,'zones':{z:{'steps':[{'status':'예정' if z not in ['b1','2b'] else '미등록','start':'','end':'','owner':'','note':''} for _ in range(6)],'checks':[False]*4,'records':[],'contractors':{},'costs':[]} for z in ZONES}}
+ p={'version':0,'zones':{z:{'steps':[{'status':'예정' if z not in ['b1','2b'] else '미등록','start':'','end':'','owner':'','note':''} for _ in range(6)],'checks':[False]*4,'records':[],'contractors':{},'costs':[],'scope':'','quotes':[]} for z in ZONES}}
  p['zones']['1']['steps'][2].update(status='진행 중',note='사용자 확인: 전기공사 진행 중')
  p['zones']['1']['steps'][4].update(status='진행 중',note='사용자 확인: 마트 진열장 공사 진행 중')
  return p
@@ -25,6 +25,7 @@ def read():
  with connect() as c:return json.loads(c.execute('SELECT content FROM project WHERE id=1').fetchone()[0])
 def validate_zone(v):
  import math
+ if not isinstance(v.get('scope',''),str) or len(v.get('scope',''))>3000:raise ValueError('공사 형태 입력 오류')
  trades=['전기공사','내부미장','인테리어','냉난방기 설치','마트설계','기타']
  contractors=v.get('contractors',{})
  if not isinstance(contractors,dict) or any(k not in trades for k in contractors):raise ValueError('업체 형식 오류')
@@ -61,7 +62,9 @@ def update(zone,value,version,action):
  with connect() as c:
   c.execute('BEGIN IMMEDIATE');p=json.loads(c.execute('SELECT content FROM project WHERE id=1').fetchone()[0])
   if version!=p['version']:raise ValueError('다른 관리자가 수정했습니다. 최신 기록을 확인하세요.')
-  if action=='zone':value['records']=p['zones'][zone]['records'];p['zones'][zone]=value
+  if action=='zone':
+   value['records']=p['zones'][zone]['records'];value['quotes']=p['zones'][zone].get('quotes',[]);p['zones'][zone]=value
+  elif action=='quote':p['zones'][zone].setdefault('quotes',[]).append(value)
   else:p['zones'][zone]['records'].append(value)
   p['version']+=1;c.execute('UPDATE project SET content=? WHERE id=1',(json.dumps(p,ensure_ascii=False),));c.execute('INSERT INTO audit(created,zone,action) VALUES (?,?,?)',(time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),zone,action));return p
 class Handler(SimpleHTTPRequestHandler):
@@ -84,10 +87,10 @@ class Handler(SimpleHTTPRequestHandler):
    s=self.session();return self.reply({'admin':bool(s),'csrf':s['csrf'] if s else None})
   if self.path.startswith('/uploads/'):
    name=self.path.removeprefix('/uploads/')
-   if not re.fullmatch(r'[0-9a-f]{32}\.(jpg|png|webp)',name):return self.send_error(404)
+   if not re.fullmatch(r'[0-9a-f]{32}\.(jpg|png|webp|pdf)',name):return self.send_error(404)
    p=DATA/'uploads'/name
    if not p.is_file():return self.send_error(404)
-   b=p.read_bytes();self.send_response(200);self.send_header('Content-Type',{'jpg':'image/jpeg','png':'image/png','webp':'image/webp'}[p.suffix[1:]]);self.send_header('X-Content-Type-Options','nosniff');self.send_header('Content-Length',str(len(b)));self.end_headers();self.wfile.write(b);return
+   b=p.read_bytes();self.send_response(200);self.send_header('Content-Type',{'jpg':'image/jpeg','png':'image/png','webp':'image/webp','pdf':'application/pdf'}[p.suffix[1:]]);self.send_header('X-Content-Type-Options','nosniff');self.send_header('Content-Length',str(len(b)));self.end_headers();self.wfile.write(b);return
   if self.path.startswith('/api/'):return self.reply({'error':'경로 없음'},404)
   return super().do_GET()
  def mutate(self):
@@ -113,10 +116,25 @@ class Handler(SimpleHTTPRequestHandler):
    if zone not in ZONES:return self.reply({'error':'영역 없음'},404)
    b=self.body()
    if self.command=='PUT' and self.path.startswith('/api/zone/'):
-    validate_zone(b);v={k:b[k] for k in ['steps','checks','contractors','costs']};return self.reply(update(zone,v,b.get('version'),'zone'))
+    validate_zone(b);v={k:b[k] for k in ['steps','checks','contractors','costs']};v['scope']=b.get('scope','');return self.reply(update(zone,v,b.get('version'),'zone'))
+   if self.command=='POST' and self.path.startswith('/api/quote/'):
+    content=b.get('content','');name=b.get('name','')
+    if not isinstance(name,str) or not name or len(name)>150:raise ValueError('견적서 이름 오류')
+    m=re.fullmatch(r'data:(application/pdf|image/jpeg|image/png|image/webp);base64,(.+)',content)
+    if not m:raise ValueError('PDF 또는 사진 견적서만 가능합니다.')
+    raw=base64.b64decode(m[2],validate=True)
+    if len(raw)>8*1024*1024:raise ValueError('견적서는 8MB 이하여야 합니다.')
+    mime=m[1];ext={'application/pdf':'pdf','image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[mime]
+    valid=(ext=='pdf' and raw.startswith(b'%PDF-')) or (ext=='jpg' and raw.startswith(b'\xff\xd8\xff')) or (ext=='png' and raw.startswith(b'\x89PNG\r\n\x1a\n')) or (ext=='webp' and raw[:4]==b'RIFF' and raw[8:12]==b'WEBP')
+    if not valid:raise ValueError('견적서 내용과 파일 형식 불일치')
+    filename=secrets.token_hex(16)+'.'+ext;folder=DATA/'uploads';folder.mkdir(exist_ok=True);p=folder/filename;p.write_bytes(raw)
+    try:return self.reply(update(zone,{'url':'/uploads/'+filename,'name':name,'created':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())},b.get('version'),'quote'))
+    except:p.unlink(missing_ok=True);raise
    if self.command=='POST' and self.path.startswith('/api/photo/'):
     import datetime
     datetime.date.fromisoformat(b['date'])
+    if b.get('kind','during') not in ['before','during','after']:raise ValueError('사진 구분 오류')
+    if not isinstance(b.get('viewpoint',''),str) or len(b.get('viewpoint',''))>100:raise ValueError('촬영 위치 입력 오류')
     if not isinstance(b.get('note'),str) or not b['note'].strip() or len(b['note'])>1000:raise ValueError('작업 기록을 확인하세요.')
     if not isinstance(b.get('image'),str):raise ValueError('사진 형식 오류')
     m=re.fullmatch(r'data:image/(jpeg|png|webp);base64,(.+)',b['image'])
@@ -126,7 +144,7 @@ class Handler(SimpleHTTPRequestHandler):
     valid=(m[1]=='jpeg' and raw.startswith(b'\xff\xd8\xff')) or (m[1]=='png' and raw.startswith(b'\x89PNG\r\n\x1a\n')) or (m[1]=='webp' and raw[:4]==b'RIFF' and raw[8:12]==b'WEBP')
     if not valid:raise ValueError('사진 내용과 형식이 일치하지 않습니다.')
     name=secrets.token_hex(16)+'.'+('jpg' if m[1]=='jpeg' else m[1]);folder=DATA/'uploads';folder.mkdir(exist_ok=True);p=folder/name;p.write_bytes(raw)
-    try:return self.reply(update(zone,{'url':'/uploads/'+name,'date':b['date'],'note':b['note'],'created':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())},b.get('version'),'photo'))
+    try:return self.reply(update(zone,{'url':'/uploads/'+name,'date':b['date'],'note':b['note'],'kind':b.get('kind','during'),'viewpoint':b.get('viewpoint',''),'created':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())},b.get('version'),'photo'))
     except:p.unlink(missing_ok=True);raise
    return self.reply({'error':'경로 없음'},404)
   except (ValueError,KeyError,TypeError,json.JSONDecodeError) as e:return self.reply({'error':str(e)},400)
