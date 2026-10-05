@@ -1,0 +1,1 @@
+{"name":"the-arirang-store","private":true,"scripts":{"start":"python3 server.py","test":"python3 -m unittest discover -s tests"}}
