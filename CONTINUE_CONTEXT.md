@@ -34,3 +34,9 @@ AI Gateway 또는 서버 OpenAI 키 설정 후 사진·이미지/PDF 견적서 �
 배포: main, npm run build, dist, netlify/functions, Node 22. 관리자 Identity Invite only + admin 역할. OPENAI_API_KEY/OPENAI_BASE_URL은 서버 범위이며 소스/화면에 노출하지 않습니다. 자세한 절차는 DEPLOY_NETLIFY.md.
 
 사진 업로드: JPEG/PNG/WebP 장당 3MB, 묶음 20장. 견적 파일은 PDF 추가 허용, 묶음 6건. 사진별 생성은 별도 이미지 호출 비용이 발생하며 일부 실패할 수 있습니다. 층별 생성 요청 기록 최대 500건.
+
+## 연결 도구 요청함·영상 추가
+
+`/eternion/mcp`에 Bearer 인증 MCP 연결 골격과 별도의 영속 검토 요청함을 추가했습니다. 기존 사진별 자동 생성·JSON 내보내기·수동 등록·견적 비교는 유지합니다. 연결 도구용 요청은 별도 작업이므로 자동 생성과 중복 실행하지 않도록 선택합니다. 실제 ChatGPT 커넥터 등록, OAuth 중계, 운영 AI 호출은 검증되지 않았습니다. 설정은 DEPLOY_NETLIFY.md 참고.
+
+현재 계획에 연결된 사진별 예상도를 층별/전체 층 무음 영상으로 재생·다운로드합니다. Canvas/MediaRecorder 기반이며 3D/생성형 동영상은 아닙니다. 전체화면 미지원 시 화면 가득 보기로 전환합니다. 타입 검사, Netlify 38건, 기존 Python 5건, 실제 1280×720 WebM 생성과 모바일 표시를 검증했습니다.

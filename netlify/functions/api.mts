@@ -1,9 +1,10 @@
 import {getStore,getDeployStore} from '@netlify/blobs';
 import {initial,validateZone,decodeFile,text,date,Problem} from './_shared/project.mjs';
 import {aiStore,publicJob,queueAI,aiReady} from './_shared/ai.mjs';
+import {listRequests,queueRequests,retryRequest,dispatchNext} from './_shared/requests.mjs';
 import {listImageRequests,createImageRequests} from './_shared/image-requests.mjs';
 import type {Config} from '@netlify/functions';
-async function withAI(project:ReturnType<typeof initial>){const jobs=aiStore();await Promise.all(Object.entries(project.zones).map(async([id,zone])=>{const job=await jobs.getWithMetadata(id,{type:'json'});(zone as any).ai=publicJob(job?.data,zone)}));return project}
+async function withAI(project:ReturnType<typeof initial>){const jobs=aiStore();await Promise.all(Object.entries(project.zones).map(async([id,zone])=>{const job=await jobs.getWithMetadata(id,{type:'json'});(zone as any).ai=publicJob(job?.data,zone);(zone as any).requests=await listRequests(id,zone)}));return project}
 const json=(v:unknown,status=200)=>new Response(JSON.stringify(v),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}});
 export default async function handler(req:Request){
  try{
@@ -26,6 +27,8 @@ export default async function handler(req:Request){
  if(!current)throw new Problem('저장소 초기화 실패',503);
  const project=current.data as ReturnType<typeof initial>;
  if(path==='/api/project'&&req.method==='GET')return json(await withAI(project));
+ const requestMatch=/^\/api\/requests\/(b1|1|2a|2b|3|4|5)$/.exec(path);
+ if(requestMatch){const id=requestMatch[1],zone=project.zones[id];if(req.method==='GET')return json(await listRequests(id,zone));if(req.method!=='POST')throw new Problem('잘못된 요청',405);const raw=await req.text();if(raw.length>2000)throw new Problem('요청 크기 초과');const input=JSON.parse(raw);if(input.version!==project.version)throw new Problem('자료가 변경되었습니다. 새로고침하세요.',409);if(input.action==='retry')await retryRequest(id,input.id,zone);else if(input.action==='queue')await queueRequests(id,zone,input.route,actor);else throw new Problem('요청 작업 오류');await dispatchNext(id,new URL(req.url).origin);return json(await listRequests(id,zone),202)}
  const resultMatch=/^\/api\/image-result\/(b1|1|2a|2b|3|4|5)\/(image-[a-f0-9]{64})$/.exec(path);
  if(resultMatch&&req.method==='POST'){const [,id,key]=resultMatch;const raw=await req.text();if(raw.length>4500000)throw new Problem('예상도 파일은 3MB 이하여야 합니다.');const input=JSON.parse(raw);const jobs=aiStore(),job=await jobs.getWithMetadata(key,{type:'json'});if(!job||job.data.zone!==id||!project.zones[id].records.some(r=>r.url===job.data.snapshot.records[0]?.url))throw new Problem('원본 사진 생성 요청을 찾지 못했습니다.',404);if(['queued','running'].includes(publicJob(job.data)?.status||''))throw new Problem('생성 중인 요청은 완료 후 교체하세요.',409);const f=decodeFile(input.image),name='manual-'+crypto.randomUUID()+'.'+f.ext;await files.set(name,f.bytes.buffer.slice(f.bytes.byteOffset,f.bytes.byteOffset+f.bytes.byteLength),{metadata:{mime:f.mime,kind:'ai-concept'}});const changed=await jobs.setJSON(key,{...job.data,status:'completed',error:undefined,finished:new Date().toISOString(),image:{url:'/uploads/'+name,reference:job.data.snapshot.records[0].url,label:'공사 후 예상도 · 관리자 등록',created:new Date().toISOString(),model:'manual-return'}},{onlyIfMatch:job.etag});if(!changed.modified){await files.delete(name);throw new Problem('다른 관리자가 결과를 등록했습니다. 새로고침하세요.',409)}return json(await listImageRequests(id,project.zones[id]))}
  const imageMatch=/^\/api\/image-requests\/(b1|1|2a|2b|3|4|5)$/.exec(path);
