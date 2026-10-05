@@ -11,3 +11,8 @@ document.addEventListener('click',e=>{if(!enabled||e.target.closest('.voice-bar'
 document.addEventListener('focusin',e=>{if(!enabled)return;const el=e.target;if(!el.matches('input,textarea,select'))return;if(el.type==='password'){speak('비밀번호 입력란입니다. 입력 내용은 읽지 않습니다.');return}let label=el.closest('label')?.childNodes[0]?.textContent||el.getAttribute('aria-label')||el.placeholder||el.name;speak(label+' 입력란입니다.')});
 const toast=$('#toast');new MutationObserver(()=>{if(enabled&&toast.style.display!=='none'&&toast.innerText)speak(toast.innerText)}).observe(toast,{childList:true,characterData:true,subtree:true});
 window.addEventListener('pagehide',()=>{run++;synth?.cancel()});
+
+const motionButton=$('#motion-toggle'),reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+let motionOn=!reduced.matches;try{if(localStorage.getItem('arirang-motion')==='off')motionOn=false}catch{}
+function setMotion(){document.documentElement.classList.toggle('motion-off',!motionOn);motionButton.setAttribute('aria-pressed',String(motionOn));motionButton.textContent=motionOn?'로고 움직임 끄기':'로고 움직임 켜기'}
+setMotion();motionButton.onclick=()=>{motionOn=!motionOn;setMotion();try{localStorage.setItem('arirang-motion',motionOn?'on':'off')}catch{}speak(motionOn?'로고 움직임을 켰습니다.':'로고 움직임을 껐습니다.')}
