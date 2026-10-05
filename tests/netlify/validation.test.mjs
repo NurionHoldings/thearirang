@@ -1,0 +1,9 @@
+import {build} from 'esbuild';
+import {test} from 'node:test';import assert from 'node:assert/strict';
+await build({entryPoints:['netlify/functions/_shared/project.mts'],outfile:'.test-build/project.mjs',bundle:true,platform:'node',format:'esm'});
+const {initial,validateZone,decodeFile,date}=await import('../../.test-build/project.mjs');
+test('baseline reflects confirmed first-floor works without invented completion',()=>{const p=initial();assert.equal(p.zones['1'].steps[2].status,'진행 중');assert.equal(p.zones['1'].steps[4].status,'진행 중');assert.equal(p.zones['2b'].steps[0].status,'미등록')});
+test('reject invalid dates and reversed schedule',()=>{assert.throws(()=>date('2026-02-30'));const z=initial().zones['1'];z.steps[0].start='2026-10-06';z.steps[0].end='2026-10-05';assert.throws(()=>validateZone(z))});
+test('handover requires prior completion and checks',()=>{const z=initial().zones['1'];z.steps[5]={status:'완료',start:'',end:'',owner:'현장 담당',note:'확인'};assert.throws(()=>validateZone(z));for(const s of z.steps)Object.assign(s,{status:'완료',owner:'담당',note:'확인'});z.checks.fill(true);assert.equal(validateZone(z).steps[5].status,'완료')});
+test('negative and unsafe estimates rejected; evidence excluded from zone edits',()=>{const z=initial().zones['1'];z.costs=[{trade:'전기공사',item:'전등',qty:1,unit:'개',price:-1,vat:10,note:''}];assert.throws(()=>validateZone(z));z.costs[0].price=10000;z.records=[{url:'forged'}];assert.equal(validateZone(z).costs[0].price,10000);assert.equal(validateZone(z).records,undefined)});
+test('file magic, quote-only PDF and 3MB limit',()=>{const pdf='data:application/pdf;base64,'+Buffer.from('%PDF-1.7').toString('base64');assert.throws(()=>decodeFile(pdf));assert.equal(decodeFile(pdf,true).ext,'pdf');assert.throws(()=>decodeFile('data:image/png;base64,'+Buffer.from('fake').toString('base64')));assert.throws(()=>decodeFile('data:image/jpeg;base64,'+Buffer.alloc(3*1024*1024+1).toString('base64')))});
