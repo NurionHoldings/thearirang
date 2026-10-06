@@ -1,0 +1,12 @@
+import {login,logout,getUser,handleAuthCallback} from '@netlify/identity';
+const $=id=>document.getElementById(id),status=s=>$('state').textContent=s;
+const titles={3:'한의원 · 접수 / 진료 / 치료',4:'어르신 쉼터 · 보행 / 인지 / 보조기 체험',5:'옥상 정원 · 중앙 휴식 / 좌우 정원'};
+for(const n of [3,4,5]){const a=document.createElement('article');a.innerHTML=`<h3>${n}층 ${titles[n]}</h3><a href="/plans/floor-${n}.svg" target="_blank"><img src="/plans/floor-${n}.png" alt="${n}층 인테리어 기본계획도"></a><a href="/plans/floor-${n}.svg" download>벡터 도면 SVG 다운로드</a>`;$('plans').append(a)}
+$('printPlans').onclick=()=>window.print();
+async function api(path,options={}){const r=await fetch('/drawings-api/'+path,{...options,credentials:'same-origin',cache:'no-store'});const v=await r.json();if(!r.ok)throw Error(v.error||'요청 실패');return v}
+async function refresh(){await getUser();const s=await api('session');$('login').hidden=s.loggedIn;$('logout').hidden=!s.loggedIn;$('admin').hidden=!s.admin;$('original').replaceChildren();status(s.admin?'관리자 로그인 · 원본 등록 및 다운로드 가능':s.approved?'승인된 업자 · 원본 열람만 가능':s.loggedIn?'열람 승인이 필요합니다.':'원본을 보려면 승인된 계정으로 로그인하세요.');if(s.approved){if(!s.ready){status('원본 도면 등록 전입니다.');return}for(let n=1;n<=s.pages;n++){const img=document.createElement('img');img.src='/drawings-api/page/'+n;img.alt='비공개 원본 도면 '+n+'페이지';img.loading='lazy';img.draggable=false;$('original').append(img)}}}
+$('login').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);try{await login(f.get('email'),f.get('password'));e.target.reset();await refresh()}catch(e){status(e.message)}};
+$('logout').onclick=async()=>{await logout();await refresh()};
+$('grant').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);try{await api('grant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:f.get('email'),active:f.get('active')==='true'})});status('열람 승인 설정이 저장되었습니다.')}catch(e){status(e.message)}};
+$('import').onsubmit=async e=>{e.preventDefault();try{const files=Array.from(e.target.files.files),form=new FormData();const pdf=files.find(f=>/\.pdf$/i.test(f.name));if(!pdf)throw Error('PDF를 선택하세요.');form.set('pdf',pdf);for(let n=1;n<=9;n++){const f=files.find(f=>f.name==='page-'+n+'.jpg');if(!f)throw Error('page-'+n+'.jpg 파일이 필요합니다.');form.set('page'+n,f)}status('비공개 등록 중…');await api('import',{method:'POST',body:form});await refresh();status('원본 9장 비공개 등록 완료')}catch(e){status(e.message)}};
+try{await handleAuthCallback();await refresh()}catch(e){status(e.message)}
