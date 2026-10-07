@@ -46,3 +46,16 @@ test('PDF diary remains stored when OCR is unavailable; unauthorized retries and
  const response=await handler(request('/api/diary/1','POST',{version:0,name:'일지.pdf',content:'data:application/pdf;base64,'+Buffer.from('%PDF-1.7').toString('base64')}));const p=await response.json(),d=p.zones['1'].diaries[0];assert.equal(d.status,'waiting');assert.equal((await handler(request(d.url))).status,200);assert.equal((await handler(request('/api/diary-retry/'+d.id,'POST',{},false))).status,401);assert.equal((await handler(request('/api/diary-retry/'+d.id,'POST',{}))).status,503);
  assert.equal((await handler(request('/api/diary/1','POST',{version:p.version,name:'invalid.txt',content:'data:text/plain;base64,/w=='}))).status,400);
 });
+
+test('diary review requires admin confirmation, preserves original, and applies only explicitly chosen stage',async()=>{
+ const content='data:text/plain;base64,'+Buffer.from('원문 배선 공사').toString('base64');let p=await (await handler(request('/api/diary/1','POST',{version:0,name:'일지.txt',vendor:'전기업체',trade:'전기공사',content}))).json();const d=p.zones['1'].diaries[0],url='/api/diary-review/1/'+d.id;
+ const body={version:p.version,text:'관리자 대조: 배선 공사 완료',confirm:true,stepIndex:2,status:'완료',owner:'관리자',note:'원본 일지 및 현장 대조',start:'2026-10-06',end:'2026-10-07'};
+ assert.equal((await handler(request(url,'POST',body,false))).status,401);assert.equal((await handler(request(url,'POST',{...body,confirm:false}))).status,400);assert.equal((await handler(request(url,'POST',{...body,owner:''}))).status,400);assert.equal((await handler(request(url.replace('/1/','/3/'),'POST',body))).status,404);
+ const response=await handler(request(url,'POST',body));assert.equal(response.status,200);p=await response.json();assert.equal(p.zones['1'].steps[2].status,'완료');assert.equal(p.zones['1'].steps[3].status,'예정');assert.equal(p.zones['1'].diaries[0].text,'원문 배선 공사');assert.equal(p.zones['1'].diaries[0].review.text,body.text);assert.equal(p.zones['1'].diaries[0].review.actor,'owner');assert.equal(p.audit.at(-1).action,'diary-review');assert.equal((await handler(request(url,'POST',body))).status,409);
+ assert.equal(await (await handler(request(d.url))).text(),'원문 배선 공사');const pub=await (await handler(request('/api/project','GET',undefined,false))).json();assert.equal(pub.zones['1'].steps[2].status,'완료');assert.equal(pub.zones['1'].diaries,undefined);
+});
+test('review-only diary confirmation does not change progress and premature handover is blocked',async()=>{
+ let p=await (await handler(request('/api/diary/1','POST',{version:0,name:'일지.txt',content:'data:text/plain;base64,'+Buffer.from('작업 기록').toString('base64')}))).json();const before=structuredClone(p.zones['1'].steps),url='/api/diary-review/1/'+p.zones['1'].diaries[0].id;
+ p=await (await handler(request(url,'POST',{version:p.version,text:'대조한 작업 기록',confirm:true,stepIndex:null}))).json();assert.deepEqual(p.zones['1'].steps,before);assert.equal(p.zones['1'].diaries[0].review.stepIndex,null);
+ assert.equal((await handler(request(url,'POST',{version:p.version,text:'인계',confirm:true,stepIndex:5,status:'완료',owner:'관리자',note:'인계'}))).status,400);
+});

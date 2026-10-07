@@ -1,6 +1,6 @@
 import {diaryStore,decodeDiary,publicDiary,prepareDiary,dispatchDiary} from './_shared/diary.mjs';
 import {getStore,getDeployStore} from '@netlify/blobs';
-import {initial,publicProject,validateZone,decodeFile,text,date,Problem} from './_shared/project.mjs';
+import {initial,publicProject,reviewDiary,validateZone,decodeFile,text,date,Problem} from './_shared/project.mjs';
 import {aiStore,publicJob,queueAI,aiReady} from './_shared/ai.mjs';
 import {listImageRequests,createImageRequests} from './_shared/image-requests.mjs';
 import type {Config} from '@netlify/functions';
@@ -27,6 +27,8 @@ export default async function handler(req:Request){
  if(!current)throw new Problem('저장소 초기화 실패',503);
  const project=current.data as ReturnType<typeof initial>;
  if(path==='/api/project'&&req.method==='GET')return json(admin?await withAI(project):publicProject(project));
+ const reviewMatch=/^\/api\/diary-review\/(b1|1|2a|2b|3|4|5)\/(diary-[a-f0-9-]{36})$/.exec(path);
+ if(reviewMatch&&req.method==='POST'){const raw=await req.text();if(raw.length>650000)throw new Problem('검토 문서는 10만 자 이내로 작성하세요.',413);const input=JSON.parse(raw);if(input.version!==project.version)throw new Problem('다른 관리자가 수정했습니다. 새로고침 후 다시 저장하세요.',409);const [,zoneID,diaryID]=reviewMatch;reviewDiary(project.zones[zoneID],diaryID,input,actor);project.version++;project.audit=[...(project.audit||[]),{at:new Date().toISOString(),actor,zone:zoneID,action:'diary-review'}].slice(-500);const saved=await store.setJSON('project',project,{onlyIfMatch:current.etag});if(!saved.modified)throw new Problem('다른 관리자가 수정했습니다. 새로고침 후 다시 저장하세요.',409);return json(await withAI(project));}
  const retry=/^\/api\/diary-retry\/(diary-[a-f0-9-]{36})$/.exec(path);
  if(retry&&req.method==='POST'){const id=retry[1];if(!Object.values(project.zones).some(z=>z.diaries?.some(d=>d.id===id)))throw new Problem('일지 없음',404);const row=await diaryStore().getWithMetadata(id,{type:'json'});if(!row)throw new Problem('일지 없음',404);if(['queued','running'].includes(row.data.status))throw new Problem('변환 진행 중입니다.',409);if(!aiReady())throw new Problem('이미지·PDF 자동 변환 서비스를 준비 중입니다. 원본은 저장되어 있습니다.',503);const secret=await prepareDiary(id,row.data.zone,row.data.url,row.data.name);await dispatchDiary(id,secret,new URL(req.url).origin);return json(await withAI(project));}
  const resultMatch=/^\/api\/image-result\/(b1|1|2a|2b|3|4|5)\/(image-[a-f0-9]{64})$/.exec(path);
@@ -42,7 +44,7 @@ export default async function handler(req:Request){
  const input=JSON.parse(raw);if(input.version!==project.version)throw new Problem('다른 관리자가 수정했습니다. 새로고침 후 다시 저장하세요.',409);
  const [,action,id]=match;const zone=project.zones[id];let uploaded='',diaryID='',diarySecret='';
  if(action==='zone')Object.assign(zone,validateZone(input));
- else if(action==='diary'){const f=decodeDiary(input.content);uploaded=crypto.randomUUID()+'.'+f.ext;const name=text(input.name,150,'파일명',true),workDate=date(input.date??'');await files.set(uploaded,f.bytes.buffer.slice(f.bytes.byteOffset,f.bytes.byteOffset+f.bytes.byteLength),{metadata:{mime:f.mime}});diaryID='diary-'+crypto.randomUUID();diarySecret=await prepareDiary(diaryID,id,'/uploads/'+uploaded,name,f.text);(zone.diaries??=[]).push({id:diaryID,name,date:workDate,url:'/uploads/'+uploaded,mime:f.mime,created:new Date().toISOString()});}
+ else if(action==='diary'){const f=decodeDiary(input.content);uploaded=crypto.randomUUID()+'.'+f.ext;const name=text(input.name,150,'파일명',true),workDate=date(input.date??''),vendor=text(input.vendor??'',100,'일지 업체'),trade=text(input.trade??'',60,'일지 공종');await files.set(uploaded,f.bytes.buffer.slice(f.bytes.byteOffset,f.bytes.byteOffset+f.bytes.byteLength),{metadata:{mime:f.mime}});diaryID='diary-'+crypto.randomUUID();diarySecret=await prepareDiary(diaryID,id,'/uploads/'+uploaded,name,f.text);(zone.diaries??=[]).push({id:diaryID,name,date:workDate,vendor,trade,url:'/uploads/'+uploaded,mime:f.mime,created:new Date().toISOString()});}
  else{
  const quote=action==='quote',contract=action==='contract',document=quote||contract,f=decodeFile(document?input.content:input.image,document);uploaded=crypto.randomUUID()+'.'+f.ext;
  const entry=document?{name:text(input.name,150,'파일명',true),vendor:text(input.vendor??'',100,'견적 업체명'),trade:text(input.trade??'',60,'견적 공종'),url:'/uploads/'+uploaded}: {date:date(input.date),note:text(input.note,1000,'작업 내용',true),kind:text(input.kind,10,'사진 구분'),viewpoint:text(input.viewpoint,100,'촬영 위치',true),url:'/uploads/'+uploaded};

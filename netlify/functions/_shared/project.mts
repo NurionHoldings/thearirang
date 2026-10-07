@@ -36,3 +36,11 @@ export function publicProject(source:Project):Project{
  result.zones[id].contractors=Object.fromEntries(Object.entries(zone.contractors||{}).filter(([,c])=>c.status==='진행 중'&&c.name.trim()).map(([trade,c])=>[trade,{name:c.name,contact:c.contact,phone:c.phone,status:'진행 중'}]));
  }return result;
 }
+
+export function reviewDiary(zone:Zone,diaryID:string,input:any,actor:string){
+ const entry=zone.diaries?.find(d=>d.id===diaryID);if(!entry)throw new Problem('공사일지를 찾을 수 없습니다.',404);
+ if(input.confirm!==true)throw new Problem('원본 대조 확인이 필요합니다.');
+ const reviewedText=text(input.text,100000,'검토 문서',true);let stepIndex:number|null=null;
+ if(input.stepIndex!==null&&input.stepIndex!==undefined){if(!Number.isInteger(input.stepIndex)||input.stepIndex<0||input.stepIndex>5)throw new Problem('공정 선택 오류');stepIndex=input.stepIndex;const steps=zone.steps.map(s=>({...s}));steps[stepIndex!]={status:input.status,start:input.start??steps[stepIndex!].start,end:input.end??steps[stepIndex!].end,owner:input.owner,note:input.note};const checked=validateZone({...zone,steps});zone.steps=checked.steps;}
+ const review={text:reviewedText,at:new Date().toISOString(),actor,stepIndex,status:stepIndex===null?null:zone.steps[stepIndex].status};entry.review=review;entry.reviewHistory=[...(entry.reviewHistory||[]),review].slice(-10);return review;
+}
