@@ -17,3 +17,19 @@ test('cross-origin write is denied',async()=>{const req=new Request(origin+'/api
 test('AI jobs require admin and configured provider',async()=>{assert.equal((await handler(request('/api/ai/1','POST',{version:0,mode:'all'},false))).status,401);assert.equal((await handler(request('/api/ai/1','POST',{version:0,mode:'all'}))).status,503);assert.equal((await (await handler(request('/api/session'))).json()).aiReady,false)});
 
 test('photo-specific requests and manual returned result remain connected and private',async()=>{const jpeg='data:image/jpeg;base64,'+Buffer.from([255,216,255,0]).toString('base64');const p=await (await handler(request('/api/photo/1','POST',{version:0,image:jpeg,kind:'before',date:'2026-10-06',viewpoint:'입구',note:'공사 전'}))).json();const response=await handler(request('/api/image-requests/1','POST',{version:p.version,process:false}));const list=await response.json();assert.equal(response.status,202);assert.equal(list.length,1);assert.equal(list[0].status,'waiting');assert.equal((await handler(request('/api/image-requests/1','GET',undefined,false))).status,401);const uploaded=await handler(request('/api/image-result/1/'+list[0].key,'POST',{image:jpeg}));const result=await uploaded.json();assert.equal(uploaded.status,200);assert.equal(result[0].image.reference,p.zones['1'].records[0].url);assert.equal(result[0].status,'completed')});
+
+
+test('public view contains current progress and only active contractor contacts without financial documents',async()=>{
+ let p=await (await handler(request('/api/project'))).json();
+ p=await (await handler(request('/api/zone/1','PUT',{...p.zones['1'],version:p.version,scope:'private scope',contractors:{전기공사:{name:'진행 업체',contact:'현장 담당',phone:'042-000-0000',status:'진행 중'},인테리어:{name:'견적 업체',contact:'비공개',phone:'secret',status:'예정'}},costs:[{trade:'전기공사',item:'private item',unit:'식',qty:1,price:100000,vat:10,note:'private note'}]}))).json();
+ p=await (await handler(request('/api/quote/1','POST',{version:p.version,name:'secret.pdf',content:'data:application/pdf;base64,'+Buffer.from('%PDF-1.7').toString('base64')}))).json();
+ const pub=await (await handler(request('/api/project','GET',undefined,false))).json();
+ assert.equal(pub.zones['1'].steps[2].status,'진행 중');assert.equal(pub.zones['1'].steps[2].note,'');assert.deepEqual(Object.keys(pub.zones['1'].contractors),['전기공사']);assert.equal(pub.zones['1'].contractors.전기공사.phone,'042-000-0000');assert.deepEqual(pub.zones['1'].quotes,[]);assert.deepEqual(pub.zones['1'].costs,[]);assert.equal(pub.zones['1'].scope,'');assert.deepEqual(pub.audit,[]);assert.equal((await handler(request(p.zones['1'].quotes[0].url,'GET',undefined,false))).status,401);
+});
+test('contract attachments are admin-only and preserved by zone updates',async()=>{
+ const content='data:application/pdf;base64,'+Buffer.from('%PDF-1.7').toString('base64');assert.equal((await handler(request('/api/contract/1','POST',{version:0,name:'contract.pdf',vendor:'업체',content},false))).status,401);
+ let p=await (await handler(request('/api/contract/1','POST',{version:0,name:'contract.pdf',vendor:'업체',content}))).json();const url=p.zones['1'].contracts[0].url;
+ assert.equal((await handler(request(url))).status,200);assert.equal((await handler(request(url,'GET',undefined,false))).status,401);
+ p=await (await handler(request('/api/zone/1','PUT',{...p.zones['1'],contracts:[],version:p.version}))).json();assert.equal(p.zones['1'].contracts.length,1);
+ const pub=await (await handler(request('/api/project','GET',undefined,false))).json();assert.equal(JSON.stringify(pub).includes(url),false);
+});
