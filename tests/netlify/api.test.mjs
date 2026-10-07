@@ -33,3 +33,16 @@ test('contract attachments are admin-only and preserved by zone updates',async()
  p=await (await handler(request('/api/zone/1','PUT',{...p.zones['1'],contracts:[],version:p.version}))).json();assert.equal(p.zones['1'].contracts.length,1);
  const pub=await (await handler(request('/api/project','GET',undefined,false))).json();assert.equal(JSON.stringify(pub).includes(url),false);
 });
+
+test('Kakao TXT diary preserves original bytes and creates escaped-ready web text privately',async()=>{
+ const text='2026-10-07 공사일지\n전기공사 배선 작업\n<script>alert(1)</script>',bytes=Buffer.from(text),content='data:text/plain;base64,'+bytes.toString('base64');
+ assert.equal((await handler(request('/api/diary/1','POST',{version:0,name:'카톡.txt',content},false))).status,401);
+ const response=await handler(request('/api/diary/1','POST',{version:0,name:'카톡.txt',content,date:'2026-10-07'}));assert.equal(response.status,200);const p=await response.json(),d=p.zones['1'].diaries[0];assert.equal(d.status,'completed');assert.equal(d.text,text);assert.equal(d.secretHash,undefined);
+ const original=await handler(request(d.url));assert.equal(Buffer.from(await original.arrayBuffer()).equals(bytes),true);assert.equal((await handler(request(d.url,'GET',undefined,false))).status,401);
+ const pub=await (await handler(request('/api/project','GET',undefined,false))).json();assert.equal(JSON.stringify(pub).includes(text),false);assert.equal(pub.zones['1'].diaries,undefined);
+ const saved=await (await handler(request('/api/zone/1','PUT',{...p.zones['1'],version:p.version,diaries:[]}))).json();assert.equal(saved.zones['1'].diaries.length,1);
+});
+test('PDF diary remains stored when OCR is unavailable; unauthorized retries and malformed UTF8 are rejected',async()=>{
+ const response=await handler(request('/api/diary/1','POST',{version:0,name:'일지.pdf',content:'data:application/pdf;base64,'+Buffer.from('%PDF-1.7').toString('base64')}));const p=await response.json(),d=p.zones['1'].diaries[0];assert.equal(d.status,'waiting');assert.equal((await handler(request(d.url))).status,200);assert.equal((await handler(request('/api/diary-retry/'+d.id,'POST',{},false))).status,401);assert.equal((await handler(request('/api/diary-retry/'+d.id,'POST',{}))).status,503);
+ assert.equal((await handler(request('/api/diary/1','POST',{version:p.version,name:'invalid.txt',content:'data:text/plain;base64,/w=='}))).status,400);
+});

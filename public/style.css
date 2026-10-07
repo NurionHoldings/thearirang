@@ -33,3 +33,5 @@ input,select,textarea{max-width:100%}button{min-height:44px}.tabs{gap:14px}.tabs
 .public-contractors{display:grid;gap:12px;margin:16px 0}.public-contractors article{padding:15px;border:1px solid var(--line);border-radius:8px;background:#f3f7f7}.public-contractors p{margin:6px 0;overflow-wrap:anywhere}#contract-form{padding:16px;border:1px solid var(--line);border-radius:8px}#contract-form label{display:block;margin:10px 0}#contract-form input{width:100%;padding:10px}
 
 .document-card{padding:14px;border:1px solid var(--line);border-radius:8px;margin:12px 0}.document-card .actions{display:flex;gap:8px;flex-wrap:wrap}#document-dialog{width:min(1100px,96vw);max-width:96vw;height:92vh;max-height:92vh;padding:16px}#document-dialog iframe{width:100%;height:calc(100% - 120px);border:1px solid var(--line)}
+
+#diary-form,.diary-card{padding:16px;border:1px solid var(--line);border-radius:8px;margin:15px 0}#diary-form label{display:block;margin:12px 0}#diary-form input{display:block;width:100%;padding:10px}.diary-text{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;max-height:65vh;overflow:auto}.diary-card .actions{display:flex;gap:8px;flex-wrap:wrap}

@@ -1,6 +1,6 @@
 export function zoneIDs(){return ['b1','1','2a','2b','3','4','5'] as const}
 export type Step={status:string;start:string;end:string;owner:string;note:string};
-export type Zone={steps:Step[];checks:boolean[];records:any[];quotes:any[];contracts?:any[];contractors:Record<string,{name:string;contact:string;phone:string;status?:string}>;costs:any[];scope:string};
+export type Zone={steps:Step[];checks:boolean[];records:any[];quotes:any[];contracts?:any[];diaries?:any[];contractors:Record<string,{name:string;contact:string;phone:string;status?:string}>;costs:any[];scope:string};
 export type Project={version:number;zones:Record<string,Zone>;audit?:{at:string;actor:string;zone:string;action:string}[]};
 export class Problem extends Error{constructor(message:string,public status=400){super(message)}}
 export function initial():Project{
