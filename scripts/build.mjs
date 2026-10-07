@@ -6,3 +6,5 @@ await build({entryPoints:['src/netlify-app.js'],outfile:'dist/netlify-app.js',bu
 console.log('Netlify ready: dist + netlify/functions');
 
 await build({entryPoints:['src/drawings-app.js'],outfile:'dist/drawings.js',bundle:true,format:'esm',target:['es2022'],minify:true});
+
+await build({entryPoints:['src/cad-app.js'],outfile:'dist/cad-app.js',bundle:true,format:'esm',target:['es2022'],minify:true});

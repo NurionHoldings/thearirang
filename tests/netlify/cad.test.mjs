@@ -1,0 +1,8 @@
+import {build} from 'esbuild';import {test} from 'node:test';import assert from 'node:assert/strict';
+await build({entryPoints:['public/cad-core.js'],outfile:'.test-build/cad-core.mjs',bundle:true,platform:'node',format:'esm'});
+const {drawingDXF,dimensionLabel,validateDrawing,drawingSVG}=await import('../../.test-build/cad-core.mjs');
+const element=(type,values={})=>({id:'e-'+type,type,x:1000,y:2000,x2:4000,y2:6000,w:1200,h:1000,label:'한의원',...values});
+const plan={unit:'mm',title:'3층 계획안',width:20000,height:15000,verified:false,elements:[element('wall'),element('rect'),element('dimension'),element('door'),element('text',{label:'<script>alert(1)</script>'})]};
+test('CAD export has mm units, correct Y coordinates, door arcs and explicit non-associative dimensions',()=>{const d=drawingDXF(validateDrawing(plan));assert.match(d,/\$INSUNITS\r\n70\r\n4/);assert.match(d,/10\r\n1000\r\n20\r\n13000/);assert.match(d,/0\r\nARC/);assert.match(d,/5000 mm/);assert.match(d,/\\U\+D55C/);assert.ok(d.endsWith('0\r\nEOF\r\n'));assert.equal(dimensionLabel(plan.elements[2]),'5000 mm')});
+test('SVG escapes imported labels and keeps unverified plans clearly labelled',()=>{const svg=drawingSVG(plan);assert.ok(!svg.includes('<script>'));assert.ok(svg.includes('&lt;script&gt;'));assert.ok(svg.includes('치수 미확인 계획안'))});
+test('CAD rejects non-finite geometry, negative rectangles, duplicate IDs and unsupported objects',()=>{assert.throws(()=>validateDrawing({...plan,elements:[element('wall',{x:Infinity})]}));assert.throws(()=>validateDrawing({...plan,elements:[element('rect',{w:-10})]}));assert.throws(()=>validateDrawing({...plan,elements:[element('wall'),element('wall')]}));assert.throws(()=>validateDrawing({...plan,elements:[element('iframe')]}))});

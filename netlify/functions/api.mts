@@ -1,3 +1,4 @@
+import {validateCAD} from './_shared/cad.mjs';
 import {diaryStore,decodeDiary,publicDiary,prepareDiary,dispatchDiary} from './_shared/diary.mjs';
 import {getStore,getDeployStore} from '@netlify/blobs';
 import {initial,publicProject,reviewDiary,validateZone,decodeFile,text,date,Problem} from './_shared/project.mjs';
@@ -27,6 +28,8 @@ export default async function handler(req:Request){
  if(!current)throw new Problem('저장소 초기화 실패',503);
  const project=current.data as ReturnType<typeof initial>;
  if(path==='/api/project'&&req.method==='GET')return json(admin?await withAI(project):publicProject(project));
+ const cadMatch=/^\/api\/cad\/(b1|1|2a|2b|3|4|5)$/.exec(path);
+ if(cadMatch){const id=cadMatch[1];if(req.method==='GET')return json({version:project.version,cad:(project.zones[id] as any).cad||null});if(req.method!=='PUT')throw new Problem('잘못된 요청',404);const raw=await req.text();if(raw.length>500000)throw new Problem('도면은 500개 요소 이내로 작성하세요.',413);const input=JSON.parse(raw);if(input.version!==project.version)throw new Problem('다른 관리자가 수정했습니다. 도면을 내려받아 보관한 뒤 다시 불러오세요.',409);(project.zones[id] as any).cad=validateCAD(input.cad);project.version++;project.audit=[...(project.audit||[]),{at:new Date().toISOString(),actor,zone:id,action:'cad-save'}].slice(-500);const saved=await store.setJSON('project',project,{onlyIfMatch:current.etag});if(!saved.modified)throw new Problem('다른 관리자가 수정했습니다. 도면을 보관한 뒤 다시 불러오세요.',409);return json({version:project.version,cad:(project.zones[id] as any).cad});}
  const reviewMatch=/^\/api\/diary-review\/(b1|1|2a|2b|3|4|5)\/(diary-[a-f0-9-]{36})$/.exec(path);
  if(reviewMatch&&req.method==='POST'){const raw=await req.text();if(raw.length>650000)throw new Problem('검토 문서는 10만 자 이내로 작성하세요.',413);const input=JSON.parse(raw);if(input.version!==project.version)throw new Problem('다른 관리자가 수정했습니다. 새로고침 후 다시 저장하세요.',409);const [,zoneID,diaryID]=reviewMatch;reviewDiary(project.zones[zoneID],diaryID,input,actor);project.version++;project.audit=[...(project.audit||[]),{at:new Date().toISOString(),actor,zone:zoneID,action:'diary-review'}].slice(-500);const saved=await store.setJSON('project',project,{onlyIfMatch:current.etag});if(!saved.modified)throw new Problem('다른 관리자가 수정했습니다. 새로고침 후 다시 저장하세요.',409);return json(await withAI(project));}
  const retry=/^\/api\/diary-retry\/(diary-[a-f0-9-]{36})$/.exec(path);

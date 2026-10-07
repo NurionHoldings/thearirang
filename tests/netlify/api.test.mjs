@@ -59,3 +59,12 @@ test('review-only diary confirmation does not change progress and premature hand
  p=await (await handler(request(url,'POST',{version:p.version,text:'대조한 작업 기록',confirm:true,stepIndex:null}))).json();assert.deepEqual(p.zones['1'].steps,before);assert.equal(p.zones['1'].diaries[0].review.stepIndex,null);
  assert.equal((await handler(request(url,'POST',{version:p.version,text:'인계',confirm:true,stepIndex:5,status:'완료',owner:'관리자',note:'인계'}))).status,400);
 });
+
+test('CAD plans are admin-only, isolated by floor and protected from stale writes',async()=>{
+ const cad={unit:'mm',title:'3층 계획안',width:20000,height:15000,verified:false,elements:[{id:'e-wall',type:'wall',x:1000,y:1000,x2:3000,y2:1000,w:0,h:0,label:'벽'}]};
+ assert.equal((await handler(request('/api/cad/3','GET',undefined,false))).status,401);assert.equal((await handler(request('/api/cad/3','PUT',{version:0,cad},false))).status,401);
+ const saved=await handler(request('/api/cad/3','PUT',{version:0,cad}));assert.equal(saved.status,200);const data=await saved.json();assert.equal(data.cad.elements[0].x2,3000);assert.equal(data.version,1);assert.equal((await handler(request('/api/cad/3','PUT',{version:0,cad}))).status,409);
+ assert.equal((await (await handler(request('/api/cad/4'))).json()).cad,null);const pub=await (await handler(request('/api/project','GET',undefined,false))).json();assert.equal(pub.zones['3'].cad,undefined);
+ assert.equal((await handler(request('/api/cad/3','PUT',{version:1,cad:{...cad,elements:[{...cad.elements[0],x:200001}]}}))).status,400);
+ const p=await (await handler(request('/api/project'))).json();assert.equal(p.audit.at(-1).action,'cad-save');const updated=await (await handler(request('/api/zone/3','PUT',{...p.zones['3'],cad:null,version:p.version}))).json();assert.equal(updated.zones['3'].cad.elements.length,1);
+});
