@@ -9,6 +9,6 @@ function open(el){if(el.classList.contains('concept')){const style=getComputedSt
 document.addEventListener('click',e=>{const el=e.target.closest('main img,.concept');if(el)open(el)});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.image-expandable')){e.preventDefault();open(e.target)}});
 dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});dialog.addEventListener('close',()=>{large.hidden=false;crop.hidden=true});
-new MutationObserver(prepare).observe(document.getElementById('detail'),{childList:true,subtree:true});prepare();
+const detailObserver=new MutationObserver(prepare);for(const id of ['detail','floor-resources']){const target=document.getElementById(id);if(target)detailObserver.observe(target,{childList:true,subtree:true})}prepare();
 reduced.addEventListener('change',e=>{if(e.matches)document.querySelectorAll('.image-reveal').forEach(el=>el.classList.add('image-visible'))});
 })();

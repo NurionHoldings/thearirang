@@ -58,3 +58,12 @@ input,select,textarea{max-width:100%}button{min-height:44px}.tabs{gap:14px}.tabs
 .arirang-story .story-promise .story-return{font-size:23px;font-family:'Noto Serif KR',Georgia,serif;font-weight:600;letter-spacing:-.04em}
 .arirang-story .story-promise .story-closing{margin:18px 0 0;font-size:13px;line-height:1.9;font-weight:400;color:#6c715d}
 @media(max-width:760px){.arirang-plan-grid{grid-template-columns:1fr;gap:16px}.arirang-story{padding:30px 25px}.arirang-story h3{font-size:29px}.arirang-story .story-copy p{font-size:15px}}
+
+/* Keep construction workflows below the two-column space guide. */
+.construction-panel{margin-top:24px;padding:28px;background:white;border:1px solid var(--line);border-radius:14px;scroll-margin-top:20px}
+.construction-panel>.floor-resources{border:0;padding:0;margin:0}
+.resource-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+.resource-heading .eyebrow{margin:0 0 8px}.resource-heading h2{margin:0;font-size:24px}
+.construction-panel .tabs{overflow-x:auto}.construction-panel .tabs button{flex-shrink:0}
+@media(min-width:1001px){.workspace{align-items:stretch;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr)}.workspace>.building-panel{display:flex;flex-direction:column}.workspace .building-view{flex:1;min-height:610px;height:auto}.workspace .building-view>img{position:absolute;inset:0}.workspace>.detail-panel{min-width:0}}
+@media(max-width:760px){.construction-panel{padding:20px 18px}.resource-heading{align-items:flex-start}.resource-heading h2{font-size:21px}.construction-panel .floor-resource-links a{width:100%}}
