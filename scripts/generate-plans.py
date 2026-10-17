@@ -4,17 +4,18 @@ out=pathlib.Path('public/plans');out.mkdir(parents=True,exist_ok=True)
 doc=fitz.open();X=[0,6400,12800,19200,22200,26400,32800,39200];Y=[0,9300,16900,24500,34300]
 for f in [3,4,5]:
  if f==3:
-  p=doc.new_page(width=1190,height=842);p.insert_font(fontname='korea')
-  def tt(x,y,text,size=15):p.insert_text((x,y),text,fontname='korea',fontsize=size,color=(.1,.25,.24))
-  tt(45,50,'더 아리랑 3층 | 49인 입소형 요양원 공간 관계안',26)
-  tt(45,85,'축척 없음 · 치수 미확정 · 정원 수용 검증 전 · 시공 및 인허가용 아님',17)
-  for x,y,w,h,label in [(60,140,280,180,'좌측 생활침실'),(820,140,280,180,'우측 생활침실'),(60,370,280,160,'상담·간호·돌봄 거점'),(820,370,280,160,'목욕·위생·생활지원'),(380,140,400,390,'중앙 공동 거실·식당'),(60,560,280,70,'직원 휴게실'),(820,560,280,70,'직원 탈의실·사물함')]:
-   p.draw_rect(fitz.Rect(x,y,x+w,y+h),fill=(.9,.95,.91),color=(.3,.5,.43));tt(x+18,y+50,label,20)
-  tt(45,670,'좌우 생활공간과 중앙 공동생활 영역을 구분하는 기능 관계도입니다.',17)
-  tt(45,710,'침실 수·정원·창·피난·구조·설비 및 계단·승강기 위치는 실측 후 확정합니다.',16)
-  tt(45,750,'정원 49명은 사업 계획이며 설치신고·장기요양기관 지정 전입니다.',16)
-  tt(45,800,'2026.10.17 | 기존 한의원 계획을 대체하는 요양원 개념안',14)
-  (out/'floor-3.svg').write_text(p.get_svg_image(text_as_path=True));p.get_pixmap(matrix=fitz.Matrix(1.2,1.2),alpha=False).save(out/'floor-3.png')
+  import xml.etree.ElementTree as ET
+  p=doc.new_page(width=960,height=720);p.insert_font(fontname='korea')
+  def rgb(v):return tuple(int(v[i:i+2],16)/255 for i in (1,3,5))
+  for e in ET.fromstring(pathlib.Path('scripts/floor3-design.svg').read_text()):
+   tag=e.tag.rsplit('}',1)[-1]
+   if tag=='rect':
+    x=float(e.get('x',0))*.6;y=float(e.get('y',0))*.6;w=float(e.get('width'))*.6;h=float(e.get('height'))*.6
+    p.draw_rect(fitz.Rect(x,y,x+w,y+h),fill=rgb(e.get('fill','#ffffff')),color=rgb(e.get('stroke',e.get('fill','#ffffff'))),width=.5)
+   elif tag=='text':
+    size={'small':15,'room':19,'head':32}.get(e.get('class'),15)*.6
+    p.insert_text((float(e.get('x'))*.6,float(e.get('y'))*.6),e.text or '',fontname='korea',fontsize=size,color=(.09,.25,.23))
+  (out/'floor-3.svg').write_text(p.get_svg_image(text_as_path=True));p.get_pixmap(matrix=fitz.Matrix(1.5,1.5),alpha=False).save(out/'floor-3.png')
   continue
  p=doc.new_page(width=1190,height=842);p.insert_font(fontname='korea');ox,oy,s=65,150,.017
  def t(x,y,text,n=11):p.insert_text((x,y),text,fontname='korea',fontsize=n,color=(.15,.28,.23))
