@@ -3,10 +3,10 @@
 - 공사 후 가상 이미지 30장: `/nursing-home.html#after-gallery` (실제 준공사진·측정 도면 아님).
 - 해온 전용 관리자: `/admin.html?floor=3`.
 - 다른 층: `floor=b1,1,2,4,5`. 2층은 2a/2b를 함께 관리.
-- 기본 접속 방식은 Netlify 서버 환경변수. `HAEON_ACCESS_PASSWORD`=3층 해온 비밀번호, `ARIRANG_B1_ACCESS_PASSWORD`, `ARIRANG_FLOOR1_ACCESS_PASSWORD`, `ARIRANG_FLOOR2_ACCESS_PASSWORD`, `ARIRANG_FLOOR4_ACCESS_PASSWORD`, `ARIRANG_FLOOR5_ACCESS_PASSWORD`=각 층 비밀번호. 12~128자로 설정하고 Functions scope와 필요한 deploy context에 적용 후 재배포한다. VITE_/PUBLIC_ 등 공개 접두사를 쓰지 않는다. 비밀번호 값은 클라이언트·로그·응답에 전달하지 않는다. 환경변수 변경 후 재배포 시 기존 해당 층 세션은 무효가 된다.
+- 기본 접속 방식은 Netlify 서버 환경변수. `HAEON_ACCESS_PASSWORD`=3층 해온 비밀번호, `ARIRANG_B1_ACCESS_PASSWORD`, `ARIRANG_FLOOR1_ACCESS_PASSWORD`, `ARIRANG_FLOOR2_ACCESS_PASSWORD`, `ARIRANG_FLOOR4_ACCESS_PASSWORD`, `ARIRANG_FLOOR5_ACCESS_PASSWORD`=각 층 비밀번호. 9~128자로 설정하고 Functions scope와 필요한 deploy context에 적용 후 재배포한다. VITE_/PUBLIC_ 등 공개 접두사를 쓰지 않는다. 비밀번호 값은 클라이언트·로그·응답에 전달하지 않는다. 환경변수 변경 후 재배포 시 기존 해당 층 세션은 무효가 된다.
 - 초기 비밀번호 부여: Netlify 환경변수에 정한 초기 접속 값을 층 담당자에게 별도로 전달한다. 층 전용 주소가 계정 구역을 구분하므로 별도 아이디는 없다. 예: 해온 `/admin.html?floor=3` + `HAEON_ACCESS_PASSWORD` 값. 초기 비밀번호 자동 발송 기능은 없다.
 - 총괄관리자(Identity app_metadata의 admin 역할)는 층별 비밀번호를 지정하거나 열람하지 않고 `/floor-auth/reset`으로 초기화만 한다. 초기화 직후 해당 층의 기존 비밀번호·세션은 무효다. 초기화에는 유효한 초기 접속 환경변수가 필요하며 설정되지 않은 경우 기존 계정을 변경하지 않고 오류를 반환한다.
-- 최초 또는 초기화 후 층 담당자가 초기 접속 값으로 로그인하면 새 비밀번호 등록만 가능한 제한 세션이 발급된다. 공사 자료·도면·운영 업무는 등록 전 접근 불가. 담당자는 12~128자의 새 비밀번호·확인을 등록하며 초기 접속 값과 같을 수 없다. 등록은 총괄 계정에서 불가하고 초기화 후 1회만 허용한다. 등록 완료 시 새 정상 세션을 발급한다.
+- 최초 또는 초기화 후 층 담당자가 초기 접속 값으로 로그인하면 새 비밀번호 등록만 가능한 제한 세션이 발급된다. 공사 자료·도면·운영 업무는 등록 전 접근 불가. 담당자는 9~128자의 새 비밀번호·확인을 등록하며 초기 접속 값과 같을 수 없다. 등록은 총괄 계정에서 불가하고 초기화 후 1회만 허용한다. 등록 완료 시 새 정상 세션을 발급한다.
 - Netlify 초기 접속 값을 변경해 재배포하면 이전 계정·세션이 무효가 되고 새 값으로 다시 등록해야 한다. 층 담당자가 등록한 실제 비밀번호는 Netlify 환경변수에 덮어쓰지 않으며 솔트와 scrypt 해시만 보관한다.
 - 비밀번호는 scrypt 솔트+해시만 보관. HttpOnly/Secure/SameSite=Strict 쿠키, 8시간 세션. 변경 시 해당 층 기존 세션 무효. 로그아웃 시 세션 삭제.
 - 인증 기록은 `arirang-floor-access`, 업무는 `arirang-operations`의 `floor/{floor}` 키. production과 Deploy Preview 저장소 분리. 강한 일관성+ETag 조건 쓰기.
