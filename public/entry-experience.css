@@ -77,3 +77,31 @@
 .entry-wing-red{--wing-delay:3.3s;clip-path:polygon(15% 74%,49% 68%,65% 53%,73% 48%,69% 70%,49% 92%);filter:brightness(2.3) saturate(1.3) drop-shadow(0 0 12px #ff6276)}
 @keyframes entry-wing-flare{0%{opacity:0}12%,38%{opacity:.95}72%{opacity:.3}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.entry-wing-light{display:none;animation:none!important}.entry-letter-title>[data-entry-letter]{color:var(--glyph-base)}}
+
+/* Calmer motion, slightly larger emblem, whitespace-first Korean wrapping. */
+.entry-emblem{width:min(76vw,44svh,455px);height:min(76vw,44svh,455px)}
+.entry-logo-orbit{animation-duration:11s}
+.entry-emblem img{animation:entry-light-study 7.4s ease-in-out both,entry-symbol-turn 9.5s 7.4s cubic-bezier(.42,0,.58,1) infinite}
+.entry-emblem:before{animation-duration:8s}
+.entry-emblem:after{animation-duration:10.5s}
+.entry-story,.entry-bottom,.entry-video-caption{word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty}
+.entry-story{max-width:360px;padding-inline:12px;box-sizing:border-box}
+.entry-gate:not(:has(.entry-video)){overflow-y:auto;overflow-x:hidden}
+@media(max-width:600px){
+ .entry-scene{min-height:100%;padding:78px 18px 70px;position:relative}
+ .entry-emblem{width:min(74vw,38svh,340px);height:min(74vw,38svh,340px);margin:10px auto 24px}
+ .entry-content{min-width:0;width:100%}
+ .entry-story{max-width:280px;line-height:1.85;font-size:14px;margin-inline:auto}
+ .entry-top{max-width:42%;font-size:8px;line-height:1.6;white-space:normal;word-break:keep-all}
+ .entry-skip{right:18px;padding:9px 13px;font-size:12px}
+ .entry-bottom{left:20px;right:20px;line-height:1.8;text-align:center;bottom:20px;letter-spacing:.04em}
+ .entry-enter{max-width:100%;min-height:44px;margin-top:22px}
+ .entry-gate h1.entry-letter-title{font-size:clamp(25px,7vw,31px)}
+}
+@media(max-height:650px){
+ .entry-scene{min-height:570px;position:relative;padding-top:65px;padding-bottom:65px}
+ .entry-emblem{width:min(62vw,34svh,280px);height:min(62vw,34svh,280px);margin:0 auto 18px}
+ .entry-story{line-height:1.65}
+ .entry-bottom{bottom:18px}
+}
+@media(prefers-reduced-motion:reduce){.entry-emblem img{animation:none!important}.entry-logo-orbit,.entry-emblem:before,.entry-emblem:after{animation:none!important}}
