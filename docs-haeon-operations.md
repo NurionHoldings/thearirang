@@ -4,7 +4,10 @@
 - 해온 전용 관리자: `/admin.html?floor=3`.
 - 다른 층: `floor=b1,1,2,4,5`. 2층은 2a/2b를 함께 관리.
 - 기본 접속 방식은 Netlify 서버 환경변수. `HAEON_ACCESS_PASSWORD`=3층 해온 비밀번호, `ARIRANG_B1_ACCESS_PASSWORD`, `ARIRANG_FLOOR1_ACCESS_PASSWORD`, `ARIRANG_FLOOR2_ACCESS_PASSWORD`, `ARIRANG_FLOOR4_ACCESS_PASSWORD`, `ARIRANG_FLOOR5_ACCESS_PASSWORD`=각 층 비밀번호. 12~128자로 설정하고 Functions scope와 필요한 deploy context에 적용 후 재배포한다. VITE_/PUBLIC_ 등 공개 접두사를 쓰지 않는다. 비밀번호 값은 클라이언트·로그·응답에 전달하지 않는다. 환경변수 변경 후 재배포 시 기존 해당 층 세션은 무효가 된다.
-- 환경변수가 없는 층에 한해 기존 전체 관리자(Identity app_metadata의 admin 역할)로 `/?owner=1`에서 로그인한 뒤 관리자 페이지에서 층별 12~128자 비밀번호 설정. 초기/공통 비밀번호를 코드에 두지 않는다.
+- 초기 비밀번호 부여: Netlify 환경변수에 정한 초기 접속 값을 층 담당자에게 별도로 전달한다. 층 전용 주소가 계정 구역을 구분하므로 별도 아이디는 없다. 예: 해온 `/admin.html?floor=3` + `HAEON_ACCESS_PASSWORD` 값. 초기 비밀번호 자동 발송 기능은 없다.
+- 총괄관리자(Identity app_metadata의 admin 역할)는 층별 비밀번호를 지정하거나 열람하지 않고 `/floor-auth/reset`으로 초기화만 한다. 초기화 직후 해당 층의 기존 비밀번호·세션은 무효다. 초기화에는 유효한 초기 접속 환경변수가 필요하며 설정되지 않은 경우 기존 계정을 변경하지 않고 오류를 반환한다.
+- 최초 또는 초기화 후 층 담당자가 초기 접속 값으로 로그인하면 새 비밀번호 등록만 가능한 제한 세션이 발급된다. 공사 자료·도면·운영 업무는 등록 전 접근 불가. 담당자는 12~128자의 새 비밀번호·확인을 등록하며 초기 접속 값과 같을 수 없다. 등록은 총괄 계정에서 불가하고 초기화 후 1회만 허용한다. 등록 완료 시 새 정상 세션을 발급한다.
+- Netlify 초기 접속 값을 변경해 재배포하면 이전 계정·세션이 무효가 되고 새 값으로 다시 등록해야 한다. 층 담당자가 등록한 실제 비밀번호는 Netlify 환경변수에 덮어쓰지 않으며 솔트와 scrypt 해시만 보관한다.
 - 비밀번호는 scrypt 솔트+해시만 보관. HttpOnly/Secure/SameSite=Strict 쿠키, 8시간 세션. 변경 시 해당 층 기존 세션 무효. 로그아웃 시 세션 삭제.
 - 인증 기록은 `arirang-floor-access`, 업무는 `arirang-operations`의 `floor/{floor}` 키. production과 Deploy Preview 저장소 분리. 강한 일관성+ETag 조건 쓰기.
 - 공사 자료는 서버에서 담당 구역 권한 검증; 다른 층의 공개 진행 정보만 기본 공개 범위로 제공하며 비공개 견적·연락처·메모·첨부는 공유하지 않는다.
@@ -14,3 +17,10 @@
 - AI 지원: 기존 서버 OPENAI_API_KEY 설정 시 익명 숫자 집계만 AI에 전달. 미설정 시 규칙 기반 집계를 명시. 기본 모델은 OPENAI_TEXT_MODEL 또는 gpt-4.1-mini. 외부 전송에 입소자 코드·자유 메모·품목명 제외. 자동 승인/발주/결제 없음.
 - 로고: 생성 원본 `public/assets/haeon/logo-master.webp`, 벡터 애니메이션 `logo-animated.svg` (일출·온기·빛·등장 모션, reduced-motion 지원).
 - 검증: `npm run typecheck`, `npm run test:netlify`, `npm run build`.
+
+## 총괄관리자와 층 관리자 권한
+
+- 총괄관리자: 모든 층의 비밀번호 초기화(지정·열람 불가), 건물 전체 문구·색상·층별 공간 소개, 전 층 CAD·공사·도면·첨부 자료 수정. `/admin.html?floor=3`에 총괄 계정으로 접속하면 전체 건물 관리 화면이 나온다. 공개 디자인은 `/building-design`에 강한 일관성·버전 조건으로 저장한다.
+- 층 관리자: 담당 층의 사무·회계·요양급여 검토·재고 업무 등록. 다른 층의 운영 자료와 층별 비밀번호 초기화·건물 전역 디자인은 수정 불가.
+- 총괄 계정의 층별 운영 자료는 조회 전용. `/floor-ops/*/entries`는 총괄 계정일 때 서버에서 403으로 거부한다. 총괄 쿠키와 층별 쿠키가 동시에 있어도 총괄 계정의 수정 우회는 허용하지 않는다. 운영 프로그램 설정·변경 API를 추가할 때도 같은 정책을 유지해야 한다.
+- 건물 디자인 API는 공개 텍스트·정해진 색상·층별 소개만 허용하며 임의 HTML/CSS/JavaScript 코드를 저장·실행하지 않는다.
