@@ -35,21 +35,34 @@
 .entry-emblem:before{animation:entry-halo-one 4.8s 3s linear infinite backwards}
 .entry-emblem:after{animation:entry-halo-two 6.8s 3s linear infinite backwards}
 .entry-gate h1{position:relative;display:table;margin:0 auto;color:#dce8ed;-webkit-text-stroke:.65px #9fc5d7;text-shadow:0 1px 0 #718795,0 2px 0 #435565,0 4px 7px #000c,0 0 18px #73c9ec44;animation:entry-brand-name 1.5s .5s both}
-.entry-gate h1:after{content:attr(data-entry-title);position:absolute;inset:0;pointer-events:none;color:transparent;-webkit-text-stroke:.65px #c3f8ff;background:linear-gradient(110deg,transparent 25%,#4de5ff 42%,#fff 50%,#8cddff 58%,transparent 75%);background-size:260% 100%;background-repeat:no-repeat;background-position:180% 0;background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 0 4px #69eaff) drop-shadow(0 0 10px #4dbaff);clip-path:inset(0 100% 0 0);animation:entry-neon-scan 3.4s 1.1s ease-in-out infinite}
+
 @keyframes entry-still-reveal{from{opacity:0}to{opacity:1}}
 @keyframes entry-light-study{0%{filter:brightness(.35) drop-shadow(0 0 0 transparent)}28%{filter:brightness(1.35) drop-shadow(-12px 0 24px #52c9ff88)}54%{filter:brightness(.85) drop-shadow(10px 0 28px #e0b87988)}78%{filter:brightness(1.25) drop-shadow(0 -8px 28px #8bdfda88)}100%{filter:brightness(1) drop-shadow(0 16px 10px #0009) drop-shadow(0 0 25px #69b9db44)}}
-@keyframes entry-neon-scan{0%{clip-path:inset(0 100% 0 0);background-position:180% 0;opacity:0}12%{opacity:1}48%{clip-path:inset(0);background-position:-80% 0;opacity:1}68%,100%{clip-path:inset(0 0 0 100%);background-position:-80% 0;opacity:0}}
-@media(prefers-reduced-motion:reduce){.entry-emblem,.entry-logo-orbit,.entry-emblem img,.entry-emblem:before,.entry-emblem:after,.entry-gate h1,.entry-gate h1:after{animation:none!important}.entry-gate h1:after{display:none}.entry-emblem img{filter:drop-shadow(0 12px 18px #0008)}}
+
+@media(prefers-reduced-motion:reduce){.entry-emblem,.entry-logo-orbit,.entry-emblem img,.entry-emblem:before,.entry-emblem:after,.entry-gate h1,.entry-emblem img{filter:drop-shadow(0 12px 18px #0008)}}
 
 /* Letter origins are measured from the actual emblem and final glyph positions. */
 .entry-gate h1.entry-letter-title{display:table;white-space:nowrap;animation:none;perspective:800px;letter-spacing:.16em}
-.entry-letter-title>span{display:inline-block;position:relative;opacity:0;transform-origin:center;will-change:transform,opacity}
-.entry-letters-ready .entry-letter-title>span{animation:entry-letter-land 1.3s var(--letter-delay) cubic-bezier(.19,1,.22,1) both}
-.entry-gate h1.entry-letter-title:after{animation:entry-neon-scan 3.4s 3.6s ease-in-out infinite}
-@keyframes entry-letter-land{0%{opacity:0;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(.35);filter:blur(7px)}12%{opacity:1}68%{opacity:1;transform:translate(0,0) rotate(0) scale(1.2);filter:blur(0);text-shadow:0 0 15px #a0f0ff,0 0 35px #69bfff}82%{transform:translate(0,2px) scale(.94);text-shadow:0 2px 0 #435565,0 0 18px #73c9ec88}100%{opacity:1;transform:translate(0,0) scale(1);filter:blur(0)}}
-@media(prefers-reduced-motion:reduce){.entry-letter-title>span,.entry-letters-ready .entry-letter-title>span{opacity:1;transform:none;animation:none!important;will-change:auto}}
+.entry-letter-title>[data-entry-letter]{display:inline-block;position:relative;opacity:0;transform-origin:center;will-change:transform,opacity}
+.entry-letters-ready .entry-letter-title>[data-entry-letter]{animation:entry-letter-land 1.3s var(--letter-delay) cubic-bezier(.19,1,.22,1) both}
+
+
+@media(prefers-reduced-motion:reduce){.entry-letter-title>[data-entry-letter],.entry-letters-ready .entry-letter-title>[data-entry-letter]{opacity:1;transform:none;animation:none!important;will-change:auto}}
 
 /* After landing, illuminate and enlarge each glyph in reading order. */
-.entry-letters-ready .entry-letter-title>span{animation:entry-letter-land 1.3s var(--letter-delay) cubic-bezier(.19,1,.22,1) both,entry-glyph-light 4s var(--letter-glow-delay) ease-in-out infinite;will-change:transform,opacity}
-@keyframes entry-glyph-light{0%,25%,100%{transform:scale(1);color:#dce8ed;-webkit-text-stroke-color:#9fc5d7;text-shadow:0 1px 0 #718795,0 2px 0 #435565,0 4px 7px #000c,0 0 18px #73c9ec44}7%,14%{transform:scale(1.1);color:#f4feff;-webkit-text-stroke-color:#d6ffff;text-shadow:0 1px 0 #728f9d,0 0 4px #fff,0 0 12px #8af3ff,0 0 26px #26c8ff,0 0 42px #1d8fffaa}22%{transform:scale(1);color:#cdeef8;text-shadow:0 2px 0 #435565,0 0 16px #53d9ffa6}}
-@media(prefers-reduced-motion:reduce){.entry-letters-ready .entry-letter-title>span{animation:none!important;opacity:1;transform:none;will-change:auto}}
+.entry-letters-ready .entry-letter-title>[data-entry-letter]{animation:entry-letter-land 1.3s var(--letter-delay) cubic-bezier(.19,1,.22,1) both,entry-glyph-light 4s var(--letter-glow-delay) ease-in-out infinite;will-change:transform,opacity}
+
+@media(prefers-reduced-motion:reduce){.entry-letters-ready .entry-letter-title>[data-entry-letter]{animation:none!important;opacity:1;transform:none;will-change:auto}}
+
+/* Slow, legible origins with five trailing glyph echoes per flight. No title outline or sweep. */
+.entry-gate h1,.entry-gate h1.entry-letter-title{color:#dce8ed;-webkit-text-stroke:0;text-shadow:none;isolation:isolate}
+.entry-gate h1:after{content:none;display:none;animation:none}
+.entry-letters-ready .entry-letter-title>[data-entry-letter]{z-index:2;animation:entry-letter-land 3.4s var(--letter-delay) cubic-bezier(.4,0,.3,1) both,entry-glyph-light 4s var(--letter-glow-delay) ease-in-out infinite}
+.entry-letter-title>.entry-flight-trail{position:absolute;display:block;z-index:1;pointer-events:none;opacity:0;letter-spacing:inherit;text-align:left;color:#83d5ed;-webkit-text-stroke:0;text-shadow:none;filter:blur(.55px);animation:entry-trail-flight 3.4s var(--trail-delay) cubic-bezier(.4,0,.3,1) both}
+.entry-logo-orbit{animation-delay:7.4s}
+.entry-emblem img{animation:entry-light-study 7.4s ease-in-out both,entry-symbol-turn 6s 7.4s cubic-bezier(.42,0,.58,1) infinite}
+.entry-emblem:before,.entry-emblem:after{animation-delay:7.4s}
+@keyframes entry-letter-land{0%{opacity:0;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(1)}4%,18%{opacity:1;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(1);filter:brightness(1.45)}86%{opacity:1;transform:translate(0,0) rotate(0) scale(1.08);filter:brightness(1.1)}94%{transform:translate(0,2px) scale(.98)}100%{opacity:1;transform:translate(0,0) scale(1);filter:brightness(1)}}
+@keyframes entry-trail-flight{0%,18%{opacity:0;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(1)}24%,72%{opacity:var(--trail-opacity)}86%{opacity:0;transform:translate(0,0) rotate(0) scale(1.08)}100%{opacity:0;transform:translate(0,0) scale(1)}}
+@keyframes entry-glyph-light{0%,25%,100%{transform:scale(1);color:#dce8ed;filter:brightness(1);text-shadow:none}7%,14%{transform:scale(1.1);color:#fff;filter:brightness(1.5);text-shadow:none}22%{transform:scale(1);color:#cdeef8;filter:brightness(1.1)}}
+@media(prefers-reduced-motion:reduce){.entry-letter-title>.entry-flight-trail{display:none;animation:none!important}.entry-letters-ready .entry-letter-title>[data-entry-letter]{opacity:1;transform:none;animation:none!important;filter:none}.entry-emblem img{animation:none!important}}
