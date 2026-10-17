@@ -48,3 +48,8 @@
 .entry-gate h1.entry-letter-title:after{animation:entry-neon-scan 3.4s 3.6s ease-in-out infinite}
 @keyframes entry-letter-land{0%{opacity:0;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(.35);filter:blur(7px)}12%{opacity:1}68%{opacity:1;transform:translate(0,0) rotate(0) scale(1.2);filter:blur(0);text-shadow:0 0 15px #a0f0ff,0 0 35px #69bfff}82%{transform:translate(0,2px) scale(.94);text-shadow:0 2px 0 #435565,0 0 18px #73c9ec88}100%{opacity:1;transform:translate(0,0) scale(1);filter:blur(0)}}
 @media(prefers-reduced-motion:reduce){.entry-letter-title>span,.entry-letters-ready .entry-letter-title>span{opacity:1;transform:none;animation:none!important;will-change:auto}}
+
+/* After landing, illuminate and enlarge each glyph in reading order. */
+.entry-letters-ready .entry-letter-title>span{animation:entry-letter-land 1.3s var(--letter-delay) cubic-bezier(.19,1,.22,1) both,entry-glyph-light 4s var(--letter-glow-delay) ease-in-out infinite;will-change:transform,opacity}
+@keyframes entry-glyph-light{0%,25%,100%{transform:scale(1);color:#dce8ed;-webkit-text-stroke-color:#9fc5d7;text-shadow:0 1px 0 #718795,0 2px 0 #435565,0 4px 7px #000c,0 0 18px #73c9ec44}7%,14%{transform:scale(1.1);color:#f4feff;-webkit-text-stroke-color:#d6ffff;text-shadow:0 1px 0 #728f9d,0 0 4px #fff,0 0 12px #8af3ff,0 0 26px #26c8ff,0 0 42px #1d8fffaa}22%{transform:scale(1);color:#cdeef8;text-shadow:0 2px 0 #435565,0 0 16px #53d9ffa6}}
+@media(prefers-reduced-motion:reduce){.entry-letters-ready .entry-letter-title>span{animation:none!important;opacity:1;transform:none;will-change:auto}}
