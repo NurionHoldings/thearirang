@@ -73,14 +73,24 @@ input,select,textarea{max-width:100%}button{min-height:44px}.tabs{gap:14px}.tabs
 .nursing-images .floor-slide-outgoing{background-size:cover!important;background-position:center;background-repeat:no-repeat;background-color:#f4f2e9}
 
 /* Haeeon space guide: subtle individual fills with readable dark text. */
-.haeon-spaces span{color:#334c3e;border:1px solid #dce4d5;background:#edf3e7;border-radius:9px;padding:10px 14px;line-height:1.6}
-.haeon-spaces span:nth-child(1){background:#e6eedf;border-color:#d1ddc7}
-.haeon-spaces span:nth-child(2){background:#f3eddb;border-color:#e5dcc4}
-.haeon-spaces span:nth-child(3){background:#f5e5d8;border-color:#e8d3c0}
-.haeon-spaces span:nth-child(4){background:#e5f0e9;border-color:#cfe2d6}
-.haeon-spaces span:nth-child(5){background:#f4efd9;border-color:#e5ddbf}
-.haeon-spaces span:nth-child(6){background:#eee7f0;border-color:#dfd2e2}
-.haeon-spaces span:nth-child(7){background:#e3eef2;border-color:#cbdee5}
-.haeon-spaces span:nth-child(8){background:#f4e4df;border-color:#e7cfc7}
-.haeon-spaces span:nth-child(9){background:#eeeadd;border-color:#ded7c3}
-.haeon-spaces span:nth-child(10){background:#e3efec;border-color:#cbded8}
+.haeon-spaces > button{color:#334c3e;border:1px solid #dce4d5;background:#edf3e7;border-radius:9px;padding:10px 14px;line-height:1.6}
+.haeon-spaces > button:nth-child(1){background:#e6eedf;border-color:#d1ddc7}
+.haeon-spaces > button:nth-child(2){background:#f3eddb;border-color:#e5dcc4}
+.haeon-spaces > button:nth-child(3){background:#f5e5d8;border-color:#e8d3c0}
+.haeon-spaces > button:nth-child(4){background:#e5f0e9;border-color:#cfe2d6}
+.haeon-spaces > button:nth-child(5){background:#f4efd9;border-color:#e5ddbf}
+.haeon-spaces > button:nth-child(6){background:#eee7f0;border-color:#dfd2e2}
+.haeon-spaces > button:nth-child(7){background:#e3eef2;border-color:#cbdee5}
+.haeon-spaces > button:nth-child(8){background:#f4e4df;border-color:#e7cfc7}
+.haeon-spaces > button:nth-child(9){background:#eeeadd;border-color:#ded7c3}
+.haeon-spaces > button:nth-child(10){background:#e3efec;border-color:#cbded8}
+
+.haeon-spaces > button{font-size:14px;text-align:left;cursor:pointer;transition:filter .2s,transform .2s,box-shadow .2s}
+.haeon-spaces > button:hover{filter:brightness(.97);transform:translateY(-2px);box-shadow:0 4px 12px #334c3e15}
+.haeon-spaces > button:focus-visible{outline:3px solid #47705b;outline-offset:3px}
+#haeon-space-dialog{width:min(1100px,94vw);max-height:94vh;padding:22px;border:1px solid #dce4d5;border-radius:16px;background:#faf8f1;color:#334c3e}
+#haeon-space-dialog::backdrop{background:#10251bdb}.space-dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}.space-dialog-heading h2{margin:0;font-size:22px}
+.space-image-frame{width:100%;aspect-ratio:3/2;max-height:66vh;overflow:hidden;background:#efeee7;border-radius:10px;margin-top:18px}.space-image-frame img{display:block;width:100%;height:100%;object-fit:contain}
+.space-image-controls{display:flex;justify-content:space-between;align-items:center;gap:12px}.space-image-controls [hidden]{display:none}.space-image-fade{animation:haeon-space-fade .55s ease-out both}@keyframes haeon-space-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){#haeon-space-dialog{padding:14px}.space-dialog-heading h2{font-size:18px}.space-image-controls button{font-size:13px;padding:10px}.space-image-frame{max-height:60vh}}
+@media(prefers-reduced-motion:reduce){.space-image-fade{animation:none}.haeon-spaces > button{transition:none}.haeon-spaces > button:hover{transform:none}}
