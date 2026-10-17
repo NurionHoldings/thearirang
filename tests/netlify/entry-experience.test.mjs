@@ -15,3 +15,5 @@ test('reduced motion immediately releases film destination',()=>{const s=setup('
 test('film playback error still releases requested workspace',()=>{const s=setup('/admin.html');let calls=0;s.window.ARIRANG_ENTRY.arkaon(()=>calls++);s.events.error();s.flush();assert.equal(calls,1)});
 
 test('letter launch computes origin offsets from logo and final title position',()=>{const s=setup();assert.equal(s.positions['--letter-x'],'0px');assert.equal(s.positions['--letter-y'],'0px');assert.equal(s.positions['--letter-delay'],'0.6s');});
+
+test('home opens entrance synchronously before any homepage markup can be parsed',()=>{const html=readFileSync('public/index.html','utf8');assert.match(html,/<body><script src="entry-experience.js"><\/script>/);assert.ok(html.indexOf('<script src="entry-experience.js">')<html.indexOf('<header>'));assert.doesNotMatch(html,/<script defer src="entry-experience.js">/);assert.match(html,/rel="preload" as="image" href="\/assets\/arirang-symbol.png"/);});

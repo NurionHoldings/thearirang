@@ -31,5 +31,6 @@ window.ARIRANG_ENTRY={brand:()=>openGate('brand'),arkaon:after=>openGate('film',
 // Capture before existing tab handlers: release the original request only after the film.
 let release=false;document.addEventListener('click',e=>{const button=e.target.closest('[data-tab="arkaon"],[data-arkaon-open],[data-ai]');if(!button||release)return;e.preventDefault();e.stopImmediatePropagation();openGate('film',()=>{if(button.matches('[data-arkaon-open]')){document.dispatchEvent(new Event('arirang:chat-open'));return}if(!button.isConnected)return;release=true;try{button.click()}finally{release=false}})},true);
 const home=location.pathname==='/'||location.pathname.endsWith('/index.html');const params=new URLSearchParams(location.search);if(home&&!location.hash&&!params.has('owner'))openGate('brand');
-const footer=document.querySelector('footer');if(footer&&home){const replay=document.createElement('button');replay.type='button';replay.className='entry-replay';replay.textContent='더 아리랑 진입화면 다시 보기';replay.onclick=()=>openGate('brand');footer.append(replay)}
+function addReplay(){const footer=document.querySelector('footer');if(footer&&home){const replay=document.createElement('button');replay.type='button';replay.className='entry-replay';replay.textContent='더 아리랑 진입화면 다시 보기';replay.onclick=()=>openGate('brand');footer.append(replay)}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addReplay,{once:true});else addReplay();
 })();
