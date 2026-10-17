@@ -3,7 +3,8 @@
 - 공사 후 가상 이미지 30장: `/nursing-home.html#after-gallery` (실제 준공사진·측정 도면 아님).
 - 해온 전용 관리자: `/admin.html?floor=3`.
 - 다른 층: `floor=b1,1,2,4,5`. 2층은 2a/2b를 함께 관리.
-- 기존 전체 관리자(Identity app_metadata의 admin 역할)로 `/?owner=1`에서 로그인한 뒤 관리자 페이지에서 층별 12~128자 비밀번호 설정. 초기/공통 비밀번호를 코드에 두지 않는다.
+- 기본 접속 방식은 Netlify 서버 환경변수. `HAEON_ACCESS_PASSWORD`=3층 해온 비밀번호, `ARIRANG_B1_ACCESS_PASSWORD`, `ARIRANG_FLOOR1_ACCESS_PASSWORD`, `ARIRANG_FLOOR2_ACCESS_PASSWORD`, `ARIRANG_FLOOR4_ACCESS_PASSWORD`, `ARIRANG_FLOOR5_ACCESS_PASSWORD`=각 층 비밀번호. 12~128자로 설정하고 Functions scope와 필요한 deploy context에 적용 후 재배포한다. VITE_/PUBLIC_ 등 공개 접두사를 쓰지 않는다. 비밀번호 값은 클라이언트·로그·응답에 전달하지 않는다. 환경변수 변경 후 재배포 시 기존 해당 층 세션은 무효가 된다.
+- 환경변수가 없는 층에 한해 기존 전체 관리자(Identity app_metadata의 admin 역할)로 `/?owner=1`에서 로그인한 뒤 관리자 페이지에서 층별 12~128자 비밀번호 설정. 초기/공통 비밀번호를 코드에 두지 않는다.
 - 비밀번호는 scrypt 솔트+해시만 보관. HttpOnly/Secure/SameSite=Strict 쿠키, 8시간 세션. 변경 시 해당 층 기존 세션 무효. 로그아웃 시 세션 삭제.
 - 인증 기록은 `arirang-floor-access`, 업무는 `arirang-operations`의 `floor/{floor}` 키. production과 Deploy Preview 저장소 분리. 강한 일관성+ETag 조건 쓰기.
 - 공사 자료는 서버에서 담당 구역 권한 검증; 다른 층의 공개 진행 정보만 기본 공개 범위로 제공하며 비공개 견적·연락처·메모·첨부는 공유하지 않는다.

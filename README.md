@@ -91,4 +91,4 @@ PC는 건물/층 상세 2열, 1000px 이하 태블릿·모바일은 단일 열. 
 
 ## 해온 · 층별 업무 관리
 
-공사 후 가상 이미지 30장과 애니메이션 로고는 `/nursing-home.html`에 공개합니다. 층별 독립 관리자 화면은 `/admin.html?floor=3`(다른 층: b1/1/2/4/5)입니다. 전체 관리자가 비밀번호를 최초 설정한 후 층 관리자는 비밀번호만 입력합니다. 설정·기능·운영 한계는 [docs-haeon-operations.md](docs-haeon-operations.md)를 참조하세요.
+공사 후 가상 이미지 30장과 애니메이션 로고는 `/nursing-home.html`에 공개합니다. 층별 독립 관리자 화면은 `/admin.html?floor=3`(다른 층: b1/1/2/4/5)입니다. Netlify의 `HAEON_ACCESS_PASSWORD`(해온) 및 각 층 환경변수를 설정한 후 층 관리자는 비밀번호만 입력합니다. 설정·기능·운영 한계는 [docs-haeon-operations.md](docs-haeon-operations.md)를 참조하세요.
