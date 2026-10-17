@@ -1,0 +1,19 @@
+/* Brand entrance and local ARKAON film; no authentication or external navigation. */
+(()=>{'use strict';
+let active=null;
+const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+function openGate(kind,after){
+ if(active)return;const previous=document.activeElement,gate=document.createElement('dialog');gate.className='entry-gate';gate.setAttribute('aria-label',kind==='film'?'아르카온 진입 영상':'더 아리랑 브랜드 진입');
+ gate.innerHTML=kind==='film'?'<video class="entry-video" muted playsinline preload="auto" aria-label="아르카온 원본 진입 영상"><source src="/assets/arkaon-entry-v17.mp4" type="video/mp4"></video><p class="entry-video-caption" role="status">ARKAON · 관리자 업무 지원으로 연결합니다</p><button type="button" class="entry-skip">건너뛰기 →</button>':'<div class="entry-scene"><div class="entry-stars" aria-hidden="true"></div><span class="entry-top">DAEJEON · SINCE ARIRANG</span><button type="button" class="entry-skip">건너뛰기 →</button><div class="entry-content"><div class="entry-emblem"><img src="/assets/arirang-symbol.png" alt="더 아리랑 로고" width="366" height="338"></div><h1>더 아리랑</h1><p class="entry-english">THE ARIRANG</p><p class="entry-story">어제의 추억이,<br>내일의 행복이 되는 곳</p><button type="button" class="entry-enter">더 아리랑 만나기 <span aria-hidden="true">↗</span></button></div><span class="entry-bottom">사람을 잇고 · 세대를 품고 · 지역과 함께합니다</span></div>';
+ document.body.append(gate);active=gate;let done=false,timer,watchdog;const video=gate.querySelector('video');
+ const finish=()=>{if(done)return;done=true;clearTimeout(timer);clearTimeout(watchdog);video?.pause();gate.classList.add('entry-leaving');setTimeout(()=>{gate.close();gate.remove();active=null;if(previous?.isConnected)previous.focus();after?.();},reduced()?0:700)};
+ gate.querySelectorAll('button').forEach(b=>b.addEventListener('click',finish));gate.addEventListener('cancel',e=>{e.preventDefault();finish()});gate.showModal();gate.querySelector('button').focus();
+ if(video){video.addEventListener('ended',finish,{once:true});video.addEventListener('error',finish,{once:true});watchdog=setTimeout(finish,22000);if(reduced()){finish();return}video.play().catch(finish)}
+ else if(!reduced())timer=setTimeout(finish,6500);
+}
+window.ARIRANG_ENTRY={brand:()=>openGate('brand'),arkaon:after=>openGate('film',after)};
+// Capture before existing tab handlers: release the original request only after the film.
+let release=false;document.addEventListener('click',e=>{const button=e.target.closest('[data-tab="arkaon"],[data-arkaon-open],[data-ai]');if(!button||release)return;e.preventDefault();e.stopImmediatePropagation();openGate('film',()=>{if(button.matches('[data-arkaon-open]')){document.querySelector('#arkaon-support')?.focus();document.querySelector('#arkaon-support')?.scrollIntoView({behavior:reduced()?'instant':'smooth',block:'center'});return}if(!button.isConnected)return;release=true;try{button.click()}finally{release=false}})},true);
+const home=location.pathname==='/'||location.pathname.endsWith('/index.html');const params=new URLSearchParams(location.search);if(home&&!location.hash&&!params.has('owner'))openGate('brand');
+const footer=document.querySelector('footer');if(footer&&home){const replay=document.createElement('button');replay.type='button';replay.className='entry-replay';replay.textContent='더 아리랑 진입화면 다시 보기';replay.onclick=()=>openGate('brand');footer.append(replay)}
+})();
