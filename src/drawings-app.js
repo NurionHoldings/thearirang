@@ -1,6 +1,6 @@
 import {login,logout,getUser,handleAuthCallback} from '@netlify/identity';
 const $=id=>document.getElementById(id),status=s=>$('state').textContent=s;
-const titles={3:'한의원 · 접수 / 진료 / 치료',4:'어르신 쉼터 · 보행 / 인지 / 보조기 체험',5:'옥상 정원 · 중앙 휴식 / 좌우 정원'};
+const titles={3:'49인 요양원 · 좌우 생활침실 / 중앙 거실·식당',4:'어르신 쉼터 · 보행 / 인지 / 보조기 체험',5:'옥상 정원 · 중앙 휴식 / 좌우 정원'};
 for(const n of [3,4,5]){const a=document.createElement('article');a.innerHTML=`<h3>${n}층 ${titles[n]}</h3><a href="/plans/floor-${n}.svg" target="_blank"><img src="/plans/floor-${n}.png" alt="${n}층 인테리어 기본계획도"></a><a href="/plans/floor-${n}.svg" download>벡터 도면 SVG 다운로드</a>`;$('plans').append(a)}
 $('printPlans').onclick=()=>window.print();
 async function api(path,options={}){const r=await fetch('/drawings-api/'+path,{...options,credentials:'same-origin',cache:'no-store'});const v=await r.json();if(!r.ok)throw Error(v.error||'요청 실패');return v}
