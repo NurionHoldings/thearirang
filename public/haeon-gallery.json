@@ -1,0 +1,242 @@
+[
+  {
+    "id": "entrance",
+    "title": "입구·접수·가족 대기",
+    "category": "공용 생활",
+    "src": "assets/haeon/entrance.webp",
+    "thumb": "assets/haeon/entrance-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "living-left",
+    "title": "좌측 생활 거실",
+    "category": "공용 생활",
+    "src": "assets/haeon/living-left.webp",
+    "thumb": "assets/haeon/living-left-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "living-right",
+    "title": "우측 생활 거실",
+    "category": "공용 생활",
+    "src": "assets/haeon/living-right.webp",
+    "thumb": "assets/haeon/living-right-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "single-bedroom",
+    "title": "1인실",
+    "category": "개인 생활",
+    "src": "assets/haeon/single-bedroom.webp",
+    "thumb": "assets/haeon/single-bedroom-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "double-bedroom",
+    "title": "2인실",
+    "category": "개인 생활",
+    "src": "assets/haeon/double-bedroom.webp",
+    "thumb": "assets/haeon/double-bedroom-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "triple-bedroom",
+    "title": "3인실",
+    "category": "개인 생활",
+    "src": "assets/haeon/triple-bedroom.webp",
+    "thumb": "assets/haeon/triple-bedroom-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "quad-bedroom",
+    "title": "4인실",
+    "category": "개인 생활",
+    "src": "assets/haeon/quad-bedroom.webp",
+    "thumb": "assets/haeon/quad-bedroom-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "ensuite",
+    "title": "침실 전용 화장실",
+    "category": "개인 생활",
+    "src": "assets/haeon/ensuite.webp",
+    "thumb": "assets/haeon/ensuite-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "dining",
+    "title": "공용 식당",
+    "category": "식사·활동",
+    "src": "assets/haeon/dining.webp",
+    "thumb": "assets/haeon/dining-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "kitchen",
+    "title": "15평 조리실 구상",
+    "category": "식사·활동",
+    "src": "assets/haeon/kitchen.webp",
+    "thumb": "assets/haeon/kitchen-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "program",
+    "title": "프로그램·인지활동실",
+    "category": "식사·활동",
+    "src": "assets/haeon/program.webp",
+    "thumb": "assets/haeon/program-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "therapy",
+    "title": "물리·작업치료실",
+    "category": "식사·활동",
+    "src": "assets/haeon/therapy.webp",
+    "thumb": "assets/haeon/therapy-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "nursing",
+    "title": "간호사실",
+    "category": "돌봄·직원",
+    "src": "assets/haeon/nursing.webp",
+    "thumb": "assets/haeon/nursing-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "caregiver",
+    "title": "요양보호사실",
+    "category": "돌봄·직원",
+    "src": "assets/haeon/caregiver.webp",
+    "thumb": "assets/haeon/caregiver-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "office",
+    "title": "사회복지사·행정 사무실",
+    "category": "돌봄·직원",
+    "src": "assets/haeon/office.webp",
+    "thumb": "assets/haeon/office-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "counseling",
+    "title": "가족 상담실",
+    "category": "돌봄·직원",
+    "src": "assets/haeon/counseling.webp",
+    "thumb": "assets/haeon/counseling-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "staff-rest",
+    "title": "직원 휴게실",
+    "category": "돌봄·직원",
+    "src": "assets/haeon/staff-rest.webp",
+    "thumb": "assets/haeon/staff-rest-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "staff-changing",
+    "title": "직원 탈의실·사물함",
+    "category": "돌봄·직원",
+    "src": "assets/haeon/staff-changing.webp",
+    "thumb": "assets/haeon/staff-changing-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "male-bathing",
+    "title": "남성 목욕·탈의실",
+    "category": "목욕·위생",
+    "src": "assets/haeon/male-bathing.webp",
+    "thumb": "assets/haeon/male-bathing-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "female-bathing",
+    "title": "여성 목욕·탈의실",
+    "category": "목욕·위생",
+    "src": "assets/haeon/female-bathing.webp",
+    "thumb": "assets/haeon/female-bathing-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "corridor",
+    "title": "생활실 복도",
+    "category": "공용 생활",
+    "src": "assets/haeon/corridor.webp",
+    "thumb": "assets/haeon/corridor-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "volunteer",
+    "title": "자원봉사자실",
+    "category": "돌봄·직원",
+    "src": "assets/haeon/volunteer.webp",
+    "thumb": "assets/haeon/volunteer-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "laundry",
+    "title": "세탁·건조실",
+    "category": "운영·보관",
+    "src": "assets/haeon/laundry.webp",
+    "thumb": "assets/haeon/laundry-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "linen",
+    "title": "청결 린넨실",
+    "category": "운영·보관",
+    "src": "assets/haeon/linen.webp",
+    "thumb": "assets/haeon/linen-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "dirty-utility",
+    "title": "오염물 처리실",
+    "category": "운영·보관",
+    "src": "assets/haeon/dirty-utility.webp",
+    "thumb": "assets/haeon/dirty-utility-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "food-storage",
+    "title": "식자재 창고",
+    "category": "운영·보관",
+    "src": "assets/haeon/food-storage.webp",
+    "thumb": "assets/haeon/food-storage-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "clean-supplies",
+    "title": "청결 물품실",
+    "category": "운영·보관",
+    "src": "assets/haeon/clean-supplies.webp",
+    "thumb": "assets/haeon/clean-supplies-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "public-toilet",
+    "title": "공용 화장실",
+    "category": "목욕·위생",
+    "src": "assets/haeon/public-toilet.webp",
+    "thumb": "assets/haeon/public-toilet-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "quiet-bedroom",
+    "title": "안정형 1인실 활용안",
+    "category": "개인 생활",
+    "src": "assets/haeon/quiet-bedroom.webp",
+    "thumb": "assets/haeon/quiet-bedroom-thumb.webp",
+    "kind": "after-concept"
+  },
+  {
+    "id": "equipment",
+    "title": "휠체어·보행기 보관실",
+    "category": "운영·보관",
+    "src": "assets/haeon/equipment.webp",
+    "thumb": "assets/haeon/equipment-thumb.webp",
+    "kind": "after-concept"
+  }
+]
