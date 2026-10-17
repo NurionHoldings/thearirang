@@ -40,7 +40,7 @@ input,select,textarea{max-width:100%}button{min-height:44px}.tabs{gap:14px}.tabs
 
 .floor-preview.floor-slideshow .before-view{overflow:hidden}.floor-preview.floor-slideshow .before-view img{display:block;object-fit:cover;object-position:center}
 
-.floor-slideshow .before-view .floor-slide-outgoing{position:absolute;inset:0;background-size:cover;background-position:center;pointer-events:none;opacity:1;transition:opacity .75s cubic-bezier(.22,1,.36,1)}.floor-slideshow .before-view .floor-slide-outgoing.is-fading{opacity:0}.floor-slideshow .before-view span{z-index:1}@media(prefers-reduced-motion:reduce){.floor-slideshow .before-view .floor-slide-outgoing{transition:none}}
+.floor-slideshow .before-view .floor-slide-outgoing{position:absolute;inset:0;background-size:cover;background-position:center;pointer-events:none;transform:translateX(0);transition:transform .75s cubic-bezier(.22,1,.36,1)}.floor-slideshow .before-view .floor-slide-outgoing{z-index:1}.floor-slideshow .before-view span{z-index:2}@media(prefers-reduced-motion:reduce){.floor-slideshow .before-view .floor-slide-outgoing{transition:none}}
 
 /* The entrance image is replaced by the company's story in the same grid slot. */
 .arirang-plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px;align-items:start}
