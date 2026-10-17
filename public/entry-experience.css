@@ -27,3 +27,16 @@
 @media(max-width:600px){.entry-scene{padding:82px 20px 72px}.entry-emblem{width:min(70vw,36svh);height:min(70vw,36svh);margin:14px auto 24px}.entry-story{margin:0 auto}.entry-gate h1{font-size:27px}.entry-bottom{font-size:9px}}
 @media(max-height:650px){.entry-scene{padding:66px 20px 48px}.entry-emblem{width:min(60vw,33svh);height:min(60vw,33svh);margin:0 auto 14px}.entry-english{margin:10px 0}.entry-story{font-size:12px}.entry-enter{margin-top:14px;padding:11px 24px}.entry-bottom{bottom:14px}}
 @media(prefers-reduced-motion:reduce){.entry-emblem,.entry-emblem:before,.entry-emblem:after,.entry-logo-orbit,.entry-emblem img,.entry-scene:before{animation:none!important;transform:none!important;filter:none}.entry-gate h1{animation:none!important}}
+
+/* Light study first; the brand begins rotating only after the stationary reveal. */
+.entry-emblem{animation:entry-still-reveal 1.2s ease-out both}
+.entry-logo-orbit{animation:entry-logo-precess 7s 3s ease-in-out infinite backwards}
+.entry-emblem img{animation:entry-light-study 3s ease-in-out both,entry-symbol-turn 6s 3s cubic-bezier(.42,0,.58,1) infinite;filter:drop-shadow(0 16px 10px #0009) drop-shadow(0 0 25px #69b9db44)}
+.entry-emblem:before{animation:entry-halo-one 4.8s 3s linear infinite backwards}
+.entry-emblem:after{animation:entry-halo-two 6.8s 3s linear infinite backwards}
+.entry-gate h1{position:relative;display:table;margin:0 auto;color:#dce8ed;-webkit-text-stroke:.65px #9fc5d7;text-shadow:0 1px 0 #718795,0 2px 0 #435565,0 4px 7px #000c,0 0 18px #73c9ec44;animation:entry-brand-name 1.5s .5s both}
+.entry-gate h1:after{content:attr(data-entry-title);position:absolute;inset:0;pointer-events:none;color:transparent;-webkit-text-stroke:.65px #c3f8ff;background:linear-gradient(110deg,transparent 25%,#4de5ff 42%,#fff 50%,#8cddff 58%,transparent 75%);background-size:260% 100%;background-repeat:no-repeat;background-position:180% 0;background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 0 4px #69eaff) drop-shadow(0 0 10px #4dbaff);clip-path:inset(0 100% 0 0);animation:entry-neon-scan 3.4s 1.1s ease-in-out infinite}
+@keyframes entry-still-reveal{from{opacity:0}to{opacity:1}}
+@keyframes entry-light-study{0%{filter:brightness(.35) drop-shadow(0 0 0 transparent)}28%{filter:brightness(1.35) drop-shadow(-12px 0 24px #52c9ff88)}54%{filter:brightness(.85) drop-shadow(10px 0 28px #e0b87988)}78%{filter:brightness(1.25) drop-shadow(0 -8px 28px #8bdfda88)}100%{filter:brightness(1) drop-shadow(0 16px 10px #0009) drop-shadow(0 0 25px #69b9db44)}}
+@keyframes entry-neon-scan{0%{clip-path:inset(0 100% 0 0);background-position:180% 0;opacity:0}12%{opacity:1}48%{clip-path:inset(0);background-position:-80% 0;opacity:1}68%,100%{clip-path:inset(0 0 0 100%);background-position:-80% 0;opacity:0}}
+@media(prefers-reduced-motion:reduce){.entry-emblem,.entry-logo-orbit,.entry-emblem img,.entry-emblem:before,.entry-emblem:after,.entry-gate h1,.entry-gate h1:after{animation:none!important}.entry-gate h1:after{display:none}.entry-emblem img{filter:drop-shadow(0 12px 18px #0008)}}
