@@ -1,10 +1,11 @@
+import {productionContext} from './deploy-context.mjs';
 import {getStore,getDeployStore} from '@netlify/blobs';
 import {randomBytes,scrypt as scryptCallback,timingSafeEqual,createHash} from 'node:crypto';
 import {promisify} from 'node:util';
 import {Problem} from './project.mjs';
 const scrypt=promisify(scryptCallback);
 export const FLOOR_ZONES:Record<string,string[]>={b1:['b1'],'1':['1'],'2':['2a','2b'],'3':['3'],'4':['4'],'5':['5']};
-export function accessStore(){const o={name:'arirang-floor-access',consistency:'strong' as const};return Netlify.env.get('CONTEXT')==='production'?getStore(o):getDeployStore(o)}
+export function accessStore(){const o={name:'arirang-floor-access',consistency:'strong' as const};return productionContext()?getStore(o):getDeployStore(o)}
 export const tokenHash=(s:string)=>createHash('sha256').update(s).digest('hex');
 export function sessionToken(req:Request){return req.headers.get('cookie')?.match(/(?:^|;\s*)__Host-arirang_floor=([a-f0-9]{64})(?:;|$)/)?.[1]||''}
 export const floorCookie=(token:string,maxAge=28800)=>`__Host-arirang_floor=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`;

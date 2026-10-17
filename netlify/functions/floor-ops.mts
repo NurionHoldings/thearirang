@@ -1,3 +1,4 @@
+import {productionContext} from './_shared/deploy-context.mjs';
 import {getStore,getDeployStore} from '@netlify/blobs';
 import type {Config} from '@netlify/functions';
 import {identityAdmin,floorSession,FLOOR_ZONES} from './_shared/floor-access.mjs';
@@ -8,7 +9,7 @@ import {chatMessages,guidedChat} from './_shared/operations-chat.mjs';
 import {aiReady} from './_shared/ai.mjs';
 const json=(v:unknown,status=200)=>new Response(JSON.stringify(v),{status,headers:{'Content-Type':'application/json','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
 export default async function handler(req:Request){try{const url=new URL(req.url),match=/^\/floor-ops\/(b1|1|2|3|4|5)(?:\/(assist|entries|chat))?$/.exec(url.pathname);if(!match)throw new Problem('요청 없음',404);const [,floor,action]=match,owner=await identityAdmin(req),session=owner?null:await floorSession(req);if(!owner&&!session)throw new Problem('관리자 로그인이 필요합니다.',401);if(!owner&&session?.floor!==floor)throw new Problem('담당 층만 이용할 수 있습니다.',403);if(req.method!=='GET'&&req.headers.get('origin')!==url.origin)throw new Problem('요청 출처 오류',403);
-const o={name:'arirang-operations',consistency:'strong' as const},store=Netlify.env.get('CONTEXT')==='production'?getStore(o):getDeployStore(o),key='floor/'+floor;let current=await store.getWithMetadata(key,{type:'json'});const state=(current?.data||emptyOps()) as OpsState;
+const o={name:'arirang-operations',consistency:'strong' as const},store=productionContext()?getStore(o):getDeployStore(o),key='floor/'+floor;let current=await store.getWithMetadata(key,{type:'json'});const state=(current?.data||emptyOps()) as OpsState;
 if(req.method==='GET'&&!action)return json({...state,stock:stockRows(state.entries),summary:operationsSummary(state),aiReady:aiReady(),floor,zones:FLOOR_ZONES[floor]});
 if(req.method!=='POST')throw new Problem('요청 없음',404);const raw=await req.text();if(raw.length>(action==='chat'?20000:12000))throw new Problem('입력이 너무 깁니다.',413);const input=JSON.parse(raw);
 if(action==='entries'){if(owner)throw new Problem('총괄관리자는 층별 운영 업무를 수정할 수 없습니다. 해당 층 관리자 권한이 필요합니다.',403);const next=addEntry(state,input,session!.actor,floor),saved=await store.setJSON(key,next,current?{onlyIfMatch:current.etag}:{onlyIfNew:true});if(!saved.modified)throw new Problem('동시 수정입니다. 다시 불러오세요.',409);return json({...next,summary:operationsSummary(next),stock:stockRows(next.entries)},201);}
