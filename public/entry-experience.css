@@ -40,3 +40,11 @@
 @keyframes entry-light-study{0%{filter:brightness(.35) drop-shadow(0 0 0 transparent)}28%{filter:brightness(1.35) drop-shadow(-12px 0 24px #52c9ff88)}54%{filter:brightness(.85) drop-shadow(10px 0 28px #e0b87988)}78%{filter:brightness(1.25) drop-shadow(0 -8px 28px #8bdfda88)}100%{filter:brightness(1) drop-shadow(0 16px 10px #0009) drop-shadow(0 0 25px #69b9db44)}}
 @keyframes entry-neon-scan{0%{clip-path:inset(0 100% 0 0);background-position:180% 0;opacity:0}12%{opacity:1}48%{clip-path:inset(0);background-position:-80% 0;opacity:1}68%,100%{clip-path:inset(0 0 0 100%);background-position:-80% 0;opacity:0}}
 @media(prefers-reduced-motion:reduce){.entry-emblem,.entry-logo-orbit,.entry-emblem img,.entry-emblem:before,.entry-emblem:after,.entry-gate h1,.entry-gate h1:after{animation:none!important}.entry-gate h1:after{display:none}.entry-emblem img{filter:drop-shadow(0 12px 18px #0008)}}
+
+/* Letter origins are measured from the actual emblem and final glyph positions. */
+.entry-gate h1.entry-letter-title{display:table;white-space:nowrap;animation:none;perspective:800px;letter-spacing:.16em}
+.entry-letter-title>span{display:inline-block;position:relative;opacity:0;transform-origin:center;will-change:transform,opacity}
+.entry-letters-ready .entry-letter-title>span{animation:entry-letter-land 1.3s var(--letter-delay) cubic-bezier(.19,1,.22,1) both}
+.entry-gate h1.entry-letter-title:after{animation:entry-neon-scan 3.4s 3.6s ease-in-out infinite}
+@keyframes entry-letter-land{0%{opacity:0;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(.35);filter:blur(7px)}12%{opacity:1}68%{opacity:1;transform:translate(0,0) rotate(0) scale(1.2);filter:blur(0);text-shadow:0 0 15px #a0f0ff,0 0 35px #69bfff}82%{transform:translate(0,2px) scale(.94);text-shadow:0 2px 0 #435565,0 0 18px #73c9ec88}100%{opacity:1;transform:translate(0,0) scale(1);filter:blur(0)}}
+@media(prefers-reduced-motion:reduce){.entry-letter-title>span,.entry-letters-ready .entry-letter-title>span{opacity:1;transform:none;animation:none!important;will-change:auto}}
