@@ -105,3 +105,10 @@
  .entry-bottom{bottom:18px}
 }
 @media(prefers-reduced-motion:reduce){.entry-emblem img{animation:none!important}.entry-logo-orbit,.entry-emblem:before,.entry-emblem:after{animation:none!important}}
+
+/* Luminous depth begins on landing; warm and cool glyphs retain their own palette. */
+.entry-letter-title>[data-entry-letter="0"]{--glyph-halo:#ffc35c;--glyph-aura:#ed8e3577;--glyph-depth:#806033}
+.entry-letter-title>[data-entry-letter="1"],.entry-letter-title>[data-entry-letter="2"],.entry-letter-title>[data-entry-letter="3"]{--glyph-halo:#67dfff;--glyph-aura:#408aff77;--glyph-depth:#385d78}
+@keyframes entry-letter-land{0%{opacity:0;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(1);text-shadow:none}4%,18%{opacity:1;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(1);filter:brightness(1.45);text-shadow:0 0 6px var(--glyph-halo)}86%{opacity:1;transform:translate(0,0) rotate(0) scale(1.08);filter:brightness(1.1);text-shadow:0 2px 0 var(--glyph-depth),0 0 7px var(--glyph-halo),0 0 24px var(--glyph-aura)}94%{transform:translate(0,2px) scale(.98)}100%{opacity:1;transform:translate(0,0) scale(1);filter:brightness(1);text-shadow:0 2px 0 var(--glyph-depth),0 4px 8px #0009,0 0 7px var(--glyph-halo),0 0 20px var(--glyph-aura)}}
+@keyframes entry-glyph-light{0%,25%,100%{transform:scale(1);color:var(--glyph-base);filter:brightness(1);text-shadow:0 2px 0 var(--glyph-depth),0 4px 8px #0009,0 0 7px var(--glyph-halo),0 0 20px var(--glyph-aura)}7%,14%{transform:scale(1.1);color:var(--glyph-lit);filter:brightness(1.25);text-shadow:0 2px 0 var(--glyph-depth),0 0 4px #fff8,0 0 12px var(--glyph-halo),0 0 28px var(--glyph-halo),0 0 45px var(--glyph-aura)}22%{transform:scale(1);color:var(--glyph-base);filter:brightness(1.05);text-shadow:0 2px 0 var(--glyph-depth),0 0 10px var(--glyph-halo),0 0 26px var(--glyph-aura)}}
+@media(prefers-reduced-motion:reduce){.entry-letter-title>[data-entry-letter]{text-shadow:0 2px 0 var(--glyph-depth),0 0 10px var(--glyph-aura)}}
