@@ -1,0 +1,500 @@
+{
+  "zones": [
+    {
+      "id": "b1",
+      "floor": -1,
+      "name": "주차장",
+      "area": "면적 미확정",
+      "purpose": "지하 1층 주차장 · 운영 현황 미확인",
+      "spaces": [
+        "차량 진입",
+        "주차 구획",
+        "보행 동선",
+        "환기·조명"
+      ]
+    },
+    {
+      "id": "1",
+      "floor": 1,
+      "name": "반값마트",
+      "area": "400평",
+      "purpose": "신선식품과 생활필수품을 만나는 생활형 마트",
+      "spaces": [
+        "신선식품",
+        "상온 진열",
+        "냉장·냉동",
+        "계산대",
+        "입고·창고"
+      ]
+    },
+    {
+      "id": "2a",
+      "floor": 2,
+      "name": "약국도매유통",
+      "area": "200평",
+      "purpose": "입고·보관·출고를 분리하는 유통 공간",
+      "spaces": [
+        "입고 검수",
+        "분류·보관",
+        "온도 관리",
+        "출고·포장",
+        "업무 공간"
+      ]
+    },
+    {
+      "id": "2b",
+      "floor": 2,
+      "name": "배민마트",
+      "area": "200평",
+      "purpose": "현재 영업 중 · 운영 구역을 보호하며 공사 계획",
+      "spaces": [
+        "피킹 랙",
+        "냉장·냉동",
+        "포장",
+        "배송 인계",
+        "입고"
+      ]
+    },
+    {
+      "id": "3",
+      "floor": 3,
+      "name": "해온 요양원 · 49인 계획",
+      "area": "기존 표기 400평 · 인정 면적 확인 전",
+      "purpose": "어르신이 숙식하며 일상을 이어가는 입소형 생활공간. 좌우 생활침실과 중앙 공동 거실·식당을 나누고 사회복지사·요양보호사의 돌봄을 연결합니다.",
+      "spaces": [
+        "22실·49명",
+        "개별 화장실 22개",
+        "조리실 15평",
+        "좌우 생활침실",
+        "중앙 공동 거실·식당",
+        "상담·돌봄 거점",
+        "간호·건강관리",
+        "목욕·위생·급식",
+        "직원 휴게실·탈의실",
+        "안전한 이동 동선"
+      ]
+    },
+    {
+      "id": "4",
+      "floor": 4,
+      "name": "어르신 쉼터 · 휴식",
+      "area": "면적 미확정",
+      "purpose": "보행·균형 운동과 보조기 체험, 인지·정서 활동을 돕는 어르신 쉼터 계획",
+      "spaces": [
+        "보행·균형 운동",
+        "보조기 체험",
+        "인지·정서 활동",
+        "영양·여가 교육",
+        "휴식·상담"
+      ]
+    },
+    {
+      "id": "5",
+      "floor": 5,
+      "name": "어르신 쉼터 · 활동",
+      "area": "면적 미확정",
+      "purpose": "중앙은 차·발마사지·케어, 좌우 외부는 정원과 담소 공간",
+      "spaces": [
+        "차·담소",
+        "발마사지",
+        "소형 케어기기",
+        "인조잔디·지압길",
+        "정원·벤치"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "src": "assets/arirang-story-installation.jpg",
+      "title": "더 아리랑 회사소개 조형물",
+      "group": "company",
+      "note": "회사소개 이미지"
+    },
+    {
+      "src": "assets/exterior.jpg",
+      "title": "건물 외관",
+      "group": "photos",
+      "note": "공사 전 외관 참고"
+    },
+    {
+      "src": "assets/arirang-symbol.png",
+      "title": "더 아리랑 로고",
+      "group": "company",
+      "note": "공개 브랜드 로고"
+    },
+    {
+      "src": "assets/haeon/logo-master.webp",
+      "title": "해온 요양원 로고",
+      "group": "haeon",
+      "note": "공개 브랜드 로고"
+    },
+    {
+      "src": "assets/after-board-v2.jpg",
+      "title": "층별 리모델링 종합 예상도",
+      "group": "spaces",
+      "note": "AI 가상 예상도 · 실측·준공 사진 아님"
+    },
+    {
+      "src": "assets/floor3-before-1.jpg",
+      "title": "3층 공사 전 현장 · 촬영 위치 1",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor3-before-2.jpg",
+      "title": "3층 공사 전 현장 · 촬영 위치 2",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor3-before-3.jpg",
+      "title": "3층 공사 전 현장 · 촬영 위치 3",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor4-after-1.jpg",
+      "title": "4층 공사 후 예상 · 촬영 위치 1",
+      "group": "spaces",
+      "note": "공사 후 가상 예상도 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/floor4-after-2.jpg",
+      "title": "4층 공사 후 예상 · 촬영 위치 2",
+      "group": "spaces",
+      "note": "공사 후 가상 예상도 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/floor4-after-3.jpg",
+      "title": "4층 공사 후 예상 · 촬영 위치 3",
+      "group": "spaces",
+      "note": "공사 후 가상 예상도 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/floor4-before-1.jpg",
+      "title": "4층 공사 전 현장 · 촬영 위치 1",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor4-before-2.jpg",
+      "title": "4층 공사 전 현장 · 촬영 위치 2",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor4-before-3.jpg",
+      "title": "4층 공사 전 현장 · 촬영 위치 3",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor5-after-center-v2.jpg",
+      "title": "5층 공사 후 예상 · 중앙",
+      "group": "spaces",
+      "note": "공사 후 가상 예상도 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/floor5-after-left-v2.jpg",
+      "title": "5층 공사 후 예상 · 좌측",
+      "group": "spaces",
+      "note": "공사 후 가상 예상도 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/floor5-after-right-v2.jpg",
+      "title": "5층 공사 후 예상 · 우측",
+      "group": "spaces",
+      "note": "공사 후 가상 예상도 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/floor5-before-center.jpg",
+      "title": "5층 공사 전 현장 · 중앙",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor5-before-left.jpg",
+      "title": "5층 공사 전 현장 · 좌측",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/floor5-before-right.jpg",
+      "title": "5층 공사 전 현장 · 우측",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-00.jpg",
+      "title": "현장 외관 참고 사진 1",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-01.jpg",
+      "title": "현장 외관 참고 사진 2",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-02.jpg",
+      "title": "현장 외관 참고 사진 3",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-03.jpg",
+      "title": "현장 외관 참고 사진 4",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-04.jpg",
+      "title": "현장 외관 참고 사진 5",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-05.jpg",
+      "title": "현장 외관 참고 사진 6",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-06.jpg",
+      "title": "현장 외관 참고 사진 7",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-07.jpg",
+      "title": "현장 외관 참고 사진 8",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-08.jpg",
+      "title": "현장 외관 참고 사진 9",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/site-09.jpg",
+      "title": "현장 외관 참고 사진 10",
+      "group": "photos",
+      "note": "공사 전 현장 참고 사진"
+    },
+    {
+      "src": "assets/haeon/entrance.webp",
+      "title": "해온 · 입구·접수·가족 대기",
+      "group": "haeon",
+      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/living-left.webp",
+      "title": "해온 · 좌측 생활 거실",
+      "group": "haeon",
+      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/living-right.webp",
+      "title": "해온 · 우측 생활 거실",
+      "group": "haeon",
+      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/single-bedroom.webp",
+      "title": "해온 · 1인실",
+      "group": "haeon",
+      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/double-bedroom.webp",
+      "title": "해온 · 2인실",
+      "group": "haeon",
+      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/triple-bedroom.webp",
+      "title": "해온 · 3인실",
+      "group": "haeon",
+      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/quad-bedroom.webp",
+      "title": "해온 · 4인실",
+      "group": "haeon",
+      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/ensuite.webp",
+      "title": "해온 · 침실 전용 화장실",
+      "group": "haeon",
+      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/dining.webp",
+      "title": "해온 · 공용 식당",
+      "group": "haeon",
+      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/kitchen.webp",
+      "title": "해온 · 15평 조리실 구상",
+      "group": "haeon",
+      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/program.webp",
+      "title": "해온 · 프로그램·인지활동실",
+      "group": "haeon",
+      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/therapy.webp",
+      "title": "해온 · 물리·작업치료실",
+      "group": "haeon",
+      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/nursing.webp",
+      "title": "해온 · 간호사실",
+      "group": "haeon",
+      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/caregiver.webp",
+      "title": "해온 · 요양보호사실",
+      "group": "haeon",
+      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/office.webp",
+      "title": "해온 · 사회복지사·행정 사무실",
+      "group": "haeon",
+      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/counseling.webp",
+      "title": "해온 · 가족 상담실",
+      "group": "haeon",
+      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/staff-rest.webp",
+      "title": "해온 · 직원 휴게실",
+      "group": "haeon",
+      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/staff-changing.webp",
+      "title": "해온 · 직원 탈의실·사물함",
+      "group": "haeon",
+      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/male-bathing.webp",
+      "title": "해온 · 남성 목욕·탈의실",
+      "group": "haeon",
+      "note": "목욕·위생 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/female-bathing.webp",
+      "title": "해온 · 여성 목욕·탈의실",
+      "group": "haeon",
+      "note": "목욕·위생 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/corridor.webp",
+      "title": "해온 · 생활실 복도",
+      "group": "haeon",
+      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/volunteer.webp",
+      "title": "해온 · 자원봉사자실",
+      "group": "haeon",
+      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/laundry.webp",
+      "title": "해온 · 세탁·건조실",
+      "group": "haeon",
+      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/linen.webp",
+      "title": "해온 · 청결 린넨실",
+      "group": "haeon",
+      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/dirty-utility.webp",
+      "title": "해온 · 오염물 처리실",
+      "group": "haeon",
+      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/food-storage.webp",
+      "title": "해온 · 식자재 창고",
+      "group": "haeon",
+      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/clean-supplies.webp",
+      "title": "해온 · 청결 물품실",
+      "group": "haeon",
+      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/public-toilet.webp",
+      "title": "해온 · 공용 화장실",
+      "group": "haeon",
+      "note": "목욕·위생 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/quiet-bedroom.webp",
+      "title": "해온 · 안정형 1인실 활용안",
+      "group": "haeon",
+      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "assets/haeon/equipment.webp",
+      "title": "해온 · 휠체어·보행기 보관실",
+      "group": "haeon",
+      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+    },
+    {
+      "src": "plans/floor-3.svg",
+      "title": "3층 공개 기본계획도",
+      "group": "plans",
+      "note": "실측 전 기본계획 · 시공·인허가 도면 아님"
+    },
+    {
+      "src": "plans/floor-4.svg",
+      "title": "4층 공개 기본계획도",
+      "group": "plans",
+      "note": "실측 전 기본계획 · 시공·인허가 도면 아님"
+    },
+    {
+      "src": "plans/floor-5.svg",
+      "title": "5층 공개 기본계획도",
+      "group": "plans",
+      "note": "실측 전 기본계획 · 시공·인허가 도면 아님"
+    }
+  ],
+  "documents": [
+    {
+      "src": "plans/thearirang-interior-plans.pdf",
+      "title": "3·4·5층 기본계획도 PDF"
+    },
+    {
+      "src": "reports/nursing-home-22-room-design.pdf",
+      "title": "해온 22실 공간계획 보고서"
+    },
+    {
+      "src": "reports/nursing-home-49-review.pdf",
+      "title": "해온 49인 개설 검토 보고서"
+    }
+  ]
+}
