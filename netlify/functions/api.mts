@@ -1,3 +1,5 @@
+import {documentSession} from './_shared/document-access.mjs';
+import {ownSubmissions,submitDocument} from './_shared/document-submissions.mjs';
 import {identityAdmin,floorSession,assertFloor} from './_shared/floor-access.mjs';
 import {validateCAD} from './_shared/cad.mjs';
 import {diaryStore,decodeDiary,publicDiary,prepareDiary,dispatchDiary} from './_shared/diary.mjs';
@@ -11,12 +13,14 @@ const json=(v:unknown,status=200)=>new Response(JSON.stringify(v),{status,header
 export default async function handler(req:Request){
  try{
  const path=new URL(req.url).pathname;
- const owner=await identityAdmin(req),floor=owner?null:await floorSession(req);
+ const uploadRoute=/^\/api\/document-upload\/(b1|1|2a|2b|3|4|5)$/.exec(path),documentPortal=!!uploadRoute||path==='/api/document-submissions';
+ const uploader=documentPortal?await documentSession(req):null;
+ const owner=documentPortal?'':await identityAdmin(req),floor=documentPortal||owner?null:await floorSession(req);
  const actor=owner||floor?.actor||'',allowed=floor?.zones||null,admin=!!actor;
  const view=async(project:any)=>{if(!admin)return publicProject(project);if(!allowed)return withAI(project);const scoped={...project,zones:Object.fromEntries(Object.entries(project.zones).filter(([id])=>allowed.includes(id))),audit:(project.audit||[]).filter((a:any)=>allowed.includes(a.zone))};return {...publicProject(project),...await withAI(scoped),zones:{...publicProject(project).zones,...scoped.zones}}};
  if(path==='/api/session')return json({admin:!!owner,floorAdmin:!!floor,zones:allowed,csrf:'',identity:true,aiReady:aiReady()});
  const publicRead=path==='/api/project'&&req.method==='GET';
- if(!admin&&!publicRead)throw new Problem('관리자 계정으로 로그인하세요.',401);
+ if(!admin&&!publicRead&&!uploader)throw new Problem('관리자 계정으로 로그인하세요.',401);
  if(req.method!=='GET'&&req.headers.get('origin')!==new URL(req.url).origin)throw new Problem('요청 출처를 확인하세요.',403);
  const preview=Netlify.env.get('CONTEXT')!=='production';
  const store=preview?getDeployStore({name:'arirang-project',consistency:'strong'}):getStore({name:'arirang-project',consistency:'strong'});
@@ -25,11 +29,18 @@ export default async function handler(req:Request){
  if(!current){await store.setJSON('project',initial(),{onlyIfNew:true});current=await store.getWithMetadata('project',{type:'json'})}
  if(!current)throw new Problem('저장소 초기화 실패',503);
  const project=current.data as ReturnType<typeof initial>;
+ if(documentPortal){
+ if(!uploader)throw new Problem('자료등록 전용 비밀번호로 로그인하세요.',401);
+ if(path==='/api/document-submissions'&&req.method==='GET')return json(ownSubmissions(project));
+ if(!uploadRoute||req.method!=='POST')throw new Problem('자료등록 전용 요청을 확인하세요.',405);
+ const raw=await req.text();if(raw.length>4500000)throw new Problem('파일은 3MB 이하여야 합니다.',413);
+ return json(await submitDocument(project,current,store,files,uploadRoute[1],JSON.parse(raw)),201);
+ }
  // Enforce scope on the server for every floor-scoped operation, including private files.
  if(allowed){
  const direct=/^\/api\/(?:cad|zone|photo|quote|contract|diary|diary-review|image-result|image-requests|ai|ai-status)\/(b1|1|2a|2b|3|4|5)(?:\/|$)/.exec(path);if(direct)assertFloor(allowed,direct[1]);
  const retryID=/^\/api\/diary-retry\/(.+)$/.exec(path)?.[1];if(retryID){const zone=Object.entries(project.zones).find(([,z])=>z.diaries?.some(d=>d.id===retryID))?.[0];if(!zone)throw new Problem('일지 없음',404);assertFloor(allowed,zone);}
- if(path.startsWith('/uploads/')){let permitted=false;for(const id of allowed){const z:any=project.zones[id];if(!z)continue;const references=[...(z.records||[]),...(z.quotes||[]),...(z.contracts||[]),...(z.diaries||[])];if(references.some(r=>r.url===path))permitted=true;const job=await aiStore().getWithMetadata(id,{type:'json'});if(job?.data.image?.url===path)permitted=true;const related=await listImageRequests(id,z);if(related.some((r:any)=>r.image?.url===path))permitted=true;}if(!permitted)throw new Problem('담당 층의 파일만 이용할 수 있습니다.',403);}
+ if(path.startsWith('/uploads/')){let permitted=false;for(const id of allowed){const z:any=project.zones[id];if(!z)continue;const references=[...(z.records||[]),...(z.quotes||[]),...(z.contracts||[]),...((z as any).designs||[]),...(z.diaries||[])];if(references.some(r=>r.url===path))permitted=true;const job=await aiStore().getWithMetadata(id,{type:'json'});if(job?.data.image?.url===path)permitted=true;const related=await listImageRequests(id,z);if(related.some((r:any)=>r.image?.url===path))permitted=true;}if(!permitted)throw new Problem('담당 층의 파일만 이용할 수 있습니다.',403);}
  }
  if(path.startsWith('/uploads/')){const name=path.slice(9);if(!/^[\w-]+\.(jpg|png|webp|pdf|txt)$/.test(name))throw new Problem('파일 없음',404);const file=await files.getWithMetadata(name,{type:'arrayBuffer'});if(!file)throw new Problem('파일 없음',404);return new Response(file.data,{headers:{'Content-Type':String(file.metadata.mime),'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','X-Frame-Options':'SAMEORIGIN','Content-Security-Policy':"frame-ancestors 'self'"}})}
  if(path==='/api/project'&&req.method==='GET')return json(await view(project));
