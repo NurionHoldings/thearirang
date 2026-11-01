@@ -5,17 +5,26 @@
   const key = 'arirang-background-music-v1';
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch {}
-  let enabled = true; // Each new visit starts with music enabled; stop applies to this visit.
+  const sessionKey = 'arirang-music-playback-v2';
+  function playbackState() {
+    try {
+      const value=JSON.parse(sessionStorage.getItem(sessionKey)||'null');
+      return value && value.recording==='0718-v2' && Number.isInteger(value.track) && value.track>=0 && value.track<15 && Number.isFinite(value.time) && value.time>=0 && value.time<=301 && Date.now()-value.updated<1800000 ? value : null;
+    } catch { return null; }
+  }
+  const previous=playbackState();
+  let enabled = previous ? previous.enabled!==false : true;
+  if (/arirang-(market|local)(\.html)?$/.test(location.pathname)) document.body.classList.add('market-bgm-page');
   const volume = typeof saved.volume === 'number' && Number.isFinite(saved.volume)
     ? Math.max(0, Math.min(1, saved.volume)) : 0.25;
   const audio = document.createElement('audio');
   audio.id = 'arirang-bgm';
   const tracks = Array.from({length:15},(_,i)=>'/assets/music-0718-v2/part-'+String(i).padStart(2,'0')+'.m4a');
-  let track=0;
+  let track=previous?.track||0,seekTo=previous?.time||0;
   audio.src = tracks[track];
   audio.loop = false;
   audio.preload = 'auto';
-  audio.autoplay = true;
+  audio.autoplay = false; // Explicit play() respects a stop carried from the previous page.
   audio.volume = volume;
   audio.hidden = true;
   document.body.append(audio);
@@ -28,8 +37,16 @@
   const range = controls.querySelector('input');
   const status = controls.querySelector('.bgm-status');
   range.value = String(Math.round(volume * 100));
-  let pending = false, started = false, resume = false, attempt = 0;
+  let pending = false, attempt = 0, lastSaved = 0;
+  function remember() {
+    try { sessionStorage.setItem(sessionKey,JSON.stringify({recording:'0718-v2',track,time:seekTo||audio.currentTime||0,enabled,updated:Date.now()})); } catch {}
+  }
+  const buffer=document.createElement('audio');buffer.preload='auto';buffer.hidden=true;buffer.setAttribute('aria-hidden','true');document.body.append(buffer);
+  function preloadNext(){const next=tracks[(track+1)%tracks.length];if(buffer.getAttribute('src')!==next)buffer.src=next;}
+  audio.addEventListener('loadedmetadata',()=>{if(seekTo){try{audio.currentTime=Math.min(seekTo,Number.isFinite(audio.duration)?Math.max(0,audio.duration-.05):seekTo);seekTo=0;}catch{}}});
+  audio.addEventListener('timeupdate',()=>{if(Date.now()-lastSaved>2000){lastSaved=Date.now();remember();}});
   function save() {
+    remember();
     try { localStorage.setItem(key, JSON.stringify({ volume: audio.volume })); } catch {}
   }
   function render(message = '') {
@@ -51,7 +68,7 @@
         audio.pause();
         return;
       }
-      started = true;
+      remember();preloadNext();
       render();
     } catch (error) {
       if (thisAttempt !== attempt) return;
@@ -71,7 +88,6 @@
   toggle.addEventListener('click', () => {
     if (!audio.paused || pending) {
       enabled = false;
-      resume = false;
       stop();
       save();
     } else {
@@ -85,8 +101,9 @@
     save();
   });
   audio.addEventListener('ended', () => {
-    track=(track+1)%tracks.length;audio.src=tracks[track];
-    if(enabled)void start();
+    if(!enabled)return;
+    track=(track+1)%tracks.length;seekTo=0;audio.src=tracks[track];remember();
+    void start();
   });
   audio.addEventListener('play', () => render());
   audio.addEventListener('pause', () => render());
@@ -95,26 +112,32 @@
     render('음악을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
   });
   function gesture(event) {
-    if (started || !enabled || controls.contains(event.target)) return;
+    if (!audio.paused || !enabled || controls.contains(event.target)) return;
     if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
     if (event.target.closest?.('input,textarea,select,[contenteditable]')) return;
     void start();
   }
   document.addEventListener('pointerup', gesture, { passive: true });
   document.addEventListener('keydown', gesture);
+  // Do not forcibly pause when the tab loses visibility: mobile systems may manage audio themselves.
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { resume = enabled && (!audio.paused || pending); stop(); }
-    else if (resume && enabled) { resume = false; void start(); }
+    remember();
+    if(!document.hidden && enabled && audio.paused)void start();
   });
-  window.addEventListener('pagehide', () => { resume = enabled && (!audio.paused || pending); stop(); });
-  window.addEventListener('pageshow', event => { if (event.persisted && resume && enabled) void start(); });
+  window.addEventListener('pagehide', () => { remember();stop(); });
+  window.addEventListener('pageshow', event => {
+    if(!event.persisted)return;
+    const state=playbackState();
+    if(state){enabled=state.enabled!==false;seekTo=state.time;if(track!==state.track){track=state.track;audio.src=tracks[track];}else if(audio.readyState>=1){audio.currentTime=seekTo;seekTo=0;}}
+    if(enabled)void start();else stop();
+  });
   // Dialog top layers make background controls inert. Move only the controls, never the playing audio.
   function placeControls() {
-    const gate = document.querySelector('dialog.entry-gate[open]');
+    const gate = document.querySelector('dialog[open]');
     const target = gate || document.body;
     if (controls.parentNode !== target) target.append(controls);
   }
-  new MutationObserver(placeControls).observe(document.body, { childList: true });
+  new MutationObserver(placeControls).observe(document.body, { childList: true, subtree:true, attributes:true, attributeFilter:['open'] });
   placeControls();
   render();
   void start();
