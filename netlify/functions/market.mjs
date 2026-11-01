@@ -1,3 +1,4 @@
+import {makeFinanceService} from './_market/finance.mjs';
 import { getUser } from "@netlify/identity";
 import { identityCustomer, makeMemberService } from "./_market/member.mjs";
 import { getDatabase } from "@netlify/database";
@@ -71,6 +72,27 @@ export function marketHandler(
         guest = await service.session(customerToken),
         signedMember = identityCustomer(await identity()),
         customer = signedMember || guest;
+      if (path === "/finance" && method === "GET") return json(await service.finance.list(staff));
+      if (path === "/finance/contracts" && method === "POST") return json(await service.finance.issue(staff,body),201);
+      const contractRoute=/^\/finance\/contracts\/([a-f0-9-]+)\/(read|sign|withdraw)$/.exec(path);
+      if(contractRoute && method==='POST'){
+        const [,id,action]=contractRoute;
+        if(action==='read')return json(await service.finance.read(staff,id));
+        if(action==='withdraw')return json(await service.finance.withdraw(staff,id));
+        if(staff?.role!=='merchant')throw new MarketError('업체 계정에서 서명하세요.',403);
+        // Password verification uses the existing rate-limited account verifier, not client role claims.
+        const account=await service.financeAccount(staff);
+        const checked=await service.login({username:account.username,password:body.password},context.ip||'unknown');
+        await service.logout(checked.token);
+        if(checked.actor.id!==staff.id)throw new MarketError('서명 계정을 확인하세요.',403);
+        return json(await service.finance.sign(staff,id,body));
+      }
+      const reconcileRoute=/^\/finance\/events\/([a-f0-9-]+)\/(reconcile|reverse)$/.exec(path);
+      if(reconcileRoute&&method==='POST')return json(await service.finance[reconcileRoute[2]](staff,reconcileRoute[1],body));
+      if(path==='/finance/events'&&method==='POST')return json(await service.finance.record(staff,body),201);
+      if(path==='/finance/settlements'&&method==='POST')return json(await service.finance.draft(staff,body),201);
+      const settlementRoute=/^\/finance\/settlements\/([a-f0-9-]+)\/action$/.exec(path);
+      if(settlementRoute&&method==='POST')return json(await service.finance.action(staff,settlementRoute[1],body));
       if (path === "/member/me" && method === "GET")
         return json(await service.members.me(signedMember));
       if (path === "/member/session" && method === "POST")
@@ -210,6 +232,12 @@ export default marketHandler(() => {
     service = {
       ...makeMarketService(pool, options),
       members: makeMemberService(pool, options),
+      finance: makeFinanceService(pool),
+      async financeAccount(a){
+        if(a?.role!=='merchant')throw new MarketError('입점업체 계정이 필요합니다.',403);
+        const r=(await pool.query("SELECT username FROM market_accounts WHERE id=$1 AND active=true AND store_id=$2",[a.id,a.storeId])).rows[0];
+        if(!r)throw new MarketError('활성 계정을 확인하세요.',403);return r;
+      },
     };
   }
   return service;
