@@ -177,3 +177,26 @@ test("direct category/search links and sort state survive reload and browser his
     d.window.close();
   }
 });
+
+ test("final subcategory opens the product showcase from category navigation", async () => {
+  const { d, w, q, all, errors } = await setup();
+  try {
+    q("[data-customer-view=categories]").click();
+    await wait(() => q(".browse-title"));
+    q("[data-browse-major=fresh]").click();
+    q("[data-browse-category=fruit]").click();
+    q("[data-browse-leaf=apple-pear]").click();
+    assert.equal(w.location.hash, "#shop");
+    assert.equal(all(".product-card").length, 1);
+    assert(q(".product-card").textContent.includes("우리 사과"));
+    assert.equal(new URLSearchParams(w.location.search).get("leaf"), "apple-pear");
+    assert.equal(q(".browse-title"), null);
+    await wait(() => w.document.activeElement === q("#catalogTitle"));
+    w.history.back();
+    await wait(() => q(".browse-title"));
+    q('[data-browse-leaf=""]').click();
+    assert.equal(w.location.hash, "#shop");
+    assert.equal(all(".product-card").length, 2);
+    assert.deepEqual(errors, []);
+  } finally { d.window.close(); }
+});
