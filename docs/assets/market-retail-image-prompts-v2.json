@@ -1,0 +1,416 @@
+[
+  {
+    "category": "industrial",
+    "id": "cleaning",
+    "title": "세탁세제",
+    "unit": "1통",
+    "subject": "ONE sealed retail laundry detergent bottle with handle and secure cap, a simple blue label panel with NO letters; no soap pumps, brushes or accessories",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE sealed retail laundry detergent bottle with handle and secure cap, a simple blue label panel with NO letters; no soap pumps, brushes or accessories. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/industrial--cleaning-retail-v2.webp"
+  },
+  {
+    "category": "industrial",
+    "id": "paper",
+    "title": "화장지 묶음",
+    "unit": "1묶음",
+    "subject": "ONE retail multipack of six white toilet tissue rolls wrapped together in clear plastic with a simple blank paper band; no loose tissue or other goods",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE retail multipack of six white toilet tissue rolls wrapped together in clear plastic with a simple blank paper band; no loose tissue or other goods. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/industrial--paper-retail-v2.webp"
+  },
+  {
+    "category": "industrial",
+    "id": "kitchen",
+    "title": "밀폐용기 세트",
+    "unit": "1세트",
+    "subject": "ONE nested retail set of three clear food-storage containers with matching lids, secured as a single sellable package with a blank paper sleeve; no utensils or towels",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE nested retail set of three clear food-storage containers with matching lids, secured as a single sellable package with a blank paper sleeve; no utensils or towels. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/industrial--kitchen-retail-v2.webp"
+  },
+  {
+    "category": "fruit",
+    "id": "apple-pear",
+    "title": "사과 팩",
+    "unit": "1팩",
+    "subject": "ONE transparent grocery clamshell containing exactly four red apples, closed lid, small blank neutral label; no pears or loose fruit",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE transparent grocery clamshell containing exactly four red apples, closed lid, small blank neutral label; no pears or loose fruit. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/fruit--apple-pear-retail-v2.webp"
+  },
+  {
+    "category": "fruit",
+    "id": "citrus",
+    "title": "감귤 팩",
+    "unit": "1팩",
+    "subject": "ONE closed clear retail tray containing small fresh tangerines, simple blank paper band; no oranges cut open or loose fruit",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE closed clear retail tray containing small fresh tangerines, simple blank paper band; no oranges cut open or loose fruit. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/fruit--citrus-retail-v2.webp"
+  },
+  {
+    "category": "fruit",
+    "id": "berries",
+    "title": "딸기 팩",
+    "unit": "1팩",
+    "subject": "ONE closed transparent strawberry punnet filled with fresh strawberries, small blank label; no other berries or bowls",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE closed transparent strawberry punnet filled with fresh strawberries, small blank label; no other berries or bowls. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/fruit--berries-retail-v2.webp"
+  },
+  {
+    "category": "fruit",
+    "id": "tropical",
+    "title": "바나나 묶음",
+    "unit": "1묶음",
+    "subject": "ONE sellable bunch of five ripe yellow bananas with a plain blank paper band around the stems; no other fruits",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE sellable bunch of five ripe yellow bananas with a plain blank paper band around the stems; no other fruits. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/fruit--tropical-retail-v2.webp"
+  },
+  {
+    "category": "fruit",
+    "id": "other-fruit",
+    "title": "포도 팩",
+    "unit": "1팩",
+    "subject": "ONE transparent closed grocery clamshell containing purple grapes, simple blank neutral label; no other fruit",
+    "prompt": "Use case: product-mockup. Create a square professional Korean grocery ecommerce catalog product photograph. Subject: ONE transparent closed grocery clamshell containing purple grapes, simple blank neutral label; no other fruit. Exactly ONE retail sellable unit, sealed packaging where applicable, entire package visible, centered filling 78 percent of frame on seamless pure white background. Realistic supermarket packaging and contents, soft studio light, subtle contact shadow, front three-quarter angle. No unrelated items, no serving dishes, no loose decorative ingredients, no lifestyle scene, no collage, no watermark, no brand names, no certification or origin claims, no text. This is a retail product packshot, not an assortment or food styling photograph.",
+    "destination": "public/assets/market/leaves/fruit--other-fruit-retail-v2.webp"
+  },
+  {
+    "category": "vegetables",
+    "id": "leafy",
+    "title": "상추 팩",
+    "unit": "1팩",
+    "subject": "ONE sealed clear grocery bag containing fresh green lettuce leaves, plain blank white label; no other vegetables",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed clear grocery bag containing fresh green lettuce leaves, plain blank white label; no other vegetables. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/vegetables--leafy-retail-v2.webp"
+  },
+  {
+    "category": "vegetables",
+    "id": "root",
+    "title": "당근 팩",
+    "unit": "1팩",
+    "subject": "ONE clear sealed grocery bag of three fresh carrots, plain blank white label; no radish potatoes or other vegetables",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE clear sealed grocery bag of three fresh carrots, plain blank white label; no radish potatoes or other vegetables. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/vegetables--root-retail-v2.webp"
+  },
+  {
+    "category": "vegetables",
+    "id": "mushroom",
+    "title": "버섯 팩",
+    "unit": "1팩",
+    "subject": "ONE grocery retail tray of fresh shiitake mushrooms tightly covered with clear film, small blank label; no other mushroom varieties",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE grocery retail tray of fresh shiitake mushrooms tightly covered with clear film, small blank label; no other mushroom varieties. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/vegetables--mushroom-retail-v2.webp"
+  },
+  {
+    "category": "vegetables",
+    "id": "salad",
+    "title": "손질 샐러드",
+    "unit": "1팩",
+    "subject": "ONE sealed clear retail salad container filled with washed mixed greens and a few cherry tomatoes, small blank label, no tableware",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed clear retail salad container filled with washed mixed greens and a few cherry tomatoes, small blank label, no tableware. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/vegetables--salad-retail-v2.webp"
+  },
+  {
+    "category": "vegetables",
+    "id": "other-vegetables",
+    "title": "브로콜리 팩",
+    "unit": "1팩",
+    "subject": "ONE fresh broccoli head in a transparent sealed grocery produce bag with small blank label, no other vegetables",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE fresh broccoli head in a transparent sealed grocery produce bag with small blank label, no other vegetables. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/vegetables--other-vegetables-retail-v2.webp"
+  },
+  {
+    "category": "meat",
+    "id": "pork",
+    "title": "돼지고기 팩",
+    "unit": "1팩",
+    "subject": "ONE black supermarket meat tray containing neatly aligned sliced fresh pork belly, hygienically sealed with transparent film and a small blank white label; no herbs or plate",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE black supermarket meat tray containing neatly aligned sliced fresh pork belly, hygienically sealed with transparent film and a small blank white label; no herbs or plate. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/meat--pork-retail-v2.webp"
+  },
+  {
+    "category": "meat",
+    "id": "beef",
+    "title": "소고기 팩",
+    "unit": "1팩",
+    "subject": "ONE black supermarket meat tray containing two fresh marbled beef steaks, sealed with clear film, small blank white label; no board herbs or other meat",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE black supermarket meat tray containing two fresh marbled beef steaks, sealed with clear film, small blank white label; no board herbs or other meat. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/meat--beef-retail-v2.webp"
+  },
+  {
+    "category": "meat",
+    "id": "poultry",
+    "title": "닭가슴살 팩",
+    "unit": "1팩",
+    "subject": "ONE sealed transparent vacuum pouch containing two raw chicken breasts, small blank white label, no duck or cooking props",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed transparent vacuum pouch containing two raw chicken breasts, small blank white label, no duck or cooking props. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/meat--poultry-retail-v2.webp"
+  },
+  {
+    "category": "meat",
+    "id": "eggs",
+    "title": "계란 팩",
+    "unit": "1팩",
+    "subject": "ONE closed transparent retail egg carton containing exactly ten brown chicken eggs, simple blank paper label band; no loose eggs",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE closed transparent retail egg carton containing exactly ten brown chicken eggs, simple blank paper label band; no loose eggs. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/meat--eggs-retail-v2.webp"
+  },
+  {
+    "category": "seafood",
+    "id": "fish",
+    "title": "손질 생선 팩",
+    "unit": "1팩",
+    "subject": "ONE black supermarket fish tray containing two clean boneless silver-skinned mackerel fillets, sealed with clear film, small blank label, no ice or props",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE black supermarket fish tray containing two clean boneless silver-skinned mackerel fillets, sealed with clear film, small blank label, no ice or props. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/seafood--fish-retail-v2.webp"
+  },
+  {
+    "category": "seafood",
+    "id": "shellfish",
+    "title": "새우 팩",
+    "unit": "1팩",
+    "subject": "ONE clear closed retail seafood tray filled with neatly arranged fresh shrimp, small blank label; no clams squid or ice",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE clear closed retail seafood tray filled with neatly arranged fresh shrimp, small blank label; no clams squid or ice. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/seafood--shellfish-retail-v2.webp"
+  },
+  {
+    "category": "seafood",
+    "id": "dried-seafood",
+    "title": "멸치 봉지",
+    "unit": "1봉",
+    "subject": "ONE sealed transparent standing retail pouch of dried anchovies with a plain blank label, no bowls seaweed or props",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed transparent standing retail pouch of dried anchovies with a plain blank label, no bowls seaweed or props. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/seafood--dried-seafood-retail-v2.webp"
+  },
+  {
+    "category": "dairy",
+    "id": "milk",
+    "title": "우유",
+    "unit": "1병",
+    "subject": "ONE sealed white retail milk bottle with white cap and a simple pale-blue blank label panel; no glasses or poured milk",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed white retail milk bottle with white cap and a simple pale-blue blank label panel; no glasses or poured milk. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/dairy--milk-retail-v2.webp"
+  },
+  {
+    "category": "dairy",
+    "id": "yogurt",
+    "title": "플레인 요거트",
+    "unit": "1개",
+    "subject": "ONE sealed retail yogurt tub with white lid and a simple pale-blue blank label, no yogurt bowls fruit or spoons",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed retail yogurt tub with white lid and a simple pale-blue blank label, no yogurt bowls fruit or spoons. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/dairy--yogurt-retail-v2.webp"
+  },
+  {
+    "category": "dairy",
+    "id": "cheese",
+    "title": "버터",
+    "unit": "1개",
+    "subject": "ONE rectangular retail butter block wrapped in pale gold foil and a simple blank paper sleeve, no loose butter cheese or tableware",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE rectangular retail butter block wrapped in pale gold foil and a simple blank paper sleeve, no loose butter cheese or tableware. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/dairy--cheese-retail-v2.webp"
+  },
+  {
+    "category": "grains",
+    "id": "rice",
+    "title": "쌀 포장",
+    "unit": "1포",
+    "subject": "ONE standing sealed grocery rice bag with a clear window showing white rice grains, simple cream and green blank packaging; no bowls or rice stalks",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE standing sealed grocery rice bag with a clear window showing white rice grains, simple cream and green blank packaging; no bowls or rice stalks. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/grains--rice-retail-v2.webp"
+  },
+  {
+    "category": "grains",
+    "id": "mixed-grains",
+    "title": "혼합잡곡",
+    "unit": "1봉",
+    "subject": "ONE sealed standing transparent pouch of mixed grains and beans with a plain cream blank paper label; no bowls or scoops",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed standing transparent pouch of mixed grains and beans with a plain cream blank paper label; no bowls or scoops. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/grains--mixed-grains-retail-v2.webp"
+  },
+  {
+    "category": "grains",
+    "id": "powder",
+    "title": "밀가루",
+    "unit": "1봉",
+    "subject": "ONE standing sealed retail wheat flour paper bag with a cream and blue blank package design; no bowls scoops spilled flour or other goods",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE standing sealed retail wheat flour paper bag with a cream and blue blank package design; no bowls scoops spilled flour or other goods. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/grains--powder-retail-v2.webp"
+  },
+  {
+    "category": "ready-meals",
+    "id": "meal-kit",
+    "title": "밀키트",
+    "unit": "1팩",
+    "subject": "ONE sealed rectangular retail meal-kit box with transparent lid showing neatly partitioned vegetables noodles and tofu, simple blank paper band; no cooked dishes or tableware",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed rectangular retail meal-kit box with transparent lid showing neatly partitioned vegetables noodles and tofu, simple blank paper band; no cooked dishes or tableware. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/ready-meals--meal-kit-retail-v2.webp"
+  },
+  {
+    "category": "ready-meals",
+    "id": "rice-meal",
+    "title": "도시락",
+    "unit": "1개",
+    "subject": "ONE retail Korean lunchbox with rice, grilled fish, egg roll and vegetables, closed transparent lid, simple blank label; no side plates",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE retail Korean lunchbox with rice, grilled fish, egg roll and vegetables, closed transparent lid, simple blank label; no side plates. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/ready-meals--rice-meal-retail-v2.webp"
+  },
+  {
+    "category": "ready-meals",
+    "id": "soup",
+    "title": "된장찌개",
+    "unit": "1팩",
+    "subject": "ONE sealed standing transparent food pouch containing prepared Korean doenjang stew with visible tofu and vegetables, simple cream blank label; no pots or bowls",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed standing transparent food pouch containing prepared Korean doenjang stew with visible tofu and vegetables, simple cream blank label; no pots or bowls. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/ready-meals--soup-retail-v2.webp"
+  },
+  {
+    "category": "ready-meals",
+    "id": "side-dish",
+    "title": "반찬 팩",
+    "unit": "1팩",
+    "subject": "ONE sealed small clear rectangular deli tub containing seasoned spinach side dish, small blank label, no bowls or other side dishes",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed small clear rectangular deli tub containing seasoned spinach side dish, small blank label, no bowls or other side dishes. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/ready-meals--side-dish-retail-v2.webp"
+  },
+  {
+    "category": "frozen",
+    "id": "dumplings",
+    "title": "냉동만두",
+    "unit": "1봉",
+    "subject": "ONE sealed retail frozen dumpling bag with a transparent window showing dumplings inside, simple white and green blank packaging; no plates cooked dumplings or props",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed retail frozen dumpling bag with a transparent window showing dumplings inside, simple white and green blank packaging; no plates cooked dumplings or props. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/frozen--dumplings-retail-v2.webp"
+  },
+  {
+    "category": "frozen",
+    "id": "fried",
+    "title": "냉동 새우튀김",
+    "unit": "1봉",
+    "subject": "ONE sealed transparent retail frozen breaded shrimp bag with a simple cream blank label; no serving plate sauces or croquettes",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed transparent retail frozen breaded shrimp bag with a simple cream blank label; no serving plate sauces or croquettes. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/frozen--fried-retail-v2.webp"
+  },
+  {
+    "category": "frozen",
+    "id": "ice-cream",
+    "title": "아이스크림",
+    "unit": "1통",
+    "subject": "ONE sealed small retail vanilla ice cream tub with lid, simple cream and pale-blue blank packaging; no scoops bowls or other flavors",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed small retail vanilla ice cream tub with lid, simple cream and pale-blue blank packaging; no scoops bowls or other flavors. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/frozen--ice-cream-retail-v2.webp"
+  },
+  {
+    "category": "snacks",
+    "id": "cookies",
+    "title": "쿠키",
+    "unit": "1봉",
+    "subject": "ONE sealed transparent retail bag containing chocolate chip cookies, simple blank cream paper band; no loose cookies plate or crumbs",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed transparent retail bag containing chocolate chip cookies, simple blank cream paper band; no loose cookies plate or crumbs. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/snacks--cookies-retail-v2.webp"
+  },
+  {
+    "category": "snacks",
+    "id": "nuts",
+    "title": "견과류",
+    "unit": "1봉",
+    "subject": "ONE sealed standing transparent retail pouch of mixed almonds walnuts and cashews, small blank cream label; no bowl or loose nuts",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed standing transparent retail pouch of mixed almonds walnuts and cashews, small blank cream label; no bowl or loose nuts. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/snacks--nuts-retail-v2.webp"
+  },
+  {
+    "category": "snacks",
+    "id": "chocolate",
+    "title": "초콜릿",
+    "unit": "1개",
+    "subject": "ONE rectangular retail chocolate bar in a neat dark brown paper wrapper with a small clear window showing chocolate squares; no truffles candy or loose chocolate",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE rectangular retail chocolate bar in a neat dark brown paper wrapper with a small clear window showing chocolate squares; no truffles candy or loose chocolate. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/snacks--chocolate-retail-v2.webp"
+  },
+  {
+    "category": "drinks",
+    "id": "water",
+    "title": "생수",
+    "unit": "1병",
+    "subject": "ONE sealed clear retail plastic mineral water bottle with screw cap and a simple pale-blue blank label, no glass tumbler or second bottle",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed clear retail plastic mineral water bottle with screw cap and a simple pale-blue blank label, no glass tumbler or second bottle. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/drinks--water-retail-v2.webp"
+  },
+  {
+    "category": "drinks",
+    "id": "juice",
+    "title": "오렌지주스",
+    "unit": "1병",
+    "subject": "ONE sealed clear retail orange juice bottle with screw cap and a simple orange and cream blank label; no carafe glass fruit or other drinks",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed clear retail orange juice bottle with screw cap and a simple orange and cream blank label; no carafe glass fruit or other drinks. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/drinks--juice-retail-v2.webp"
+  },
+  {
+    "category": "drinks",
+    "id": "coffee-tea",
+    "title": "원두커피",
+    "unit": "1봉",
+    "subject": "ONE sealed standing matte kraft retail coffee bean bag with a zip closure and valve, simple blank dark brown label; no coffee cups or tea",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed standing matte kraft retail coffee bean bag with a zip closure and valve, simple blank dark brown label; no coffee cups or tea. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/drinks--coffee-tea-retail-v2.webp"
+  },
+  {
+    "category": "bakery",
+    "id": "bread",
+    "title": "식빵",
+    "unit": "1봉",
+    "subject": "ONE sliced sandwich bread loaf inside a closed transparent retail bread bag with a twist tie and plain blank paper label; no croissants boards or loose bread",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sliced sandwich bread loaf inside a closed transparent retail bread bag with a twist tie and plain blank paper label; no croissants boards or loose bread. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/bakery--bread-retail-v2.webp"
+  },
+  {
+    "category": "bakery",
+    "id": "cake",
+    "title": "조각 케이크",
+    "unit": "1개",
+    "subject": "ONE slice of strawberry cream cake inside a closed clear retail dessert clamshell with simple blank label; no plate fork or extra desserts",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE slice of strawberry cream cake inside a closed clear retail dessert clamshell with simple blank label; no plate fork or extra desserts. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/bakery--cake-retail-v2.webp"
+  },
+  {
+    "category": "bakery",
+    "id": "jam",
+    "title": "딸기잼",
+    "unit": "1병",
+    "subject": "ONE sealed clear retail strawberry jam jar with a metal lid and a simple cream blank label, no open jars fruit or spoons",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed clear retail strawberry jam jar with a metal lid and a simple cream blank label, no open jars fruit or spoons. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/bakery--jam-retail-v2.webp"
+  },
+  {
+    "category": "condiments",
+    "id": "sauce",
+    "title": "토마토소스",
+    "unit": "1병",
+    "subject": "ONE sealed clear retail tomato sauce bottle with secure cap and simple cream blank label, no sauce bowls or other condiments",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed clear retail tomato sauce bottle with secure cap and simple cream blank label, no sauce bowls or other condiments. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/condiments--sauce-retail-v2.webp"
+  },
+  {
+    "category": "condiments",
+    "id": "paste",
+    "title": "고추장",
+    "unit": "1통",
+    "subject": "ONE sealed red retail Korean gochujang plastic tub with fitted lid and simple cream blank label; no open bowls or other pastes",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed red retail Korean gochujang plastic tub with fitted lid and simple cream blank label; no open bowls or other pastes. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/condiments--paste-retail-v2.webp"
+  },
+  {
+    "category": "condiments",
+    "id": "oil",
+    "title": "식용유",
+    "unit": "1병",
+    "subject": "ONE sealed clear retail bottle filled with golden cooking oil, secure cap and simple cream-and-green blank label, no other bottles or bowls",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed clear retail bottle filled with golden cooking oil, secure cap and simple cream-and-green blank label, no other bottles or bowls. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/condiments--oil-retail-v2.webp"
+  },
+  {
+    "category": "condiments",
+    "id": "seasoning",
+    "title": "소금",
+    "unit": "1봉",
+    "subject": "ONE sealed standing retail sea salt pouch with a clear window showing white salt crystals and a plain pale-blue blank label; no seasoning dishes or other spices",
+    "prompt": "Use case: product-mockup. Square professional Korean grocery ecommerce catalog photograph. Subject: ONE sealed standing retail sea salt pouch with a clear window showing white salt crystals and a plain pale-blue blank label; no seasoning dishes or other spices. Exactly ONE retail sellable unit. Sealed realistic supermarket packaging. Entire package visible, centered with 10 percent safe margins on seamless pure white background. Soft studio lighting and subtle contact shadow. Front three-quarter angle. No unrelated products, serving dishes, decorative loose ingredients, lifestyle scenes, collage, watermark, brand names, certification or origin claims, or text. Retail product packshot rather than food styling.",
+    "destination": "public/assets/market/leaves/condiments--seasoning-retail-v2.webp"
+  }
+]

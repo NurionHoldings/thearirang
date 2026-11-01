@@ -69,7 +69,7 @@ const wait = async (predicate) => {
   }
   assert.fail("DOM state did not settle");
 };
-async function setup(hash = "") {
+async function setup(hash = "", catalog = products) {
   const errors = [],
     vc = new VirtualConsole();
   vc.on("jsdomError", (e) => errors.push(e.message));
@@ -94,8 +94,8 @@ async function setup(hash = "") {
     else if (u.pathname.endsWith("/location"))
       data = { region, source: "geolocation" };
     else if (u.pathname.endsWith("/stores")) data = [store];
-    else if (u.pathname.endsWith("/catalog")) data = products;
-    else if (u.pathname.endsWith("/products")) data = products;
+    else if (u.pathname.endsWith("/catalog")) data = catalog;
+    else if (u.pathname.endsWith("/products")) data = catalog;
     else throw Error("unexpected path " + path);
     return { ok: true, json: async () => structuredClone(data) };
   };
@@ -106,7 +106,7 @@ async function setup(hash = "") {
     write: false,
   });
   w.eval(bundle.outputFiles[0].text);
-  await wait(() => w.document.querySelector(".product-card"));
+  await wait(() => w.document.querySelector(".product-card, .leaf-preview-card"));
   return {
     d,
     w,
@@ -204,3 +204,19 @@ test("direct category/search links and sort state survive reload and browser his
     assert.deepEqual(errors, []);
   } finally { d.window.close(); }
 });
+
+ test("empty catalog presents retail mockups, never synthetic purchasable inventory", async () => {
+ const {d,w,q,all,errors}=await setup("",[]);
+ try {
+ assert.equal(all(".leaf-preview-card").length,46);
+ assert.equal(all(".product-card").length,0);
+ assert.equal(all(".leaf-preview-card [data-add]").length,0);
+ assert(q(".leaf-preview-heading").textContent.includes("실제 판매상품 등록"));
+ q('[data-preview-category="fruit"][data-preview-leaf="apple-pear"]').click();
+ assert.equal(all(".leaf-preview-card").length,1);
+ assert(q(".leaf-preview-card h3").textContent.includes("사과 팩"));
+ assert(q(".leaf-preview-card img").src.endsWith("fruit--apple-pear-retail-v2.webp"));
+ assert(w.location.search.includes("leaf=apple-pear"));
+ assert.deepEqual(errors,[]);
+ }finally{d.window.close()}
+ });
