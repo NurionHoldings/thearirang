@@ -132,6 +132,9 @@ test("home is compact; hierarchical narrowing hides promotions; detail/back pres
     assert(w.location.search.includes("leaf=apple-pear"));
     q("[data-detail]").click();
     assert.equal(q("#productDetail").hasAttribute("open"), true);
+    assert.equal(all(".detail-tabs button").length,3);
+    assert(q("#detailOverview").textContent.includes("국내산"));
+    assert(q(".detail-price").textContent.includes("5,000원"));
     q("[data-close-detail]").click();
     assert.equal(all(".product-card").length, 1);
     assert.equal(
@@ -217,6 +220,14 @@ test("direct category/search links and sort state survive reload and browser his
  assert(q(".leaf-preview-card h3").textContent.includes("사과 팩"));
  assert(q(".leaf-preview-card img").src.endsWith("fruit--apple-pear-retail-v2.webp"));
  assert(w.location.search.includes("leaf=apple-pear"));
+ assert(q("#productDetail").hasAttribute("open"));
+ assert(q("#detailTitle").textContent.includes("사과 팩"));
+ assert.equal(all("#productDetail [data-add]").length,0);
+ assert(q("#productDetail .primary").disabled);
+ assert.equal(all(".detail-tabs button").length,3);
+ q("[data-close-detail]").click();
+ assert.equal(q("#productDetail"),null);
+ assert.equal(all(".leaf-preview-card").length,1);
  assert.deepEqual(errors,[]);
  }finally{d.window.close()}
  });
