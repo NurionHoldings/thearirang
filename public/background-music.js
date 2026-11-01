@@ -10,8 +10,10 @@
     ? Math.max(0, Math.min(1, saved.volume)) : 0.25;
   const audio = document.createElement('audio');
   audio.id = 'arirang-bgm';
-  audio.src = '/assets/arirang-background-0825-v1.mp3';
-  audio.loop = true;
+  const tracks = Array.from({length:15},(_,i)=>'/assets/music-0718-v2/part-'+String(i).padStart(2,'0')+'.m4a');
+  let track=0;
+  audio.src = tracks[track];
+  audio.loop = false;
   audio.preload = 'auto';
   audio.autoplay = true;
   audio.volume = volume;
@@ -81,6 +83,10 @@
   range.addEventListener('input', () => {
     audio.volume = Math.max(0, Math.min(1, Number(range.value) / 100));
     save();
+  });
+  audio.addEventListener('ended', () => {
+    track=(track+1)%tracks.length;audio.src=tracks[track];
+    if(enabled)void start();
   });
   audio.addEventListener('play', () => render());
   audio.addEventListener('pause', () => render());
