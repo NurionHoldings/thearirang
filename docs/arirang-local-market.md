@@ -48,3 +48,13 @@ Netlify Production / Functions 환경변수:
 - `node --test tests/market/browser.test.mjs` (실행 가능한 Chromium이 있는 환경, 로컬 HTTPS·합성 데이터·모의 주소 응답)
 
 테스트는 실제 Kakao 키, 고객 주문, 외부 결제, 외부 배달 호출을 사용하지 않는다. 로컬 단일 DB 테스트는 운영 부하 시험이 아니다.
+
+## 탐색 화면 개편 (2026-11-01)
+
+`arirang-market.html`과 `arirang-local.html`은 동일한 지역 장보기 화면을 제공한다. 별도 홍보 안내 화면을 거치지 않는다. 전문관(대분류) → 중분류 → 소분류 → 지역별 공개 상품으로 탐색하며, 분류 정의는 `public/market-taxonomy.mjs`를 서버/브라우저가 함께 사용한다. 소분류는 신규 migration의 `market_products.subcategory`에 저장한다. 기존 중분류 ID는 유지하고 기존 상품의 소분류를 추정해 채우지 않는다.
+
+검색/분류 시 전문관 소개를 숨기고, 검색어·분류·정렬·직접 선택 지역은 URL에 남긴다. 상세 창을 닫으면 목록 조건을 유지한다. 모바일은 상단 고정 검색과 하단 홈/카테고리/장바구니/내 주문을 사용한다. 상품명/제목 MaruBuri, 설명/가격/버튼 Pretendard를 사용하며 CDN 실패 시 시스템 글꼴로 대체한다.
+
+고객 결제 화면은 사용자 지시에 따라 카드결제·외부 배달대행 연결 준비 상태만 안내한다. 현장결제 입력 폼은 표시하지 않는다. 외부 PG/배달 업체가 정해지지 않아 결제·배달 연동 완료로 표시하지 않는다. 기존 주문의 관리 API는 보존한다.
+
+`npm run test:market`에는 DB 분류 저장/지역 카탈로그 및 JSDOM 인터랙션 검사도 포함된다. 이는 실제 Chromium 렌더링 검증과 구분한다. 브라우저 렌더링 검사는 `node tests/online-market-browser.cjs`에서 별도로 실행한다.

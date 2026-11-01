@@ -1,3 +1,4 @@
+import { validLeaf } from "../../../public/market-taxonomy.mjs";
 import {
   randomBytes,
   randomInt,
@@ -114,7 +115,10 @@ export function makeMarketService(
         onDuty: account.on_duty,
       };
     }
-    return { id: row.role === "operator" ? "operator" : row.actor_id, role: row.role };
+    return {
+      id: row.role === "operator" ? "operator" : row.actor_id,
+      role: row.role,
+    };
   }
   async function issue(c, id, role) {
     const token = randomBytes(32).toString("hex");
@@ -178,7 +182,10 @@ export function makeMarketService(
         onDuty: r.on_duty,
       };
     }
-    return { actor: a.role === "operator" ? {id:"operator",role:"operator"} : a, token: await issue(pool, a.id, a.role) };
+    return {
+      actor: a.role === "operator" ? { id: "operator", role: "operator" } : a,
+      token: await issue(pool, a.id, a.role),
+    };
   }
   async function logout(token) {
     if (token)
@@ -263,6 +270,21 @@ export function makeMarketService(
         deliveryFee: s.delivery_fee,
         minimumOrder: s.minimum_order,
       }));
+  }
+  async function catalog(regionId) {
+    const stores = await publicStores(regionId);
+    if (!stores.length) return [];
+    const ids = stores.map((s) => s.id);
+    const rows = (
+      await pool.query(
+        "SELECT id,store_id,title,category,subcategory,unit,price,stock,description,origin,storage FROM market_products WHERE store_id=ANY($1::uuid[]) AND active=true AND deleted=false ORDER BY title",
+        [ids],
+      )
+    ).rows;
+    return rows.map((p) => ({
+      ...p,
+      storeName: stores.find((s) => s.id === p.store_id).name,
+    }));
   }
   async function products(storeId, actor) {
     identifier(storeId);
@@ -485,6 +507,7 @@ export function makeMarketService(
     const storeId =
       actor.role === "merchant" ? actor.storeId : identifier(v.storeId);
     if (
+      !validLeaf(v.category, v.subcategory ?? "") ||
       !categories.includes(v.category) ||
       !["ambient", "chilled", "frozen"].includes(v.storage)
     )
@@ -505,7 +528,7 @@ export function makeMarketService(
         throw new MarketError("업체별 상품 등록 한도는 50개입니다.", 409);
       const id = uuid();
       await c.query(
-        "INSERT INTO market_products(id,store_id,title,category,unit,price,stock,active,description,origin,storage) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
+        "INSERT INTO market_products(id,store_id,title,category,unit,price,stock,active,description,origin,storage,subcategory) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
         [
           id,
           storeId,
@@ -518,6 +541,7 @@ export function makeMarketService(
           optional(v.description, 2000),
           text(v.origin, 200),
           v.storage,
+          v.subcategory ?? "",
         ],
       );
       return { id };
@@ -1072,6 +1096,7 @@ export function makeMarketService(
     regions,
     resolveLocation,
     publicStores,
+    catalog,
     products,
     createRegion,
     createStore,

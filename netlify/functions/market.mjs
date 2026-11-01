@@ -62,6 +62,8 @@ export function marketHandler(
         return json(await service.resolveLocation(body, context.geo || {}));
       if (path === "/stores" && method === "GET")
         return json(await service.publicStores(url.searchParams.get("region")));
+      if (path === "/catalog" && method === "GET")
+        return json(await service.catalog(url.searchParams.get("region")));
       const staff = await service.session(staffToken),
         customer = await service.session(customerToken);
       if (path === "/session" && method === "GET")

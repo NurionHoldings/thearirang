@@ -1,3 +1,12 @@
+import {
+  departments,
+  categoryNames,
+  leaves,
+  departmentFor,
+  leafName,
+  normalizeBrowse,
+  filterProducts,
+} from "./market-taxonomy.mjs";
 const API = "/market-api",
   root = document.getElementById("localContent"),
   feedback = document.getElementById("marketFeedback");
@@ -11,20 +20,6 @@ const e = (v) =>
   );
 const won = (n) => Number(n || 0).toLocaleString("ko-KR") + "원",
   uid = () => crypto.randomUUID();
-const categoryNames = {
-  fruit: "과일",
-  vegetables: "채소",
-  meat: "정육·계란",
-  seafood: "수산",
-  dairy: "유제품",
-  grains: "쌀·잡곡",
-  "ready-meals": "간편식·밀키트",
-  frozen: "냉동식품",
-  snacks: "과자·간식",
-  drinks: "생수·음료",
-  bakery: "베이커리",
-  condiments: "양념·소스",
-};
 const statuses = {
   new: "업체 접수 대기",
   accepted: "주문 접수",
@@ -40,6 +35,12 @@ const state = {
   regions: [],
   stores: [],
   products: [],
+  catalog: [],
+  major: "all",
+  leaf: "",
+  sort: "recommended",
+  filterStore: false,
+  detail: null,
   staff: null,
   customer: null,
   ops: null,
@@ -69,9 +70,54 @@ try {
     state.savedBasket = raw;
 } catch {}
 const view = () =>
-  ["shop", "orders", "staff", "operations"].includes(location.hash.slice(1))
+  ["shop", "categories", "cart", "orders", "staff", "operations"].includes(
+    location.hash.slice(1),
+  )
     ? location.hash.slice(1)
     : "shop";
+function readBrowse() {
+  const q = new URLSearchParams(location.search);
+  Object.assign(
+    state,
+    normalizeBrowse({
+      major: q.get("major"),
+      category: q.get("category"),
+      leaf: q.get("leaf"),
+      search: q.get("q"),
+      sort: q.get("sort"),
+    }),
+  );
+}
+readBrowse();
+function saveBrowse(replace = false) {
+  const u = new URL(location.href);
+  for (const [k, v] of Object.entries({
+    major: state.major,
+    category: state.category,
+    leaf: state.leaf,
+    q: state.search,
+    sort: state.sort,
+    region: state.region?.id || "",
+  })) {
+    if (v && v !== "all" && v !== "recommended") u.searchParams.set(k, v);
+    else u.searchParams.delete(k);
+  }
+  history[replace ? "replaceState" : "pushState"]({}, "", u);
+}
+function setBrowse(value) {
+  Object.assign(state, normalizeBrowse({ ...state, ...value }));
+  state.detail = null;
+  saveBrowse();
+  render();
+}
+function results() {
+  return filterProducts(
+    state.filterStore && state.store
+      ? state.catalog.filter((p) => p.store_id === state.store.id)
+      : state.catalog,
+    state,
+  );
+}
 function message(text, error = false) {
   feedback.textContent = text;
   feedback.classList.toggle("error", error);
@@ -164,13 +210,19 @@ async function chooseRegion(id, manual = true) {
     render();
     return;
   }
-  const stores = await api("/stores?region=" + encodeURIComponent(id));
+  const [stores, catalog] = await Promise.all([
+    api("/stores?region=" + encodeURIComponent(id)),
+    api("/catalog?region=" + encodeURIComponent(id)),
+  ]);
   state.region = r;
   state.store = null;
   state.products = [];
   state.basket = {};
   state.stores = stores;
+  state.filterStore = false;
+  state.catalog = catalog;
   resetCheckout();
+  if (manual) saveBrowse();
   if (manual)
     try {
       localStorage.setItem("arirang-delivery-region", id);
@@ -221,8 +273,14 @@ async function chooseStore(id) {
     !confirm("업체를 바꾸면 현재 장바구니가 비워집니다. 변경할까요?")
   )
     return;
+  if (state.store?.id === id) {
+    state.filterStore = true;
+    render();
+    return;
+  }
+  const products = await api("/products?storeId=" + id);
   state.store = s;
-  state.products = await api("/products?storeId=" + id);
+  state.products = products;
   state.basket = {};
   if (
     state.savedBasket?.storeId === id &&
@@ -235,12 +293,7 @@ async function chooseStore(id) {
     }
     state.savedBasket = null;
   }
-  state.search = "";
-  state.category = categoryNames[
-    new URLSearchParams(location.search).get("category")
-  ]
-    ? new URLSearchParams(location.search).get("category")
-    : "all";
+  state.filterStore = true;
   resetCheckout();
   render();
 }
@@ -250,29 +303,51 @@ function basketView() {
   return `<aside class="local-basket"><div class="section-title"><h2>이 업체 장바구니</h2><span>${rows.length}종 / 최대 50종</span></div>${rows.length ? rows.map((p) => `<div class="basket-row"><div><strong>${e(p.title)}</strong><small>${won(p.price)} · ${e(p.unit)}</small></div><div class="quantity"><button data-qty="${p.id}" data-delta="-1" aria-label="${e(p.title)} 수량 줄이기">−</button><span>${p.quantity}</span><button data-qty="${p.id}" data-delta="1" aria-label="${e(p.title)} 수량 늘리기"${p.quantity >= Math.min(p.stock, 100) ? " disabled" : ""}>+</button></div></div>`).join("") : '<p class="muted">한 업체의 상품을 담아 주세요.</p>'}<div class="basket-total"><span>상품 합계</span><b>${won(subtotal)}</b><span>업체 배송비</span><b>${won(state.store.deliveryFee)}</b><span>예상 합계</span><strong>${won(subtotal + state.store.deliveryFee)}</strong></div><p class="muted">최소 상품금액 ${won(state.store.minimumOrder)} · 현장결제 · 실제 결제 확인은 별도</p>${rows.length ? checkoutForm(subtotal) : ""}</aside>`;
 }
 function checkoutForm(subtotal) {
-  return `<form id="checkoutForm"><h3>배송 정보</h3><p class="muted">${e(state.region.name)} 배송 구역 · 주소 확인 후 주문할 수 있습니다.</p><label>받는 분<input name="customerName" maxlength="40" required autocomplete="name"></label><label>연락처<input name="phone" maxlength="20" required autocomplete="tel" inputmode="tel"></label><label>도로명 또는 지번 주소<input name="addressBase" maxlength="200" required autocomplete="street-address"></label><label>상세주소<input name="addressDetail" maxlength="200" required placeholder="동·호수 / 건물 내 위치"></label><button type="button" id="checkAddress"${state.config.liveOrders ? "" : " disabled"}>배송 지역·주소 확인</button><p id="addressResult" class="muted">주소가 업체 배송 구역에 포함되는지 서버에서 확인합니다.</p><label class="check"><input name="consent" type="checkbox" required> 주문 확인·배송 연락에 필요한 이름·전화·주소 이용에 동의합니다.</label>${state.config.privacyURL ? `<a href="${e(state.config.privacyURL)}" target="_blank" rel="noopener">개인정보 처리 안내 ↗</a>` : '<p class="muted">개인정보 처리 안내 연결 준비 중</p>'}<p class="payment-note">현장결제 · 온라인 카드결제 미연결</p><button type="submit" class="primary"${state.config.liveOrders && subtotal >= state.store.minimumOrder ? "" : " disabled"}>${won(subtotal + state.store.deliveryFee)} 현장결제 주문 접수</button></form>`;
+  return `<div class="checkout-preparing"><h3>카드결제 · 외부 배달대행</h3><p>결제·배달 서비스 연결을 준비하고 있습니다. 현재는 상품 탐색과 장바구니를 이용하실 수 있습니다.</p><button disabled>결제 연결 준비 중</button></div>`;
+}
+function categoryBrowser(compact = false) {
+  const middle =
+    state.major === "all"
+      ? Object.keys(categoryNames)
+      : departments.find((d) => d.id === state.major).categories;
+  const chips = (label, rows, key, current) =>
+    `<div class="category-level"><span>${label}</span><div role="group" aria-label="${label}">${rows.map(([id, name]) => `<button data-browse-${key}="${e(id)}" aria-pressed="${id === current}">${e(name)}</button>`).join("")}</div></div>`;
+  return `<section id="categoryBrowser" class="category-browser" aria-label="3단계 상품 분류">${compact ? "" : chips("대분류", [["all", "전체"], ...departments.map((d) => [d.id, d.name])], "major", state.major)}${chips("중분류", [["all", "전체"], ...middle.map((id) => [id, categoryNames[id]])], "category", state.category)}${state.category !== "all" ? chips("소분류", [["", "전체"], ...leaves[state.category]], "leaf", state.leaf) : '<p class="category-hint">중분류를 선택하면 소분류가 열립니다.</p>'}</section>`;
+}
+function productCard(p) {
+  return `<article class="product-card"><button class="product-detail-trigger" data-detail="${e(p.id)}" aria-label="${e(p.title)} 상세 보기"><span class="product-tile" data-category-color="${e(departmentFor(p.category)?.id)}" aria-hidden="true">${e(leafName(p.category, p.subcategory) || categoryNames[p.category])}</span><span class="product-category">${e(p.storeName)}</span><h3>${e(p.title)}</h3><p>${e(p.unit)} · ${e(p.origin)}</p><strong>${won(p.price)}</strong></button><small>${p.stock > 0 ? "판매가능 " + p.stock + "개" : "품절"}</small><button data-add="${e(p.id)}"${p.stock ? "" : " disabled"}>${p.stock ? "담기 +" : "품절"}</button></article>`;
+}
+function productDialog() {
+  const p = state.catalog.find((p) => p.id === state.detail);
+  if (!p) return "";
+  return `<dialog id="productDetail" aria-labelledby="detailTitle"><button class="detail-close" data-close-detail aria-label="상품 상세 닫기">✕</button><p class="detail-path">${e(departmentFor(p.category)?.name)} › ${e(categoryNames[p.category])}${p.subcategory ? " › " + e(leafName(p.category, p.subcategory)) : ""}</p><div class="product-tile" data-category-color="${e(departmentFor(p.category)?.id)}">${e(leafName(p.category, p.subcategory) || categoryNames[p.category])}</div><h2 id="detailTitle">${e(p.title)}</h2><p>${e(p.storeName)} · ${e(p.unit)}</p><strong class="detail-price">${won(p.price)}</strong><dl><dt>원산지</dt><dd>${e(p.origin)}</dd><dt>보관</dt><dd>${{ ambient: "실온", chilled: "냉장", frozen: "냉동" }[p.storage] || "업체 확인"}</dd><dt>상품 안내</dt><dd>${e(p.description || "등록된 상세 설명이 없습니다.")}</dd></dl><div class="detail-actions"><button data-close-detail>← 목록으로</button><a href="#shop" data-detail-home>마켓 홈</a><button class="primary" data-add="${e(p.id)}"${p.stock ? "" : " disabled"}>장바구니 담기</button></div></dialog>`;
 }
 function shop() {
-  return `<section class="region-panel"><img class="regional-grocery-art" src="assets/arirang-market-online.svg" width="260" height="210" alt="신선한 식재료를 담은 장바구니"><p class="eyebrow">NEARBY ARIRANG MARKET</p><h1>내 지역에서 장보기</h1><p>소도시는 시 단위, 대도시는 구·동 단위로 연결합니다.</p><div class="region-controls"><select id="regionSelect" aria-label="판매·배송 지역">${regionOptions(state.region?.id)}</select><button id="locate">내 위치로 연결</button><button id="autoRegion">접속 지역 자동 연결</button></div><p class="muted">${e(state.locationNote)} · 위치 좌표는 지역 확인에만 사용하며 저장하지 않습니다.</p></section>${!state.region ? `<div class="empty"><h2>${state.regions.length ? "배송 지역을 선택해 주세요." : "등록된 운영 지역이 없습니다."}</h2><p>운영자가 지역과 입점업체를 등록하면 해당 지역에서 장보기와 주문이 가능합니다.</p></div>` : `<section><div class="section-title"><h2>${e(state.region.name)} 입점업체</h2><span>${state.stores.length}개 지역 업체</span></div><div class="store-grid">${state.stores.length ? state.stores.map((s) => `<button class="store-card${s.id === state.store?.id ? " selected" : ""}" data-store="${s.id}"><strong>${e(s.name)}</strong><span>${e(s.address)}</span><small>최소 주문 ${won(s.minimumOrder)} · 배송비 ${won(s.deliveryFee)}</small><b>이 업체 상품 보기 →</b></button>`).join("") : '<p class="muted">현재 이 구역에서 주문을 받는 업체가 없습니다. 다른 지역을 선택해 주세요.</p>'}</div></section>`}${
-    state.store
-      ? `<section class="store-shopping"><div><div class="section-title"><div><p class="eyebrow">${e(state.region.name)}</p><h2>${e(state.store.name)}</h2></div><span>${state.products.length}개 등록 상품</span></div><nav class="food-filters" aria-label="상품 분류"><button data-category="all"${state.category === "all" ? ' aria-current="true"' : ""}>전체</button>${[...new Set(state.products.map((p) => p.category))].map((c) => `<button data-category="${c}"${state.category === c ? ' aria-current="true"' : ""}>${e(categoryNames[c])}</button>`).join("")}</nav><label class="product-search">상품 검색<input id="productSearch" type="search" placeholder="상품명·원산지·구성 검색" value="${e(state.search)}"></label><div class="product-grid">${
-          state.products
-            .filter(
-              (p) =>
-                (state.category === "all" || p.category === state.category) &&
-                [p.title, p.origin, p.unit, p.description]
-                  .join(" ")
-                  .toLocaleLowerCase()
-                  .includes(state.search.toLocaleLowerCase()),
-            )
-            .map(
-              (p) =>
-                `<article class="product-card"><span class="product-category">${e(categoryNames[p.category])}</span><h3>${e(p.title)}</h3><p>${e(p.unit)} · ${e(p.origin)}</p><p class="muted">${e(p.description)}</p><strong>${won(p.price)}</strong><small>판매가능 ${p.stock}개 · ${{ ambient: "실온", chilled: "냉장", frozen: "냉동" }[p.storage]}</small><button data-add="${p.id}"${p.stock ? "" : " disabled"}>${p.stock ? "장바구니 담기" : "품절"}</button></article>`,
-            )
-            .join("") || '<p class="muted">등록된 상품이 없습니다.</p>'
-        }</div></div>${basketView()}</section>`
-      : ""
-  }`;
+  const focused = !!(
+      state.search ||
+      state.major !== "all" ||
+      state.category !== "all" ||
+      state.leaf ||
+      state.filterStore
+    ),
+    rows = results();
+  return `
+ <section class="delivery-strip" aria-label="배송 지역"><label>배송 지역 <select id="regionSelect" aria-label="판매·배송 지역">${regionOptions(state.region?.id)}</select></label><button id="locate">내 위치</button><button id="autoRegion" aria-label="접속 지역 다시 확인">자동 연결</button></section>
+ ${!focused ? `<section class="market-intro"><p class="eyebrow">NEARBY GROCERY</p><h1>가까운 곳에서, 오늘의 장보기.</h1><p>${state.region ? e(state.region.name) + " 지역 업체의 상품을 만나보세요." : "배송 지역을 선택하고 우리 동네 상품을 만나보세요."}</p></section><section class="specialty-halls" aria-label="전문관">${departments.map((d) => `<button data-browse-major="${d.id}" class="hall-card" data-category-color="${d.id}"><span aria-hidden="true">${d.icon}</span><strong>${d.name}</strong><small>${d.note}</small></button>`).join("")}</section>` : ""}
+ ${categoryBrowser(!focused)}
+ <section class="catalog-section" aria-labelledby="catalogTitle"><div class="catalog-heading"><div><p class="browse-crumb">${e(state.major === "all" ? "전체 상품" : departments.find((d) => d.id === state.major)?.name)}${state.category !== "all" ? " › " + e(categoryNames[state.category]) : ""}${state.leaf ? " › " + e(leafName(state.category, state.leaf)) : ""}</p><h2 id="catalogTitle" tabindex="-1">${state.search ? "“" + e(state.search) + "” 검색 결과" : "우리 지역 상품"} <small>${rows.length}</small></h2></div><select id="productSort" aria-label="상품 정렬">${[
+   ["recommended", "기본순"],
+   ["price-asc", "낮은 가격순"],
+   ["price-desc", "높은 가격순"],
+   ["name", "상품명순"],
+ ]
+   .map(
+     ([id, name]) =>
+       `<option value="${id}"${state.sort === id ? " selected" : ""}>${name}</option>`,
+   )
+   .join("")}</select></div>
+ ${state.region ? `<label class="store-filter">입점업체 <select id="storeFilter" aria-label="입점업체 필터"><option value="">전체 업체 (${state.stores.length})</option>${state.stores.map((v) => `<option value="${v.id}"${state.filterStore && state.store?.id === v.id ? " selected" : ""}>${e(v.name)}</option>`).join("")}</select></label>` : ""}
+ <div class="product-grid">${rows.map(productCard).join("") || `<div class="catalog-empty"><h3>${!state.region ? "배송 지역을 먼저 선택해 주세요." : state.catalog.length ? "조건에 맞는 상품이 없습니다." : "이 지역의 판매 상품을 준비하고 있습니다."}</h3><p>${state.catalog.length ? "검색어를 줄이거나 분류를 넓혀보세요." : "실제 입점업체가 공개한 상품만 표시합니다."}</p>${focused ? "<button data-clear-browse>검색·분류 초기화</button>" : ""}</div>`}</div></section>${productDialog()}`;
 }
 function orderCard(o, workspace) {
   const isStaff = workspace === "staff",
@@ -340,13 +415,13 @@ function staffWorkspace() {
   return `<div class="section-title"><div><p class="eyebrow">${e(role.toUpperCase())} WORKSPACE</p><h1>${{ merchant: "판매자 주문 접수", rider: "라이더 배송", operator: "운영자 주문·배차" }[role]}</h1></div><div><button id="refreshOrders">새로고침</button><button id="staffLogout">로그아웃</button></div></div>${role === "rider" ? `<label class="check duty"><input id="riderDuty" type="checkbox"${state.staff.onDuty ? " checked" : ""}> 현재 근무 중 · 지정 지역 배송 요청 받기</label><p class="muted">기본 단건 배차입니다. 배송 수락 → 픽업 확인 → 고객 인계번호 확인 순서로 처리합니다.</p>` : '<p class="muted">접수 → 상품 준비 → 픽업 준비 완료 순서로 처리합니다. 배송 완료는 배정된 라이더가 인계 확인 후 처리합니다.</p>'}${role === "merchant" ? `<label class="check duty"><input id="merchantOpen" type="checkbox"${state.ops?.stores[0]?.open ? " checked" : ""}${state.ops?.stores[0]?.status === "active" ? "" : " disabled"}> 현재 주문 받기</label><details class="operations-panel"><summary>내 업체 상품 등록 · 최대 50개</summary>${productForm()}<div id="managedProducts"></div></details>` : ""}${state.orders.length ? state.orders.map((o) => orderCard(o, "staff")).join("") : '<div class="empty"><h2>현재 처리할 주문이 없습니다.</h2><p>접수된 주문과 지정 지역의 배송 요청이 이곳에 표시됩니다.</p></div>'}`;
 }
 function productForm() {
-  return `<form id="productForm" class="form-grid">${state.staff.role === "operator" ? `<label>입점업체<select name="storeId" required>${options(state.ops.stores)}</select></label>` : ""}<label>상품명<input name="title" maxlength="80" required></label><label>상품 분류<select name="category">${Object.entries(
+  return `<form id="productForm" class="form-grid">${state.staff.role === "operator" ? `<label>입점업체<select name="storeId" required>${options(state.ops.stores)}</select></label>` : ""}<label>상품명<input name="title" maxlength="80" required></label><label>대분류<select name="major">${departments.map((d) => `<option value="${d.id}">${d.name}</option>`).join("")}</select></label><label>중분류<select name="category">${Object.entries(
     categoryNames,
   )
     .map(([id, name]) => `<option value="${id}">${name}</option>`)
     .join(
       "",
-    )}</select></label><label>구성·중량<input name="unit" maxlength="40" required></label><label>판매가 (원)<input name="price" type="number" min="1" max="100000000" step="1" required></label><label>판매가능 수량<input name="stock" type="number" min="0" max="100000" step="1" required></label><label>원산지·표시 정보<input name="origin" maxlength="200" required></label><label>보관 방식<select name="storage"><option value="ambient">실온</option><option value="chilled">냉장</option><option value="frozen">냉동</option></select></label><label class="wide">상품 설명<textarea name="description" maxlength="2000"></textarea></label><label class="check"><input type="checkbox" name="active"> 상품 공개</label><button class="primary">상품 등록</button></form>`;
+    )}</select></label><label>소분류<select name="subcategory" required></select></label><label>구성·중량<input name="unit" maxlength="40" required></label><label>판매가 (원)<input name="price" type="number" min="1" max="100000000" step="1" required></label><label>판매가능 수량<input name="stock" type="number" min="0" max="100000" step="1" required></label><label>원산지·표시 정보<input name="origin" maxlength="200" required></label><label>보관 방식<select name="storage"><option value="ambient">실온</option><option value="chilled">냉장</option><option value="frozen">냉동</option></select></label><label class="wide">상품 설명<textarea name="description" maxlength="2000"></textarea></label><label class="check"><input type="checkbox" name="active"> 상품 공개</label><button class="primary">상품 등록</button></form>`;
 }
 function operations() {
   if (!state.staff) return login();
@@ -374,6 +449,22 @@ async function loadView() {
   render();
 }
 function render() {
+  const searchInput = document.querySelector("#marketSearch [name=q]");
+  if (searchInput && document.activeElement !== searchInput)
+    searchInput.value = state.search;
+  document
+    .querySelectorAll("[data-customer-view]")
+    .forEach((a) =>
+      a.setAttribute(
+        "aria-current",
+        a.dataset.customerView === view() ? "page" : "false",
+      ),
+    );
+  const badge = document.querySelector("#basketCount");
+  if (badge)
+    badge.textContent =
+      Object.values(state.basket).reduce((a, b) => a + b, 0) || "";
+
   document
     .querySelectorAll(".local-tabs [data-view]")
     .forEach((a) =>
@@ -385,18 +476,24 @@ function render() {
   const banner = document.getElementById("serviceState");
   banner.textContent = state.connected
     ? state.config.liveOrders
-      ? "지역 기반 현장결제 주문 접수 · 업체별 배송비 · 자체 라이더 배차"
-      : "실제 주문 접수 준비 중 · 운영 지역/업체·정책·주소 확인 연결 후 활성화됩니다."
+      ? "지역별 장보기 · 카드결제·외부 배달대행 연결 준비 중"
+      : "카드결제·외부 배달대행 연결 준비 중 · 실제 주문 접수 전입니다."
     : "주문 서비스 저장소 연결 준비 중입니다. 운영 안내 페이지를 이용해 주세요.";
   root.innerHTML = !state.connected
     ? '<div class="empty"><h1>지역 주문 서비스를 준비하고 있습니다.</h1><p>저장소 연결과 운영 설정이 완료되면 지역별 업체와 주문·배송 화면이 열립니다.</p><a href="/arirang-market.html">아리랑마켓 안내로 →</a><button id="retryConnection">연결 다시 확인</button></div>'
-    : view() === "shop"
-      ? shop()
-      : view() === "orders"
-        ? customerOrders()
-        : view() === "staff"
-          ? staffWorkspace()
-          : operations();
+    : view() === "cart"
+      ? state.store
+        ? basketView()
+        : '<div class="empty"><h1>장바구니</h1><p>상품 목록에서 원하는 상품을 담아주세요.</p><a href="#shop">장보기 →</a></div>'
+      : view() === "categories"
+        ? `<h1 class="browse-title">카테고리</h1>${categoryBrowser()}<p><a href="#shop">선택한 분류의 상품 보기 →</a></p>`
+        : view() === "shop"
+          ? shop()
+          : view() === "orders"
+            ? customerOrders()
+            : view() === "staff"
+              ? staffWorkspace()
+              : operations();
   bind();
 }
 function run(task) {
@@ -411,16 +508,102 @@ function run(task) {
   };
 }
 function bind() {
-  root.querySelector("#productSearch")?.addEventListener("input", (ev) => {
-    state.search = ev.target.value;
-    const position = ev.target.selectionStart;
-    render();
-    const field = root.querySelector("#productSearch");
-    field?.focus();
-    try {
-      field?.setSelectionRange(position, position);
-    } catch {}
+  root.querySelectorAll("[data-browse-major]").forEach(
+    (b) =>
+      (b.onclick = () =>
+        setBrowse({
+          major: b.dataset.browseMajor,
+          category: "all",
+          leaf: "",
+        })),
+  );
+  root
+    .querySelectorAll("[data-browse-category]")
+    .forEach(
+      (b) =>
+        (b.onclick = () =>
+          setBrowse({ category: b.dataset.browseCategory, leaf: "" })),
+    );
+  root
+    .querySelectorAll("[data-browse-leaf]")
+    .forEach(
+      (b) => (b.onclick = () => setBrowse({ leaf: b.dataset.browseLeaf })),
+    );
+  root.querySelector("[data-clear-browse]")?.addEventListener("click", () => {
+    state.filterStore = false;
+    setBrowse({ major: "all", category: "all", leaf: "", search: "" });
   });
+  root
+    .querySelector("#productSort")
+    ?.addEventListener("change", (ev) => setBrowse({ sort: ev.target.value }));
+  root.querySelector("#storeFilter")?.addEventListener(
+    "change",
+    run(async (ev) => {
+      if (!ev.target.value) {
+        state.filterStore = false;
+        render();
+        return;
+      }
+      await chooseStore(ev.target.value);
+    }),
+  );
+  root.querySelectorAll("[data-detail]").forEach(
+    (b) =>
+      (b.onclick = () => {
+        state.detail = b.dataset.detail;
+        render();
+      }),
+  );
+  root.querySelectorAll("[data-close-detail]").forEach(
+    (b) =>
+      (b.onclick = () => {
+        state.detail = null;
+        render();
+      }),
+  );
+  root.querySelector("[data-detail-home]")?.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    state.detail = null;
+    setBrowse({ major: "all", category: "all", leaf: "", search: "" });
+  });
+  const dialog = root.querySelector("#productDetail");
+  if (dialog) {
+    dialog.showModal();
+    dialog.addEventListener("cancel", () => {
+      state.detail = null;
+    });
+    dialog.addEventListener("click", (ev) => {
+      if (ev.target === dialog) {
+        state.detail = null;
+        render();
+      }
+    });
+  }
+  const pf = root.querySelector("#productForm");
+  if (pf) {
+    const middle = pf.elements.category,
+      major = pf.elements.major,
+      leaf = pf.elements.subcategory;
+    const fillLeaf = () => {
+      leaf.innerHTML =
+        '<option value="">소분류 선택</option>' +
+        leaves[middle.value]
+          .map(([id, name]) => `<option value="${id}">${name}</option>`)
+          .join("");
+    };
+    const fillMiddle = () => {
+      middle.innerHTML = departments
+        .find((d) => d.id === major.value)
+        .categories.map(
+          (id) => `<option value="${id}">${categoryNames[id]}</option>`,
+        )
+        .join("");
+      fillLeaf();
+    };
+    major.onchange = fillMiddle;
+    middle.onchange = fillLeaf;
+    fillMiddle();
+  }
   const roleSelect = root.querySelector("#staffLogin [name=role]");
   if (roleSelect)
     roleSelect.onchange = () => {
@@ -453,13 +636,6 @@ function bind() {
   root
     .querySelectorAll("[data-store]")
     .forEach((b) => (b.onclick = run(() => chooseStore(b.dataset.store))));
-  root.querySelectorAll("[data-category]").forEach(
-    (b) =>
-      (b.onclick = () => {
-        state.category = b.dataset.category;
-        render();
-      }),
-  );
   const changeQuantity = (id, delta) => {
     const p = state.products.find((p) => p.id === id),
       n = (state.basket[id] || 0) + delta;
@@ -471,9 +647,22 @@ function bind() {
     saveBasket();
     render();
   };
-  root
-    .querySelectorAll("[data-add]")
-    .forEach((b) => (b.onclick = () => changeQuantity(b.dataset.add, 1)));
+  root.querySelectorAll("[data-add]").forEach(
+    (b) =>
+      (b.onclick = run(async () => {
+        const p = state.catalog.find((p) => p.id === b.dataset.add);
+        if (!p) return;
+        const wasFiltered = state.filterStore;
+        state.detail = null;
+        if (state.store?.id !== p.store_id) {
+          await chooseStore(p.store_id);
+          if (state.store?.id !== p.store_id) return;
+        }
+        state.filterStore = wasFiltered;
+        changeQuantity(p.id, 1);
+        message(p.title + "을 장바구니에 담았습니다.");
+      })),
+  );
   root
     .querySelectorAll("[data-qty]")
     .forEach(
@@ -703,8 +892,7 @@ function bind() {
       v.price = Number(v.price);
       v.stock = Number(v.stock);
       await post("/products", v);
-      event.target.reset();
-      await loadManagedProducts();
+      await loadView();
     }),
   );
   if (state.staff?.role === "merchant" && view() === "staff")
@@ -770,7 +958,9 @@ async function initialize() {
     state.connected = true;
     let saved;
     try {
-      saved = localStorage.getItem("arirang-delivery-region");
+      saved =
+        new URLSearchParams(location.search).get("region") ||
+        localStorage.getItem("arirang-delivery-region");
     } catch {}
     if (regions.some((r) => r.id === saved)) await chooseRegion(saved, false);
     else {
@@ -784,6 +974,13 @@ async function initialize() {
         state.locationNote = error.message;
       }
     }
+    if (
+      state.savedBasket?.regionId === state.region?.id &&
+      state.stores.some((v) => v.id === state.savedBasket.storeId)
+    ) {
+      await chooseStore(state.savedBasket.storeId);
+      state.filterStore = false;
+    }
     await loadView();
   } catch (error) {
     state.connected = false;
@@ -791,6 +988,25 @@ async function initialize() {
     render();
   }
 }
+document
+  .querySelector('[data-customer-view="shop"]')
+  ?.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    state.filterStore = false;
+    setBrowse({ major: "all", category: "all", leaf: "", search: "" });
+    if (view() !== "shop") location.hash = "#shop";
+  });
+document.getElementById("marketSearch")?.addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  state.filterStore = false;
+  setBrowse({ search: ev.target.elements.q.value });
+  if (view() !== "shop") location.hash = "#shop";
+  root.querySelector("#catalogTitle")?.focus();
+});
+window.addEventListener("popstate", () => {
+  readBrowse();
+  loadView().catch((error) => message(error.message, true));
+});
 window.addEventListener("hashchange", () =>
   loadView().catch((error) => message(error.message, true)),
 );

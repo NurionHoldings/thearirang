@@ -1,43 +1,91 @@
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>아리랑마켓 온라인판매 | 더 아리랑</title>
-  <meta name="description" content="내 지역 입점업체에서 장보고 판매자 접수부터 라이더 배송까지 확인하는 아리랑마켓.">
-  <link rel="icon" href="favicon.svg">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="site-footer.css">
-  <link rel="stylesheet" href="arirang-market.css">
-  <script defer src="site-footer.js"></script>
-</head>
-<body class="online-market-page">
-  <header class="online-market-header">
-    <a class="brand" href="/" aria-label="더 아리랑 홈"><img src="assets/arirang-symbol.png" width="48" height="48" alt=""><span>더 아리랑<small>THE ARIRANG</small></span></a>
-    <nav aria-label="온라인판매 메뉴"><a href="/">공간 안내</a><a href="/arirang-market.html" aria-current="page">아리랑마켓</a><a href="#food-categories">식품 카테고리</a></nav>
-  </header>
-  <main class="online-market-main">
-    <nav class="online-return" aria-label="이전 화면 및 홈 이동"><a href="/#online-market">← 이전</a><a href="/">더 아리랑 홈가기</a></nav>
-    <section class="online-market-hero" aria-labelledby="market-title">
-      <div class="online-market-copy"><p class="market-eyebrow">THE ARIRANG · ONLINE GROCERY</p><h1 id="market-title">아리랑마켓<span>오늘의 식탁을<br>기분 좋게 채우다.</span></h1><p>신선한 식재료부터 간편한 한 끼까지.<br>더 아리랑에서 만나는 온라인 식품 장보기.</p><a class="market-primary" data-online-shop href="/arirang-local.html">내 지역 장보기 →<small>지역별 입점업체 · 자체 라이더 배송</small></a></div>
-      <img src="assets/arirang-market-online.svg" width="540" height="430" alt="과일과 채소를 담은 장보기 일러스트">
-    </section>
-    <aside class="market-service-note" aria-label="온라인 서비스 안내"><strong>우리 지역 업체에서, 우리 집까지</strong><p>접속 지역을 안내받거나 배송 지역을 직접 선택하세요. 위치 권한을 허용하면 구·동 단위 연결이 가능합니다. 실제 주문은 운영이 승인된 업체와 배송주소 확인이 가능한 지역에서 접수합니다.</p></aside>
-    <section id="food-categories" aria-labelledby="category-title"><div class="market-section-heading"><div><p class="market-eyebrow">SHOP BY CATEGORY</p><h2 id="category-title">필요한 식품부터 둘러보세요.</h2></div><span>지역 업체를 선택한 뒤 해당 분류의 상품을 확인합니다.</span></div><div class="online-food-grid">
-      <a data-food-category="fruit" href="/arirang-local.html?category=fruit"><span>01</span><strong>과일</strong><small>사과 · 감귤 · 제철 과일</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="vegetables" href="/arirang-local.html?category=vegetables"><span>02</span><strong>채소</strong><small>잎채소 · 뿌리채소 · 버섯</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="meat" href="/arirang-local.html?category=meat"><span>03</span><strong>정육·계란</strong><small>돼지고기 · 소고기 · 계란</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="seafood" href="/arirang-local.html?category=seafood"><span>04</span><strong>수산</strong><small>생선 · 해산물 · 건어물</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="dairy" href="/arirang-local.html?category=dairy"><span>05</span><strong>유제품</strong><small>우유 · 요거트 · 치즈</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="grains" href="/arirang-local.html?category=grains"><span>06</span><strong>쌀·잡곡</strong><small>쌀 · 잡곡 · 콩</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="ready-meals" href="/arirang-local.html?category=ready-meals"><span>07</span><strong>간편식·밀키트</strong><small>밀키트 · 즉석밥 · 국·탕</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="frozen" href="/arirang-local.html?category=frozen"><span>08</span><strong>냉동식품</strong><small>만두 · 튀김 · 아이스크림</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="snacks" href="/arirang-local.html?category=snacks"><span>09</span><strong>과자·간식</strong><small>과자 · 견과류 · 초콜릿</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="drinks" href="/arirang-local.html?category=drinks"><span>10</span><strong>생수·음료</strong><small>생수 · 주스 · 커피·차</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="bakery" href="/arirang-local.html?category=bakery"><span>11</span><strong>베이커리</strong><small>식빵 · 빵 · 디저트</small><b aria-hidden="true">↗</b></a>
-      <a data-food-category="condiments" href="/arirang-local.html?category=condiments"><span>12</span><strong>양념·소스</strong><small>소스·장류 · 오일 · 조미료</small><b aria-hidden="true">↗</b></a>
-    </div></section>
-    <section class="market-how" aria-labelledby="market-how-title"><div><p class="market-eyebrow">A SIMPLE WAY TO SHOP</p><h2 id="market-how-title">카테고리에서 장바구니까지.</h2><p>지역 선택 → 업체별 장보기 → 주문 접수 → 상품 준비 → 라이더 픽업·배송까지 한곳에서 확인하세요.</p></div><ol><li><b>01</b><strong>식품 선택</strong><span>카테고리와 검색으로 탐색</span></li><li><b>02</b><strong>상세 확인</strong><span>상품 구성·보관 안내 확인</span></li><li><b>03</b><strong>주문·배송 확인</strong><span>판매자 접수와 배송 단계 확인</span></li></ol><a class="market-primary" href="/arirang-local.html#orders">내 주문·배송 확인 →<small>이 브라우저에서 접수한 주문</small></a></section>
-  </main>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>아리랑마켓 | 우리 동네 장보기</title>
+    <meta
+      name="description"
+      content="전문관과 3단계 카테고리로 우리 지역 입점업체의 식품을 찾아보세요."
+    />
+    <link rel="icon" href="favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css"
+    />
+    <link rel="stylesheet" href="arirang-local.css" />
+  </head>
+  <body>
+    <a class="skip-market" href="#localContent">상품 탐색 바로가기</a>
+    <header class="market-top">
+      <div class="market-top-inner">
+        <a class="market-wordmark" href="?" aria-label="아리랑마켓 홈"
+          ><img
+            src="assets/arirang-symbol.png"
+            width="38"
+            height="38"
+            alt=""
+          /><span>아리랑마켓<small>우리 동네의 좋은 장보기</small></span></a
+        >
+        <form id="marketSearch" role="search">
+          <label class="sr-only" for="marketSearchInput">상품 검색</label
+          ><input
+            id="marketSearchInput"
+            name="q"
+            type="search"
+            maxlength="120"
+            placeholder="찾는 상품을 검색해 보세요"
+            autocomplete="off"
+          /><button type="submit" aria-label="검색">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 5 5" />
+            </svg>
+          </button>
+        </form>
+        <a class="partner-link" href="#staff">판매자 접속</a>
+      </div>
+    </header>
+    <nav class="market-customer-nav" aria-label="마켓 탐색">
+      <a href="#shop" data-customer-view="shop"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m3 10 9-7 9 7v11h-7v-7h-4v7H3Z" /></svg
+        ><span>홈</span></a
+      ><a href="#categories" data-customer-view="categories"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 3h6v6H3ZM15 3h6v6h-6ZM3 15h6v6H3ZM15 15h6v6h-6Z" /></svg
+        ><span>카테고리</span></a
+      ><a href="#cart" data-customer-view="cart"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m3 3 2 3 2 11h13l2-10H6M9 21h.1M18 21h.1" /></svg
+        ><span>장바구니 <b id="basketCount"></b></span></a
+      ><a href="#orders" data-customer-view="orders"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 3h12v18l-3-2-3 2-3-2-3 2ZM9 8h6M9 12h6" /></svg
+        ><span>내 주문</span></a
+      >
+    </nav>
+    <main>
+      <aside id="serviceState" class="service-state" role="status">
+        마켓을 연결하고 있습니다.
+      </aside>
+      <div
+        id="marketFeedback"
+        class="feedback"
+        role="status"
+        aria-live="polite"
+      ></div>
+      <section id="localContent" aria-live="polite"></section>
+    </main>
+    <footer class="market-footer">
+      <a href="/">더 아리랑 홈</a><a href="#staff">판매자 접속</a
+      ><a href="#operations">운영 관리</a
+      ><span>카드결제·외부 배달대행 연결 준비 중</span>
+    </footer>
+    <script type="module" src="arirang-local.js"></script>
+  </body>
 </html>

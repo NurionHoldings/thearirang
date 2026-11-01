@@ -3,26 +3,75 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>내 지역 아리랑마켓 | 지역 장보기·배달</title>
+    <title>아리랑마켓 | 우리 동네 장보기</title>
+    <meta
+      name="description"
+      content="전문관과 3단계 카테고리로 우리 지역 입점업체의 식품을 찾아보세요."
+    />
     <link rel="icon" href="favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css"
+    />
     <link rel="stylesheet" href="arirang-local.css" />
   </head>
   <body>
-    <header class="local-header">
-      <a href="/arirang-market.html" class="local-brand"
-        >아리랑마켓<small>우리 동네 장보기·배달</small></a
-      ><a href="/">더 아리랑 홈 ↗</a>
+    <a class="skip-market" href="#localContent">상품 탐색 바로가기</a>
+    <header class="market-top">
+      <div class="market-top-inner">
+        <a class="market-wordmark" href="?" aria-label="아리랑마켓 홈"
+          ><img
+            src="assets/arirang-symbol.png"
+            width="38"
+            height="38"
+            alt=""
+          /><span>아리랑마켓<small>우리 동네의 좋은 장보기</small></span></a
+        >
+        <form id="marketSearch" role="search">
+          <label class="sr-only" for="marketSearchInput">상품 검색</label
+          ><input
+            id="marketSearchInput"
+            name="q"
+            type="search"
+            maxlength="120"
+            placeholder="찾는 상품을 검색해 보세요"
+            autocomplete="off"
+          /><button type="submit" aria-label="검색">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 5 5" />
+            </svg>
+          </button>
+        </form>
+        <a class="partner-link" href="#staff">판매자 접속</a>
+      </div>
     </header>
-    <nav class="local-tabs" aria-label="마켓 업무 선택">
-      <a href="#shop" data-view="shop">내 지역 장보기</a
-      ><a href="#orders" data-view="orders">내 주문</a
-      ><a href="#staff" data-view="staff">판매자·라이더</a
-      ><a href="#operations" data-view="operations">운영 관리</a>
+    <nav class="market-customer-nav" aria-label="마켓 탐색">
+      <a href="#shop" data-customer-view="shop"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m3 10 9-7 9 7v11h-7v-7h-4v7H3Z" /></svg
+        ><span>홈</span></a
+      ><a href="#categories" data-customer-view="categories"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 3h6v6H3ZM15 3h6v6h-6ZM3 15h6v6H3ZM15 15h6v6h-6Z" /></svg
+        ><span>카테고리</span></a
+      ><a href="#cart" data-customer-view="cart"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m3 3 2 3 2 11h13l2-10H6M9 21h.1M18 21h.1" /></svg
+        ><span>장바구니 <b id="basketCount"></b></span></a
+      ><a href="#orders" data-customer-view="orders"
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 3h12v18l-3-2-3 2-3-2-3 2ZM9 8h6M9 12h6" /></svg
+        ><span>내 주문</span></a
+      >
     </nav>
     <main>
       <aside id="serviceState" class="service-state" role="status">
-        주문 서비스 연결을 확인하고 있습니다.
+        마켓을 연결하고 있습니다.
       </aside>
       <div
         id="marketFeedback"
@@ -32,13 +81,10 @@
       ></div>
       <section id="localContent" aria-live="polite"></section>
     </main>
-    <footer>
-      <a href="/arirang-market.html">← 아리랑마켓 안내</a
-      ><span>지역별 입점업체 · 업체별 주문 · 자체 라이더 배송</span>
-      <p>
-        외부 배달대행·실시간 위치 지도·온라인 PG는 아직 연결되지 않았습니다.
-        배송 완료는 결제 확인과 별도로 처리합니다.
-      </p>
+    <footer class="market-footer">
+      <a href="/">더 아리랑 홈</a><a href="#staff">판매자 접속</a
+      ><a href="#operations">운영 관리</a
+      ><span>카드결제·외부 배달대행 연결 준비 중</span>
     </footer>
     <script type="module" src="arirang-local.js"></script>
   </body>
