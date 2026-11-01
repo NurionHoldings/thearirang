@@ -93,3 +93,6 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
 @media print{.home-hero{background:#fff;color:#173b70;box-shadow:none}.home-hero h1{color:#173b70}.hero-actions,.audience-grid,.audience-heading{display:none}.home-hero .heading{display:block;padding:0}.home-hero .project-state{display:none}}
 @media print{.home-hero :is(h1,p,span,small){color:#173b70!important}}
 @media screen{.brand-home .voice-bar button{font-size:14px!important}.audience-card .portal-kicker{font-size:14px}.hero-meta{font-size:14px}}
+@media screen{body.partner-documents :is(button,.button){background:var(--brand-strong);border-color:var(--brand-strong);color:#fff}body.partner-documents :is(button,.button):hover{background:var(--brand-deep)}body.partner-documents form{background:#fff4ee;border-color:var(--brand-line)}}
+@media(max-width:720px){.market-top-inner>.market-context-chip{display:none}}
+@media screen{body[data-brand] :is(input,select,textarea){color:var(--brand-ink)}body[data-brand] .feedback:not(.error){background:var(--brand-tint);border-color:var(--brand-line);color:var(--brand-strong)}}
