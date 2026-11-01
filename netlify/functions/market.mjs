@@ -1,3 +1,5 @@
+import { getUser } from "@netlify/identity";
+import { identityCustomer, makeMemberService } from "./_market/member.mjs";
 import { getDatabase } from "@netlify/database";
 import { makeMarketService } from "./_market/service.mjs";
 import { MarketError } from "./_market/domain.mjs";
@@ -24,6 +26,7 @@ const json = (data, status = 200, headers = {}) =>
 export function marketHandler(
   serviceFactory,
   env = (key) => Netlify.env.get(key),
+  identity = getUser,
 ) {
   return async (req, context = {}) => {
     try {
@@ -65,7 +68,48 @@ export function marketHandler(
       if (path === "/catalog" && method === "GET")
         return json(await service.catalog(url.searchParams.get("region")));
       const staff = await service.session(staffToken),
-        customer = await service.session(customerToken);
+        guest = await service.session(customerToken),
+        signedMember = identityCustomer(await identity()),
+        customer = signedMember || guest;
+      if (path === "/member/me" && method === "GET")
+        return json(await service.members.me(signedMember));
+      if (path === "/member/session" && method === "POST")
+        return json(await service.members.sync(signedMember));
+      if (path === "/member/addresses" && method === "POST")
+        return json(await service.members.save(signedMember, body), 201);
+      const addressRoute =
+        /^\/member\/addresses\/([a-f0-9-]+)(?:\/(select|default))?$/.exec(path);
+      if (addressRoute) {
+        const [, id, action] = addressRoute;
+        if (action && method === "POST")
+          return json(
+            await service.members.select(
+              signedMember,
+              id,
+              action === "default",
+            ),
+          );
+        if (!action && method === "PATCH")
+          return json(await service.members.save(signedMember, body, id));
+        if (!action && method === "DELETE")
+          return json(
+            await service.members.remove(signedMember, id, body.version),
+          );
+      }
+      if (path === "/member/address-check" && method === "POST") {
+        const a = await service.members.orderAddress(
+          signedMember,
+          body.addressId,
+        );
+        return json(
+          await service.addressCheck(signedMember, {
+            storeId: body.storeId,
+            regionId: a.region_id,
+            addressBase: a.address_base,
+            consent: body.consent,
+          }),
+        );
+      }
       if (path === "/session" && method === "GET")
         return json({ staff, customer });
       if (path === "/customer-session" && method === "POST") {
@@ -159,12 +203,17 @@ export function marketHandler(
   };
 }
 let service;
-export default marketHandler(
-  () =>
-    (service ||= makeMarketService(getDatabase().pool, {
-      env: (key) => Netlify.env.get(key),
-    })),
-);
+export default marketHandler(() => {
+  if (!service) {
+    const pool = getDatabase().pool,
+      options = { env: (key) => Netlify.env.get(key) };
+    service = {
+      ...makeMarketService(pool, options),
+      members: makeMemberService(pool, options),
+    };
+  }
+  return service;
+});
 export const config = {
   path: ["/market-api", "/market-api/*"],
   rateLimit: {

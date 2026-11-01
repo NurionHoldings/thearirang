@@ -32,6 +32,13 @@ const statuses = {
 };
 const state = {
   config: {},
+  member: null,
+  addresses: [],
+  selectedAddressId: null,
+  addressEdit: null,
+  memberSettings: null,
+  authError: "",
+  recovery: false,
   regions: [],
   stores: [],
   products: [],
@@ -70,9 +77,16 @@ try {
     state.savedBasket = raw;
 } catch {}
 const view = () =>
-  ["shop", "categories", "cart", "orders", "staff", "operations"].includes(
-    location.hash.slice(1),
-  )
+  [
+    "shop",
+    "categories",
+    "cart",
+    "orders",
+    "member",
+    "addresses",
+    "staff",
+    "operations",
+  ].includes(location.hash.slice(1))
     ? location.hash.slice(1)
     : "shop";
 function readBrowse() {
@@ -116,6 +130,227 @@ function results() {
       ? state.catalog.filter((p) => p.store_id === state.store.id)
       : state.catalog,
     state,
+  );
+}
+function selectedDelivery() {
+  return (
+    state.addresses.find((a) => a.id === state.selectedAddressId) ||
+    state.addresses.find((a) => a.is_default) ||
+    null
+  );
+}
+async function refreshMember(sync = false) {
+  if (!window.ARIRANG_MEMBER_AUTH) return;
+  const result = sync
+    ? await post("/member/session", {})
+    : await api("/member/me");
+  state.member = result.member;
+  state.addresses = result.addresses || [];
+  state.selectedAddressId = result.selectedAddressId;
+  state.customer = state.member
+    ? { id: state.member.id, role: "customer", member: true }
+    : null;
+}
+async function applyDelivery() {
+  const a = selectedDelivery();
+  if (!a) return;
+  if (a.region_id && state.regions.some((r) => r.id === a.region_id)) {
+    if (state.region?.id !== a.region_id)
+      await chooseRegion(a.region_id, false);
+  } else {
+    state.region = null;
+    state.store = null;
+    state.products = [];
+    state.catalog = [];
+    state.stores = [];
+    state.basket = {};
+    resetCheckout();
+  }
+  render();
+}
+function memberView() {
+  if (state.member && !state.recovery)
+    return `<section class="member-panel"><p class="eyebrow">MY ARIRANG MARKET</p><h1>${e(state.member.name || "회원")}님, 반갑습니다.</h1><p>${e(state.member.email)}</p><div class="member-actions"><a class="primary-link" href="#addresses">배송지 관리 (${state.addresses.length}/10)</a><a href="#orders">내 주문</a><button id="memberLogout">로그아웃</button></div><p class="muted">배송지는 계정에 저장되어 로그인한 기기에서 다시 사용할 수 있습니다.</p></section>`;
+  const auth = window.ARIRANG_MEMBER_AUTH,
+    settings = state.memberSettings;
+  if (!auth || state.authError)
+    return `<section class="member-panel"><h1>회원 연결 확인이 필요합니다.</h1><p>${e(state.authError || "회원 기능을 연결하고 있습니다. 잠시 후 새로고침해 주세요.")}</p></section>`;
+  if (state.recovery)
+    return `<section class="member-panel"><h1>새 비밀번호 설정</h1><form id="memberRecovery"><label>새 비밀번호<input name="password" type="password" minlength="10" maxlength="128" required autocomplete="new-password"></label><button class="primary">비밀번호 변경</button></form></section>`;
+  return `<section class="member-panel"><p class="eyebrow">WELCOME TO ARIRANG MARKET</p><h1>내 배송지로 편하게 장보기</h1><p>회원가입 후 집·회사 등 배송지를 미리 저장하세요.</p><form id="memberLogin"><h2>로그인</h2><label>이메일<input name="email" type="email" maxlength="254" required autocomplete="username"></label><label>비밀번호<input name="password" type="password" maxlength="128" required autocomplete="current-password"></label><button class="primary">로그인</button><button type="button" id="memberForgot">비밀번호 재설정 메일 받기</button></form><details class="member-signup"><summary>처음 오셨나요? 회원가입</summary>${settings?.disableSignup ? '<p class="membership-unavailable">현재 일반 회원가입을 준비 중입니다. 가입이 열리면 이 화면에서 바로 등록할 수 있습니다.</p>' : `<form id="memberSignup"><label>이름<input name="name" maxlength="40" required autocomplete="name"></label><label>이메일<input name="email" type="email" maxlength="254" required autocomplete="email"></label><label>비밀번호 (10자 이상)<input name="password" type="password" minlength="10" maxlength="128" required autocomplete="new-password"></label><label>비밀번호 확인<input name="confirm" type="password" minlength="10" maxlength="128" required autocomplete="new-password"></label><p class="muted">계정 인증에 이메일과 이름을 사용합니다. 배송지 정보는 가입 후 주소록에서 별도로 등록합니다.</p><button class="primary">가입하고 이메일 인증하기</button></form>`}</details></section>`;
+}
+function addressesView() {
+  if (!state.member)
+    return `<section class="member-panel"><h1>배송주소를 미리 저장하세요.</h1><p>회원 로그인 후 배송지 주소록을 이용할 수 있습니다.</p><a class="primary-link" href="#member">로그인·회원가입</a></section>`;
+  const editing =
+    state.addressEdit === "new"
+      ? {}
+      : state.addresses.find((a) => a.id === state.addressEdit);
+  return `<section class="address-book"><div class="catalog-heading"><h1>배송지 관리 <small>${state.addresses.length}/10</small></h1><button id="newDeliveryAddress"${state.addresses.length >= 10 ? " disabled" : ""}>+ 배송지 등록</button></div><p class="muted">선택한 배송지로 장보기 지역을 연결합니다. 주소·연락처·배송 요청은 공개 화면이나 이 브라우저 저장소에 보관하지 않습니다.</p>${editing ? `<form id="addressBookForm" class="form-grid"><h2 class="wide">${editing.id ? "배송지 수정" : "배송지 등록"}</h2><label>배송지 이름<input name="label" maxlength="30" required placeholder="집 / 회사" value="${e(editing.label)}"></label><label>받는 분<input name="recipientName" maxlength="40" required autocomplete="name" value="${e(editing.recipient_name || state.member.name)}"></label><label>휴대전화<input name="phone" maxlength="20" required inputmode="tel" autocomplete="tel" value="${e(editing.phone)}"></label><label>우편번호 (선택)<input name="postalCode" maxlength="5" inputmode="numeric" autocomplete="postal-code" value="${e(editing.postal_code)}"></label><label class="wide">도로명 또는 지번 주소<input name="addressBase" maxlength="200" required autocomplete="address-line1" placeholder="시·구·도로명과 건물번호까지 입력" value="${e(editing.address_base)}"></label><label class="wide">상세주소<input name="addressDetail" maxlength="200" required autocomplete="address-line2" placeholder="건물명 · 동·호수" value="${e(editing.address_detail)}"></label><label class="wide">배송 요청 (선택)<textarea name="deliveryNote" maxlength="300">${e(editing.delivery_note)}</textarea></label><label class="check"><input name="isDefault" type="checkbox"${editing.is_default || !state.addresses.length ? " checked" : ""}> 기본 배송지로 사용</label><label class="check wide"><input name="consent" type="checkbox" required> 이름·연락처·주소·요청사항을 내 계정에 저장하는 것을 확인했습니다.</label><p class="muted wide">주소 확인 서비스 연결 전에는 미확인 상태로 저장됩니다. 미확인 주소는 배송 가능으로 표시하지 않습니다.</p><div class="member-actions wide"><button class="primary">배송지 저장</button><button type="button" id="cancelAddressEdit">취소</button></div></form>` : ""}<div class="address-list">${state.addresses.map((a) => `<article class="saved-address"><div class="catalog-heading"><h2>${e(a.label)} ${a.is_default ? '<span class="address-badge">기본</span>' : ""}${a.id === state.selectedAddressId ? '<span class="address-badge selected">선택 중</span>' : ""}</h2><button data-edit-address="${a.id}">수정</button></div><p>${e(a.recipient_name)} · ${e(a.phone)}</p><p>${e(a.address_base)} ${e(a.address_detail)}</p>${a.delivery_note ? `<p class="muted">배송 요청: ${e(a.delivery_note)}</p>` : ""}<p class="address-verification">${!a.verified_at ? "주소 확인 대기" : a.region_id ? "주소 확인 완료 · 등록 배송구역 연결" : "주소 확인 완료 · 현재 서비스 구역 외"}</p><div class="member-actions"><button data-select-address="${a.id}">${a.id === state.selectedAddressId ? "현재 배송지" : "이 주소로 장보기"}</button>${!a.is_default ? `<button data-default-address="${a.id}">기본 배송지로</button>` : ""}<button data-delete-address="${a.id}" data-version="${a.version}">삭제</button></div></article>`).join("") || '<div class="catalog-empty"><h2>등록된 배송지가 없습니다.</h2><p>집이나 회사 주소를 한 번 등록해 두세요.</p></div>'}</div><p><a href="#shop">← 장보기로 돌아가기</a></p></section>`;
+}
+function bindMember() {
+  const auth = window.ARIRANG_MEMBER_AUTH;
+  root.querySelector("#memberLogin")?.addEventListener(
+    "submit",
+    run(async (ev) => {
+      const f = ev.target,
+        b = f.querySelector("button");
+      b.disabled = true;
+      try {
+        await auth.login(
+          f.elements.email.value.trim(),
+          f.elements.password.value,
+        );
+        f.reset();
+        await refreshMember(true);
+        await applyDelivery();
+        location.hash = "#addresses";
+      } finally {
+        b.disabled = false;
+      }
+    }),
+  );
+  root.querySelector("#memberSignup")?.addEventListener(
+    "submit",
+    run(async (ev) => {
+      const f = ev.target;
+      if (f.elements.password.value !== f.elements.confirm.value)
+        throw Error("비밀번호 확인이 일치하지 않습니다.");
+      const b = f.querySelector("button");
+      b.disabled = true;
+      try {
+        await auth.signup(
+          f.elements.email.value.trim(),
+          f.elements.password.value,
+          { full_name: f.elements.name.value.trim() },
+        );
+        f.reset();
+        if (await auth.getUser()) {
+          await refreshMember(true);
+          location.hash = "#addresses";
+        } else {
+          message(
+            "인증 메일을 보냈습니다. 받은 메일의 링크를 확인한 뒤 로그인하세요.",
+          );
+          return "인증 메일의 링크를 확인한 뒤 로그인하세요.";
+        }
+      } finally {
+        b.disabled = false;
+      }
+    }),
+  );
+  root.querySelector("#memberForgot")?.addEventListener(
+    "click",
+    run(async () => {
+      const f = root.querySelector("#memberLogin"),
+        email = f.elements.email;
+      if (!email.reportValidity()) return;
+      await auth.requestPasswordRecovery(email.value.trim());
+      return "해당 계정이 있으면 비밀번호 재설정 안내가 발송됩니다.";
+    }),
+  );
+  root.querySelector("#memberRecovery")?.addEventListener(
+    "submit",
+    run(async (ev) => {
+      await auth.updateUser({ password: ev.target.elements.password.value });
+      ev.target.reset();
+      state.recovery = false;
+      const u = new URL(location.href);
+      u.searchParams.delete("memberRecovery");
+      history.replaceState({}, "", u);
+      await refreshMember(true);
+      render();
+    }),
+  );
+  root.querySelector("#memberLogout")?.addEventListener(
+    "click",
+    run(async () => {
+      await auth.logout();
+      state.member = null;
+      state.customer = null;
+      state.addresses = [];
+      state.selectedAddressId = null;
+      state.addressEdit = null;
+      state.orders = [];
+      state.detail = null;
+      render();
+    }),
+  );
+  root.querySelector("#newDeliveryAddress")?.addEventListener("click", () => {
+    state.addressEdit = "new";
+    render();
+  });
+  root.querySelector("#cancelAddressEdit")?.addEventListener("click", () => {
+    state.addressEdit = null;
+    render();
+  });
+  root.querySelectorAll("[data-edit-address]").forEach(
+    (b) =>
+      (b.onclick = () => {
+        state.addressEdit = b.dataset.editAddress;
+        render();
+      }),
+  );
+  root.querySelector("#addressBookForm")?.addEventListener(
+    "submit",
+    run(async (ev) => {
+      const f = ev.target,
+        v = Object.fromEntries(new FormData(f)),
+        old = state.addresses.find((a) => a.id === state.addressEdit);
+      v.isDefault = f.elements.isDefault.checked;
+      v.consent = f.elements.consent.checked;
+      if (old) v.version = old.version;
+      const b = f.querySelector("button[type=submit],button.primary");
+      b.disabled = true;
+      try {
+        await api("/member/addresses" + (old ? "/" + old.id : ""), {
+          method: old ? "PATCH" : "POST",
+          body: JSON.stringify(v),
+        });
+        f.reset();
+        state.addressEdit = null;
+        await refreshMember();
+        await applyDelivery();
+        render();
+      } finally {
+        b.disabled = false;
+      }
+    }),
+  );
+  for (const [selector, suffix, key] of [
+    ["[data-select-address]", "select", "selectAddress"],
+    ["[data-default-address]", "default", "defaultAddress"],
+  ])
+    root.querySelectorAll(selector).forEach(
+      (b) =>
+        (b.onclick = run(async () => {
+          if (
+            Object.keys(state.basket).length &&
+            !confirm(
+              "배송지를 변경하면 현재 장바구니가 비워질 수 있습니다. 변경할까요?",
+            )
+          )
+            return;
+          await post("/member/addresses/" + b.dataset[key] + "/" + suffix, {});
+          await refreshMember();
+          await applyDelivery();
+          state.addressEdit = null;
+          location.hash = "#shop";
+          render();
+        })),
+    );
+  root.querySelectorAll("[data-delete-address]").forEach(
+    (b) =>
+      (b.onclick = run(async () => {
+        if (!confirm("이 배송지를 삭제할까요?")) return;
+        await api("/member/addresses/" + b.dataset.deleteAddress, {
+          method: "DELETE",
+          body: JSON.stringify({ version: Number(b.dataset.version) }),
+        });
+        await refreshMember();
+        await applyDelivery();
+        render();
+      })),
   );
 }
 function message(text, error = false) {
@@ -332,7 +567,7 @@ function shop() {
     ),
     rows = results();
   return `
- <section class="delivery-strip" aria-label="배송 지역"><label>배송 지역 <select id="regionSelect" aria-label="판매·배송 지역">${regionOptions(state.region?.id)}</select></label><button id="locate">내 위치</button><button id="autoRegion" aria-label="접속 지역 다시 확인">자동 연결</button></section>
+ <section class="delivery-strip" aria-label="배송 지역"><a class="delivery-address-link" href="#addresses">${selectedDelivery() ? e(selectedDelivery().label) + " · " + e(selectedDelivery().address_base) : state.member ? "배송지 등록·선택" : "로그인하고 배송지 등록"} <span>변경 ›</span></a><label>배송 지역 <select id="regionSelect" aria-label="판매·배송 지역">${regionOptions(state.region?.id)}</select></label><button id="locate">내 위치</button><button id="autoRegion" aria-label="접속 지역 다시 확인">자동 연결</button></section>
  ${!focused ? `<section class="market-intro"><p class="eyebrow">NEARBY GROCERY</p><h1>가까운 곳에서, 오늘의 장보기.</h1><p>${state.region ? e(state.region.name) + " 지역 업체의 상품을 만나보세요." : "배송 지역을 선택하고 우리 동네 상품을 만나보세요."}</p></section><section class="specialty-halls" aria-label="전문관">${departments.map((d) => `<button data-browse-major="${d.id}" class="hall-card" data-category-color="${d.id}"><span aria-hidden="true">${d.icon}</span><strong>${d.name}</strong><small>${d.note}</small></button>`).join("")}</section>` : ""}
  ${categoryBrowser(!focused)}
  <section class="catalog-section" aria-labelledby="catalogTitle"><div class="catalog-heading"><div><p class="browse-crumb">${e(state.major === "all" ? "전체 상품" : departments.find((d) => d.id === state.major)?.name)}${state.category !== "all" ? " › " + e(categoryNames[state.category]) : ""}${state.leaf ? " › " + e(leafName(state.category, state.leaf)) : ""}</p><h2 id="catalogTitle" tabindex="-1">${state.search ? "“" + e(state.search) + "” 검색 결과" : "우리 지역 상품"} <small>${rows.length}</small></h2></div><select id="productSort" aria-label="상품 정렬">${[
@@ -404,7 +639,9 @@ function orderCard(o, workspace) {
   return `<article class="order-card"><div class="section-title"><h2>${e(status)}${o.status === "ready" && o.riderId ? " · 라이더 배정" : ""}</h2><small>${e(o.id.slice(0, 8))} · ${new Date(o.createdAt).toLocaleString("ko-KR")}</small></div><ol class="order-progress">${["new", "accepted", "preparing", "ready", "picked_up", "delivered"].map((s) => `<li${s === o.status ? ' aria-current="step"' : ""}>${statuses[s]}</li>`).join("")}</ol><ul>${o.items.map((p) => `<li>${e(p.title)} ${p.quantity}개 · ${won(p.price * p.quantity)}</li>`).join("")}</ul><p><strong>합계 ${won(o.total)}</strong> · 배송비 ${won(o.deliveryFee)} 포함</p><p class="payment-note">현장결제 / 결제 확인 안 됨 · 배송 완료와 별개</p>${o.addressBase ? `<p>${e(o.customerName)} · <a href="tel:${e(o.phone)}">${e(o.phone)}</a></p><p>${e(o.addressBase)} ${e(o.addressDetail)}</p>` : '<p class="muted">고객 연락처·배송 상세주소는 배차 수락 후 공개됩니다.</p>'}${o.deliveryCode && o.status !== "delivered" ? `<p class="delivery-code">인계 확인번호 <strong>${e(o.deliveryCode)}</strong><small>물품을 받은 뒤 배정 라이더에게 알려주세요.</small></p>` : ""}<div class="order-actions">${actions.join("")}</div></article>`;
 }
 function customerOrders() {
-  return `<div class="section-title"><div><p class="eyebrow">MY ORDERS</p><h1>이 기기의 주문 내역</h1></div><button id="refreshOrders">새로고침</button></div><p class="muted">주문 내역은 이 브라우저의 구매자 세션에서만 열람합니다. 접수 대기 15분 초과 주문은 자동 정리 시 취소·재고 반환되며, 만료 후 접수는 차단됩니다.</p>${state.orders.length ? state.orders.map((o) => orderCard(o, "customer")).join("") : '<div class="empty"><h2>확인할 주문이 없습니다.</h2><a href="#shop">내 지역 장보기 →</a></div>'}`;
+  if (!state.member)
+    return `<section class="member-panel"><h1>회원 주문 내역</h1><p>로그인하면 등록한 계정의 주문을 확인할 수 있습니다.</p><a class="primary-link" href="#member">로그인·회원가입</a></section>`;
+  return `<div class="section-title"><div><p class="eyebrow">MY ORDERS</p><h1>내 주문 내역</h1></div><button id="refreshOrders">새로고침</button></div><p class="muted">주문 내역은 로그인한 회원 계정으로 조회합니다. 접수 대기 15분 초과 주문은 자동 정리 시 취소·재고 반환되며, 만료 후 접수는 차단됩니다.</p>${state.orders.length ? state.orders.map((o) => orderCard(o, "customer")).join("") : '<div class="empty"><h2>확인할 주문이 없습니다.</h2><a href="#shop">내 지역 장보기 →</a></div>'}`;
 }
 function login() {
   return `<section class="login-panel"><p class="eyebrow">PARTNER WORKSPACE</p><h1>판매자·라이더·운영자 접속</h1><p>운영자가 발급한 계정으로 접속하세요. 구매자는 별도 파트너 로그인이 필요하지 않습니다.</p><form id="staffLogin"><label>접속 유형<select name="role"><option value="staff">판매자·라이더 발급 계정</option><option value="operator">플랫폼 운영자</option></select></label><label id="partnerUsername">계정<input name="username" maxlength="60" required autocomplete="username"></label><label>비밀번호<input name="password" type="password" minlength="12" maxlength="128" required autocomplete="current-password"></label><button class="primary">접속</button></form><p class="muted">플랫폼 운영자 비밀번호는 Netlify의 ARIRANG_MARKET_OPERATOR_PASSWORD(12자 이상)로 설정합니다. 층별·자료업로드 비밀번호는 주문 시스템 권한으로 사용하지 않습니다.</p></section>`;
@@ -434,7 +671,16 @@ function operations() {
 async function loadView() {
   if (!state.connected) return;
   const v = view();
+  if (
+    ["member", "addresses", "orders"].includes(v) &&
+    window.ARIRANG_MEMBER_AUTH
+  )
+    await refreshMember();
   if (v === "orders") {
+    if (!state.member) {
+      render();
+      return;
+    }
     await customerSession();
     state.orders = await api("/orders");
   }
@@ -473,6 +719,9 @@ function render() {
         a.dataset.view === view() ? "page" : "false",
       ),
     );
+  const memberLink = document.querySelector("#memberNavLink");
+  if (memberLink)
+    memberLink.textContent = state.member ? "마이페이지" : "로그인·가입";
   const banner = document.getElementById("serviceState");
   banner.textContent = state.connected
     ? state.config.liveOrders
@@ -481,33 +730,38 @@ function render() {
     : "주문 서비스 저장소 연결 준비 중입니다. 운영 안내 페이지를 이용해 주세요.";
   root.innerHTML = !state.connected
     ? '<div class="empty"><h1>지역 주문 서비스를 준비하고 있습니다.</h1><p>저장소 연결과 운영 설정이 완료되면 지역별 업체와 주문·배송 화면이 열립니다.</p><a href="/arirang-market.html">아리랑마켓 안내로 →</a><button id="retryConnection">연결 다시 확인</button></div>'
-    : view() === "cart"
-      ? state.store
-        ? basketView()
-        : '<div class="empty"><h1>장바구니</h1><p>상품 목록에서 원하는 상품을 담아주세요.</p><a href="#shop">장보기 →</a></div>'
-      : view() === "categories"
-        ? `<h1 class="browse-title">카테고리</h1>${categoryBrowser()}<p><a href="#shop">선택한 분류의 상품 보기 →</a></p>`
-        : view() === "shop"
-          ? shop()
-          : view() === "orders"
-            ? customerOrders()
-            : view() === "staff"
-              ? staffWorkspace()
-              : operations();
+    : view() === "member"
+      ? memberView()
+      : view() === "addresses"
+        ? addressesView()
+        : view() === "cart"
+          ? state.store
+            ? basketView()
+            : '<div class="empty"><h1>장바구니</h1><p>상품 목록에서 원하는 상품을 담아주세요.</p><a href="#shop">장보기 →</a></div>'
+          : view() === "categories"
+            ? `<h1 class="browse-title">카테고리</h1>${categoryBrowser()}<p><a href="#shop">선택한 분류의 상품 보기 →</a></p>`
+            : view() === "shop"
+              ? shop()
+              : view() === "orders"
+                ? customerOrders()
+                : view() === "staff"
+                  ? staffWorkspace()
+                  : operations();
   bind();
 }
 function run(task) {
   return async (event) => {
     event?.preventDefault();
     try {
-      await task(event);
-      message("처리했습니다.");
+      const notice = await task(event);
+      message(typeof notice === "string" ? notice : "처리했습니다.");
     } catch (error) {
       message(error.message, true);
     }
   };
 }
 function bind() {
+  bindMember();
   root.querySelectorAll("[data-browse-major]").forEach(
     (b) =>
       (b.onclick = () =>
@@ -956,9 +1210,21 @@ async function initialize() {
     state.customer = session.customer;
     state.regions = regions;
     state.connected = true;
+    if (window.ARIRANG_MEMBER_AUTH) {
+      try {
+        state.memberSettings = await window.ARIRANG_MEMBER_AUTH.ready;
+        state.recovery =
+          window.ARIRANG_MEMBER_RECOVERY ||
+          new URLSearchParams(location.search).get("memberRecovery") === "1";
+        await refreshMember();
+      } catch (error) {
+        state.authError = "회원 인증 연결을 확인해 주세요. " + error.message;
+      }
+    }
     let saved;
     try {
       saved =
+        selectedDelivery()?.region_id ||
         new URLSearchParams(location.search).get("region") ||
         localStorage.getItem("arirang-delivery-region");
     } catch {}
@@ -981,6 +1247,9 @@ async function initialize() {
       await chooseStore(state.savedBasket.storeId);
       state.filterStore = false;
     }
+    if (selectedDelivery() && !selectedDelivery().region_id)
+      await applyDelivery();
+    if (state.recovery) location.hash = "#member";
     await loadView();
   } catch (error) {
     state.connected = false;
@@ -1002,6 +1271,15 @@ document.getElementById("marketSearch")?.addEventListener("submit", (ev) => {
   setBrowse({ search: ev.target.elements.q.value });
   if (view() !== "shop") location.hash = "#shop";
   root.querySelector("#catalogTitle")?.focus();
+});
+window.addEventListener("arirang:member-logout", () => {
+  state.member = null;
+  state.customer = null;
+  state.addresses = [];
+  state.selectedAddressId = null;
+  state.addressEdit = null;
+  state.orders = [];
+  render();
 });
 window.addEventListener("popstate", () => {
   readBrowse();
