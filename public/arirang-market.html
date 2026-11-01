@@ -18,8 +18,8 @@
       href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css"
     />
     <link rel="stylesheet" href="arirang-local.css" />
-  <link rel="stylesheet" href="readability.css"></head>
-  <body>
+  <link rel="stylesheet" href="readability.css"><link rel="stylesheet" href="brand-theme.css"></head>
+  <body data-brand="green"><script src="brand-theme.js"></script>
     <a class="skip-market" href="#localContent">상품 탐색 바로가기</a>
     <header class="market-top">
       <div class="market-top-inner">
@@ -31,7 +31,7 @@
             alt=""
           /><span>아리랑마켓<small>우리 동네의 좋은 장보기</small></span></a
         >
-        <form id="marketSearch" role="search">
+        <span class="market-context-chip" data-brand-label>소비자·장보기</span><form id="marketSearch" role="search">
           <label class="sr-only" for="marketSearchInput">상품 검색</label
           ><input
             id="marketSearchInput"

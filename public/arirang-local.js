@@ -695,6 +695,10 @@ async function loadView() {
   render();
 }
 function render() {
+  document.body.dataset.brand=["staff","operations"].includes(view())?"coral":"green";
+  document.body.dataset.areaName=document.body.dataset.brand==="coral"?"입점업체·파트너":"소비자·장보기";
+  document.querySelectorAll('[data-brand-label]').forEach(label=>label.textContent=document.body.dataset.areaName);
+
   const searchInput = document.querySelector("#marketSearch [name=q]");
   if (searchInput && document.activeElement !== searchInput)
     searchInput.value = state.search;
