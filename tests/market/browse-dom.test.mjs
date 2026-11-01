@@ -119,9 +119,13 @@ test("home is compact; hierarchical narrowing hides promotions; detail/back pres
   const { d, w, q, all, errors } = await setup();
   try {
     assert.equal(all(".specialty-halls").length, 1);
+    assert.equal(all(".middle-category-images img").length, 13);
+    assert.equal(all(".category-showcase").length, 0);
+    assert(q('[data-browse-category="fruit"] img').getAttribute("src").includes("fruit-v1.webp"));
     assert.equal(all(".product-card").length, 3);
     q("[data-browse-major=fresh]").click();
     assert.equal(all(".specialty-halls").length, 0);
+    assert.equal(all(".middle-category-images img").length, 4);
     q("[data-browse-category=fruit]").click();
     q("[data-browse-leaf=apple-pear]").click();
     assert.equal(all(".product-card").length, 1);
