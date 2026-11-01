@@ -1,0 +1,71 @@
+{
+  "tool": "Built-in image_gen",
+  "purpose": "Original AI-generated category imagery, not actual inventory or copied retail photographs",
+  "assets": [
+    {
+      "id": "fruit",
+      "path": "public/assets/market/categories/fruit-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market online grocery. Create ONE landscape 4:3 photograph, not a collage. Subject: Korean premium seasonal fruit: red apples, golden Korean pears, tangerines, strawberries, purple grapes. Natural fresh textures, no cut-off produce. Style: exceptionally polished realistic studio product photography, soft daylight from upper left, warm ivory seamless tabletop and backdrop, subtle natural shadows, medium elevated three-quarter angle, balanced central arrangement occupying center 80% with clean margins for responsive crop. Coherent tasteful grocery catalog art direction. No people, text, labels, brand names, price labels, logos, watermark, packaging lettering or shopping interface. Objects visually distinct, authentic proportions. Category concept illustration, not documentation of actual inventory."
+    },
+    {
+      "id": "vegetables",
+      "path": "public/assets/market/categories/vegetables-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market online grocery. Create ONE landscape 4:3 photograph, not a collage. Subject: Fresh Korean vegetables: leafy lettuce, napa cabbage, carrots, cucumbers, radish, shiitake mushrooms, green onion. Style: exceptionally polished realistic studio product photography, soft daylight from upper left, warm ivory seamless tabletop and backdrop, subtle natural shadows, medium elevated three-quarter angle, balanced central arrangement occupying center 80% with clean margins for responsive crop. Coherent tasteful grocery catalog art direction. No people, text, labels, brand names, price labels, logos, watermark, packaging lettering or shopping interface. Objects visually distinct, authentic proportions. Category concept illustration, not documentation of actual inventory."
+    },
+    {
+      "id": "seafood",
+      "path": "public/assets/market/categories/seafood-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market online grocery. Create ONE landscape 4:3 photograph, not a collage. Subject: Fresh seafood hygienically arranged on clean crushed ice: whole silver fish, a salmon fillet, shrimp, clams and a small folded sheet of seaweed. Appetizing premium seafood market photography. Style: exceptionally polished realistic studio product photography, soft daylight from upper left, warm ivory seamless tabletop and backdrop, subtle natural shadows, medium elevated three-quarter angle, balanced central arrangement occupying center 80% with clean margins for responsive crop. Coherent tasteful grocery catalog art direction. No people, text, labels, brand names, price labels, logos, watermark, packaging lettering or shopping interface. Objects visually distinct, authentic proportions. Category concept illustration, not documentation of actual inventory."
+    },
+    {
+      "id": "grains",
+      "path": "public/assets/market/categories/grains-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market online grocery. Create ONE landscape 4:3 photograph, not a collage. Subject: Korean agricultural grains: white rice in a ceramic bowl, brown rice, black beans, mixed grains in small bowls, a few ears of rice, sweet potatoes. Agricultural produce category. Style: exceptionally polished realistic studio product photography, soft daylight from upper left, warm ivory seamless tabletop and backdrop, subtle natural shadows, medium elevated three-quarter angle, balanced central arrangement occupying center 80% with clean margins for responsive crop. Coherent tasteful grocery catalog art direction. No people, text, labels, brand names, price labels, logos, watermark, packaging lettering or shopping interface. Objects visually distinct, authentic proportions. Category concept illustration, not documentation of actual inventory."
+    },
+    {
+      "id": "meat",
+      "path": "public/assets/market/categories/meat-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Fresh beef steak and neatly sliced pork on separate clean ceramic trays, with a small carton of brown eggs. Premium butcher and eggs category. No gore. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "ready-meals",
+      "path": "public/assets/market/categories/ready-meals-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: A complete appetizing Korean meal: a bowl of rice, a small pot of doenjang soup, neatly portioned colorful vegetable side dishes and a prepared vegetable meal kit in a clean unbranded tray. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "frozen",
+      "path": "public/assets/market/categories/frozen-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Frozen food assortment displayed hygienically: steamed Korean dumplings on a ceramic plate, a few golden croquettes and a small bowl of creamy vanilla ice cream. Cold food category, no packaging. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "industrial",
+      "path": "public/assets/market/categories/industrial-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Household manufactured daily necessities: white toilet-paper rolls, folded neutral towels, kitchen sponge, clean unbranded laundry detergent bottle and dish soap pump, plain storage containers. Clearly nonfood household goods only. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "dairy",
+      "path": "public/assets/market/categories/dairy-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Fresh milk in a clear glass bottle and tumbler, plain yogurt in a ceramic bowl, a wedge of pale cheese and a few butter cubes on a small plate. All unlabeled. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "snacks",
+      "path": "public/assets/market/categories/snacks-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Artisanal round cookies, dark chocolate squares, mixed almonds walnuts cashews in a small ceramic bowl, a few crackers, clean appetizing assortment. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "drinks",
+      "path": "public/assets/market/categories/drinks-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Clear mineral water in plain transparent glass bottle, orange juice in a glass carafe and tumbler, cup of coffee and a small ceramic cup of green tea. No labels. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "bakery",
+      "path": "public/assets/market/categories/bakery-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Golden croissants, sliced soft sandwich bread, small rustic sourdough loaf, strawberry cream dessert and a small jar of fruit jam, natural bakery textures. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    },
+    {
+      "id": "condiments",
+      "path": "public/assets/market/categories/condiments-v1.webp",
+      "prompt": "Use case: product-mockup. Asset type: original category photograph for Korean Arirang Market. ONE landscape 4:3 image, not a collage. Subject: Korean pantry condiments: small ceramic bowls of gochujang, doenjang, soy sauce, unbranded clear bottle of golden cooking oil, small bowl of sesame seeds, clean separate presentation. Premium realistic studio photography, soft upper-left daylight, warm ivory seamless tabletop and backdrop, subtle shadows, medium elevated three-quarter angle. Balanced central arrangement, clean margins, distinct objects, authentic materials and proportions. Match a sophisticated warm natural grocery catalog. No people, text, labels, lettering, brand names, price tags, logos, watermark or interface. Category concept rather than actual inventory documentation."
+    }
+  ]
+}

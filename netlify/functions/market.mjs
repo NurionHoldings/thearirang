@@ -185,6 +185,8 @@ export function marketHandler(
         return json(await service.createRegion(staff, body), 201);
       if (path === "/stores" && method === "POST")
         return json(await service.createStore(staff, body), 201);
+      const profile=/^\/stores\/([a-f0-9-]+)\/profile$/.exec(path);
+      if(profile&&method==='PATCH')return json(await service.updateStoreProfile(staff,profile[1],body));
       const store = /^\/stores\/([a-f0-9-]+)$/.exec(path);
       if (store && method === "PATCH")
         return json(await service.storeState(staff, store[1], body));

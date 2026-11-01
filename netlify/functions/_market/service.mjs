@@ -1,3 +1,4 @@
+import {generatedImage} from '../../../public/market-images.mjs';
 import { validLeaf } from "../../../public/market-taxonomy.mjs";
 import {
   randomBytes,
@@ -251,6 +252,24 @@ export function makeMarketService(
     }
     return ipRegion(all, geo);
   }
+  async function imageURL(value,storeId,c=pool){
+    if(value===undefined||value==='')return '';
+    const url=text(value,200);if(generatedImage(url))return url;
+    const match=/^\/market-media\/([a-f0-9-]{36})\.(jpg|png|webp)$/.exec(url);
+    if(!match)throw new MarketError('업로드한 사진 또는 제공된 대표 이미지를 선택하세요.');
+    const media=await one(c,'SELECT id FROM market_media WHERE id=$1 AND store_id=$2 AND blob_key=$3',[match[1],storeId,match[1]+'.'+match[2]]);
+    if(!media)throw new MarketError('다른 업체의 사진은 사용할 수 없습니다.',403);return url;
+  }
+  async function updateStoreProfile(actor,id,v){
+    requireRole(actor,'operator','merchant');identifier(id);
+    if(actor.role==='merchant'&&actor.storeId!==id)throw new MarketError('업체 수정 권한이 없습니다.',403);
+    return transaction(async c=>{
+      const s=await one(c,'SELECT * FROM market_stores WHERE id=$1 FOR UPDATE',[id]);if(!s)throw new MarketError('업체가 없습니다.',404);
+      if(v.version!==s.version)throw new MarketError('다른 작업으로 수정됐습니다. 새로고침 후 다시 저장하세요.',409);
+      const name=text(v.name,60),address=text(v.address,200),description=optional(v.description,2000),phone=optional(v.phone,40),image=await imageURL(v.imageUrl,id,c);
+      await c.query('UPDATE market_stores SET name=$2,address=$3,description=$4,phone=$5,image_url=$6,delivery_fee=$7,minimum_order=$8,version=version+1 WHERE id=$1',[id,name,address,description,phone,image,integer(v.deliveryFee,0,1000000),integer(v.minimumOrder,0,100000000)]);return {ok:true};
+    });
+  }
   async function publicStores(regionId) {
     identifier(regionId);
     const all = await regions(),
@@ -267,6 +286,7 @@ export function makeMarketService(
         name: s.name,
         regionId: s.region_id,
         address: s.address,
+        description:s.description,phone:s.phone,imageUrl:s.image_url,
         deliveryFee: s.delivery_fee,
         minimumOrder: s.minimum_order,
       }));
@@ -277,7 +297,7 @@ export function makeMarketService(
     const ids = stores.map((s) => s.id);
     const rows = (
       await pool.query(
-        "SELECT id,store_id,title,category,subcategory,unit,price,stock,description,origin,storage FROM market_products WHERE store_id=ANY($1::uuid[]) AND active=true AND deleted=false ORDER BY title",
+        "SELECT id,store_id,title,category,subcategory,unit,price,stock,description,origin,storage,image_url FROM market_products WHERE store_id=ANY($1::uuid[]) AND active=true AND deleted=false ORDER BY title",
         [ids],
       )
     ).rows;
@@ -528,7 +548,7 @@ export function makeMarketService(
         throw new MarketError("업체별 상품 등록 한도는 50개입니다.", 409);
       const id = uuid();
       await c.query(
-        "INSERT INTO market_products(id,store_id,title,category,unit,price,stock,active,description,origin,storage,subcategory) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
+        "INSERT INTO market_products(id,store_id,title,category,unit,price,stock,active,description,origin,storage,subcategory,image_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)",
         [
           id,
           storeId,
@@ -542,6 +562,7 @@ export function makeMarketService(
           text(v.origin, 200),
           v.storage,
           v.subcategory ?? "",
+          await imageURL(v.imageUrl,storeId,c),
         ],
       );
       return { id };
@@ -558,13 +579,15 @@ export function makeMarketService(
       );
       if (!p || (actor.role === "merchant" && p.store_id !== actor.storeId))
         throw new MarketError("상품 접근 권한을 확인하세요.", 403);
+      if(v.version!==undefined&&v.version!==p.version)throw new MarketError("다른 작업으로 상품이 변경됐습니다. 새로고침하세요.",409);
       const price = integer(v.price, 1, 100000000),
         stock = integer(v.stock, 0, 100000);
       if (typeof v.active !== "boolean")
         throw new MarketError("공개 상태를 확인하세요.");
+      if(!categories.includes(v.category??p.category)||!validLeaf(v.category??p.category,v.subcategory??p.subcategory)||!['ambient','chilled','frozen'].includes(v.storage??p.storage))throw new MarketError('상품 분류·보관 방식을 확인하세요.');
       await c.query(
-        "UPDATE market_products SET price=$2,stock=$3,active=$4 WHERE id=$1",
-        [id, price, stock, v.active],
+        "UPDATE market_products SET price=$2,stock=$3,active=$4,title=$5,category=$6,subcategory=$7,unit=$8,description=$9,origin=$10,storage=$11,image_url=$12,version=version+1 WHERE id=$1",
+        [id,price,stock,v.active,text(v.title??p.title,80),v.category??p.category,v.subcategory??p.subcategory,text(v.unit??p.unit,40),optional(v.description??p.description,2000),text(v.origin??p.origin,200),v.storage??p.storage,await imageURL(v.imageUrl??p.image_url,p.store_id,c)],
       );
       return { ok: true };
     });
@@ -757,7 +780,7 @@ export function makeMarketService(
       if (!Number.isSafeInteger(subtotal) || subtotal < s.minimum_order)
         throw new MarketError("최소 주문금액을 확인하세요.");
       for (const item of items)
-        await c.query("UPDATE market_products SET stock=stock-$2 WHERE id=$1", [
+        await c.query("UPDATE market_products SET stock=stock-$2,version=version+1 WHERE id=$1", [
           item.productId,
           item.quantity,
         ]);
@@ -869,7 +892,7 @@ export function makeMarketService(
       ) {
         for (const line of o.items)
           await c.query(
-            "UPDATE market_products SET stock=stock+$2 WHERE id=$1",
+            "UPDATE market_products SET stock=stock+$2,version=version+1 WHERE id=$1",
             [line.productId, line.quantity],
           );
         await c.query(
@@ -1007,7 +1030,7 @@ export function makeMarketService(
       )
         for (const line of o.items)
           await c.query(
-            "UPDATE market_products SET stock=stock+$2 WHERE id=$1",
+            "UPDATE market_products SET stock=stock+$2,version=version+1 WHERE id=$1",
             [line.productId, line.quantity],
           );
       await c.query(
@@ -1070,7 +1093,7 @@ export function makeMarketService(
       for (const o of rows) {
         for (const line of o.items)
           await c.query(
-            "UPDATE market_products SET stock=stock+$2 WHERE id=$1",
+            "UPDATE market_products SET stock=stock+$2,version=version+1 WHERE id=$1",
             [line.productId, line.quantity],
           );
         await c.query(
@@ -1101,6 +1124,7 @@ export function makeMarketService(
     createRegion,
     createStore,
     storeState,
+    updateStoreProfile,
     regionState,
     account,
     accountState,

@@ -8,7 +8,7 @@
     "typecheck": "tsc",
     "dev:netlify": "npx netlify dev",
     "test:netlify": "node --test tests/netlify/*.test.mjs",
-    "test:market": "node --test tests/market/commerce.test.mjs tests/market/http.test.mjs tests/market/browse.test.mjs tests/market/browse-dom.test.mjs tests/market/member.test.mjs tests/market/member-dom.test.mjs tests/market/brand-theme.test.mjs tests/market/finance.test.mjs tests/market/finance-dom.test.mjs"
+    "test:market": "node --test tests/market/commerce.test.mjs tests/market/http.test.mjs tests/market/browse.test.mjs tests/market/browse-dom.test.mjs tests/market/member.test.mjs tests/market/member-dom.test.mjs tests/market/brand-theme.test.mjs tests/market/finance.test.mjs tests/market/finance-dom.test.mjs tests/market/media-profiles.test.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^11.1.3",

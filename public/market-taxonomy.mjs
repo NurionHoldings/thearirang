@@ -28,8 +28,10 @@ export const departments = [
     icon: "▤",
     categories: ["grains", "drinks", "condiments"],
   },
+  {id:"household",name:"생활·공산품",note:"생활용품·세제·주방잡화",icon:"▥",categories:["industrial"]},
 ];
 export const categoryNames = {
+  industrial:"생활·공산품",
   fruit: "과일",
   vegetables: "채소",
   meat: "정육·계란",
@@ -44,6 +46,7 @@ export const categoryNames = {
   condiments: "양념·소스",
 };
 export const leaves = {
+  industrial:[["cleaning","세제·청소"],["paper","휴지·위생"],["kitchen","주방·생활잡화"]],
   fruit: [
     ["apple-pear", "사과·배"],
     ["citrus", "감귤·오렌지"],

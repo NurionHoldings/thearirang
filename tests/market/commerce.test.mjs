@@ -18,6 +18,7 @@ test("regional commerce transactions, tenant boundaries and delivery lifecycle",
     ),
   );
   await db.exec(readFileSync("netlify/database/migrations/20261101170000_market_product_taxonomy.sql","utf8"));
+  await db.exec(readFileSync("netlify/database/migrations/20261102100000_market_media_profiles.sql","utf8"));
   let tail = Promise.resolve();
   const pool = {
     query: (q, p) => db.query(q, p),

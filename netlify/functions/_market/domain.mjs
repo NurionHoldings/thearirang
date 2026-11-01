@@ -31,6 +31,7 @@ export function integer(v, min, max) {
   return v;
 }
 export const categories = [
+  "industrial",
   "fruit",
   "vegetables",
   "meat",
