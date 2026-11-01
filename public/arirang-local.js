@@ -103,8 +103,9 @@ function readBrowse() {
   );
 }
 readBrowse();
-function saveBrowse(replace = false) {
+function saveBrowse(replace = false, hash = null) {
   const u = new URL(location.href);
+  if (hash !== null) u.hash = hash;
   for (const [k, v] of Object.entries({
     major: state.major,
     category: state.category,
@@ -118,11 +119,19 @@ function saveBrowse(replace = false) {
   }
   history[replace ? "replaceState" : "pushState"]({}, "", u);
 }
-function setBrowse(value) {
+function setBrowse(value, showResults = false) {
   Object.assign(state, normalizeBrowse({ ...state, ...value }));
   state.detail = null;
-  saveBrowse();
+  saveBrowse(false, showResults ? "shop" : null);
   render();
+  if (showResults) {
+    const schedule = window.requestAnimationFrame || ((fn) => setTimeout(fn, 0));
+    schedule(() => {
+      const title = root.querySelector("#catalogTitle");
+      title?.scrollIntoView?.({ block: "start", behavior: "instant" });
+      title?.focus({ preventScroll: true });
+    });
+  }
 }
 function results() {
   return filterProducts(
@@ -743,7 +752,7 @@ function render() {
             ? basketView()
             : '<div class="empty"><h1>장바구니</h1><p>상품 목록에서 원하는 상품을 담아주세요.</p><a href="#shop">장보기 →</a></div>'
           : view() === "categories"
-            ? `<h1 class="browse-title">카테고리</h1>${categoryBrowser()}<p><a href="#shop">선택한 분류의 상품 보기 →</a></p>`
+            ? `<h1 class="browse-title">카테고리</h1>${categoryBrowser()}<p><a href="#shop" data-show-results>선택한 분류의 상품 보기 →</a></p>`
             : view() === "shop"
               ? shop()
               : view() === "orders"
@@ -766,6 +775,10 @@ function run(task) {
 }
 function bind() {
   bindMember();
+  root.querySelector("[data-show-results]")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    setBrowse({}, true);
+  });
   root.querySelectorAll("[data-browse-major]").forEach(
     (b) =>
       (b.onclick = () =>
@@ -785,7 +798,7 @@ function bind() {
   root
     .querySelectorAll("[data-browse-leaf]")
     .forEach(
-      (b) => (b.onclick = () => setBrowse({ leaf: b.dataset.browseLeaf })),
+      (b) => (b.onclick = () => setBrowse({ leaf: b.dataset.browseLeaf }, true)),
     );
   root.querySelector("[data-clear-browse]")?.addEventListener("click", () => {
     state.filterStore = false;
