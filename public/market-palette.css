@@ -1,0 +1,89 @@
+/* Arirang logo colors: blue for discovery, green for shopping, coral for partners. */
+@media screen {
+  body.arirang-market-theme {
+    --market-blue:#204f91;
+    --market-green:#256546;
+    --market-coral:#a4473b;
+    --market-ink:#22384d;
+    --market-line:#dce4eb;
+    background:linear-gradient(135deg,#edf3fc 0,#f7faf7 48%,#fff5f0 100%);
+    color:var(--market-ink);
+  }
+  .arirang-market-theme[data-brand]>.market-top {
+    border-top:5px solid transparent;
+    border-image:linear-gradient(90deg,#204f91 0 33.333%,#256546 33.333% 66.666%,#c55b4d 66.666%) 1;
+    background:#fff;
+  }
+  .arirang-market-theme .market-wordmark{color:#204f91}
+  .arirang-market-theme .market-wordmark img{width:46px;height:46px;object-fit:contain}
+  .arirang-market-theme .market-wordmark small{color:#51677e}
+  .arirang-market-theme #marketSearch{border:1px solid #b8cce6;background:#f0f5fd;border-radius:13px;box-shadow:none}
+  .arirang-market-theme #marketSearch input{color:#243d5d}
+  .arirang-market-theme #marketSearch button{color:#204f91}
+  .arirang-market-theme #marketSearch:focus-within{border-color:#204f91;box-shadow:0 0 0 3px #204f9114}
+  .arirang-market-theme .market-context-chip{background:#eaf3ec;color:#256546;border-color:#ccdfd1}
+  .arirang-market-theme .market-customer-nav{background:#ffffffed;border-color:#d8e2ed;backdrop-filter:blur(12px)}
+  .arirang-market-theme .market-customer-nav a{color:#52667a;font-weight:600}
+  .arirang-market-theme .market-customer-nav a[data-customer-view=categories]{color:#204f91}
+  .arirang-market-theme .market-customer-nav a[data-customer-view=cart]{color:#256546}
+  .arirang-market-theme .market-customer-nav a[data-customer-view=orders]{color:#a4473b}
+  .arirang-market-theme[data-brand=green] .market-customer-nav a[aria-current=page]{color:#256546;border-color:#256546;background:#eaf3ec;border-radius:9px 9px 0 0}
+  .arirang-market-theme .market-intro{position:relative;padding:27px 30px;margin:20px 0 24px;border-radius:20px;background:linear-gradient(120deg,#163b70,#285e9d);color:#fff;overflow:hidden;box-shadow:0 10px 26px #1c467813}
+  .arirang-market-theme .market-intro:after{content:'';position:absolute;bottom:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#559bd1 0 33.333%,#54a577 33.333% 66.666%,#df7a6b 66.666%)}
+  .arirang-market-theme .market-intro h1{color:#fff;font-size:clamp(25px,3vw,37px);line-height:1.4;margin-bottom:10px}
+  .arirang-market-theme .market-intro p{color:#e0eafa;max-width:700px;margin-bottom:0}
+  .arirang-market-theme .market-intro .eyebrow{color:#d4e5fc;margin:0 0 9px;font-size:12px;letter-spacing:.14em}
+  .arirang-market-theme .delivery-strip{background:#fff;border:1px solid #dce5ec;border-radius:15px;padding:14px 16px;gap:10px}
+  .arirang-market-theme .delivery-address-link{background:#eaf4ed;color:#205438;border:1px solid #d1e4d6;border-radius:10px}
+  .arirang-market-theme #locate,.arirang-market-theme #autoRegion{color:#204f91;background:#edf3fc;border-color:#c5d7ed}
+  .arirang-market-theme .specialty-halls{gap:13px}
+  .arirang-market-theme .hall-card{--hall-accent:#204f91;--hall-soft:#edf3fc;background:var(--hall-soft);border:1px solid #d7e1eb;border-top:3px solid var(--hall-accent);border-radius:15px;box-shadow:0 3px 15px #1b355508;transition:transform .18s,box-shadow .18s}
+  .arirang-market-theme .hall-card[data-category-color=fresh]{--hall-accent:#256546;--hall-soft:#edf5ef}
+  .arirang-market-theme .hall-card[data-category-color=meals]{--hall-accent:#a4473b;--hall-soft:#fff0eb}
+  .arirang-market-theme .hall-card[data-category-color=daily]{--hall-accent:#204f91;--hall-soft:#edf3fc}
+  .arirang-market-theme .hall-card[data-category-color=pantry]{--hall-accent:#256546;--hall-soft:#eaf4ee}
+  .arirang-market-theme .hall-card[data-category-color=household]{--hall-accent:#a4473b;--hall-soft:#fff1ec}
+  .arirang-market-theme .hall-card strong{color:var(--hall-accent)}
+  .arirang-market-theme .hall-card small{color:#4c5e6b}
+  .arirang-market-theme .hall-card:hover{transform:translateY(-3px);box-shadow:0 9px 22px #203b6012}
+  .arirang-market-theme .category-browser{border:1px solid #d2dfed;border-radius:17px;padding:18px;background:#ffffffed}
+  .arirang-market-theme .category-level>span{color:#204f91;font-size:14px}
+  .arirang-market-theme .category-level button{color:#38516c;background:#eff4fb}
+  .arirang-market-theme[data-brand] .category-level button[aria-pressed=true]{background:#204f91;color:#fff;border-color:#204f91}
+  .arirang-market-theme .category-level .middle-category-card{--category-accent:#204f91;border:1px solid #d9e2ec;border-bottom:3px solid var(--category-accent);background:#fff;color:#24405f;box-shadow:0 2px 8px #1d395408}
+  .arirang-market-theme .middle-category-card:is([data-browse-category=fruit],[data-browse-category=vegetables],[data-browse-category=grains],[data-browse-category=dairy]){--category-accent:#256546}
+  .arirang-market-theme .middle-category-card:is([data-browse-category=meat],[data-browse-category=ready-meals],[data-browse-category=bakery],[data-browse-category=industrial]){--category-accent:#a4473b}
+  .arirang-market-theme .category-level .middle-category-card[aria-pressed=true]{border:2px solid #204f91;border-bottom:3px solid #204f91;background:#e8f0fc;color:#183f75;box-shadow:0 0 0 2px #204f9115}
+  .arirang-market-theme .category-level .middle-category-card[data-browse-category=all]{background:#edf3fc;color:#204f91}
+  .arirang-market-theme .category-image-note,.arirang-market-theme .category-hint{color:#53677d}
+  .arirang-market-theme .catalog-heading h2,.arirang-market-theme .browse-title{color:#204f91}
+  .arirang-market-theme .browse-crumb{color:#536b85}
+  .arirang-market-theme .product-card{border:1px solid #dce5e2;border-radius:16px;background:#fff;box-shadow:0 5px 19px #213e5f07;overflow:hidden}
+  .arirang-market-theme .product-card h3{color:#223d58}
+  .arirang-market-theme .product-card strong,.arirang-market-theme .detail-price{color:#256546}
+  .arirang-market-theme .product-card [data-add]{color:#256546;background:#edf5ef;border-color:#c3dbcb}
+  .arirang-market-theme .product-card [data-add]:hover:not(:disabled){background:#256546;color:#fff}
+  .arirang-market-theme .store-showcase article{border-color:#ecd4cb;border-top:3px solid #a4473b;background:#fffaf7}
+  .arirang-market-theme .store-showcase h3{color:#914034}
+  .arirang-market-theme .member-panel,.arirang-market-theme .saved-address,.arirang-market-theme #addressBookForm{background:#fff;border-color:#d0e2d5;border-top:3px solid #256546;border-radius:16px}
+  .arirang-market-theme .login-panel,.arirang-market-theme .operations-panel{background:#fffaf7;border-color:#e6cfc7;border-top:3px solid #a4473b;border-radius:16px}
+  .arirang-market-theme .capacity{border-left:4px solid #a4473b}
+  .arirang-market-theme .market-footer{border-top:3px solid transparent;border-image:linear-gradient(90deg,#204f91,#256546,#a4473b) 1;background:#fff;color:#52667a;padding-top:20px}
+  .arirang-market-theme .market-footer a[href='#staff'],.arirang-market-theme .market-footer a[href='#operations']{color:#a4473b;font-weight:650}
+  .arirang-market-theme .bgm-controls .bgm-toggle{background:#204f91}
+  .arirang-market-theme[data-brand] :is(button,input,select,textarea,a):focus-visible{outline-color:#204f91}
+  .arirang-market-theme[data-brand=coral]{background:linear-gradient(135deg,#eef3fc,#fff5ef 65%,#f1f7f1)}
+  .arirang-market-theme[data-brand=coral] .market-context-chip{background:#fff0e9;color:#a4473b;border-color:#ecd1c7}
+  .arirang-market-theme[data-brand=coral] .market-customer-nav a[aria-current=page]{color:#a4473b;border-color:#a4473b;background:#fff0e9}
+  @media(max-width:760px){
+    .arirang-market-theme .market-intro{padding:21px 19px;margin:15px 0 18px;border-radius:15px}
+    .arirang-market-theme .market-intro h1{font-size:27px}
+    .arirang-market-theme .market-intro p{font-size:14px}
+    .arirang-market-theme .market-wordmark img{width:39px;height:39px}
+    .arirang-market-theme .delivery-strip{padding:11px;border-radius:12px}
+    .arirang-market-theme .category-browser{padding:12px;border-radius:13px}
+    .arirang-market-theme .market-customer-nav a[aria-current=page]{border-radius:9px}
+    .arirang-market-theme .middle-category-card span{font-size:13px}
+  }
+  @media(prefers-reduced-motion:reduce){.arirang-market-theme .hall-card{transition:none}.arirang-market-theme .hall-card:hover{transform:none}}
+}
