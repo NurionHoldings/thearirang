@@ -169,3 +169,12 @@
     font-size: max(0.85rem, 1em) !important;
   }
 }
+@media screen {
+ body nav a{font-size:max(.88rem,1em)!important}
+ .brand small{font-size:13px!important;line-height:1.4!important}
+}
+@media screen {
+ .market-wordmark small{font-size:14px!important;line-height:1.4!important}
+ .partner-link,#memberNavLink{font-size:15px!important;font-weight:600;color:#244b38}
+ body footer a{font-size:15px!important}
+}
