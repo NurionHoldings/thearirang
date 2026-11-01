@@ -181,3 +181,10 @@
  .arirang-market-theme .product-detail-trigger>strong{font-size:29px!important;color:#fff}
  .arirang-market-theme .product-card h3{font-size:21px!important}
 }
+/* Override legacy role/readability rules that otherwise tint text too dark. */
+@media screen{
+ body.arirang-market-theme[data-brand] :is(.partner-link,#memberNavLink){color:#e4c872!important}
+ body.arirang-market-theme[data-brand] .market-customer-nav a[aria-current=page]{color:#fff!important}
+ body.arirang-market-theme[data-brand] :is(.service-state,.feedback){color:#d8c9ac!important}
+ body.arirang-market-theme .delivery-address-link span{color:#d8c9ac}
+}
