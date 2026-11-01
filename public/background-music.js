@@ -1,18 +1,19 @@
-/* Uploaded soundtrack; audio starts only after a visitor gesture. No third-party player. */
+/* Uploaded soundtrack; attempt autoplay on every visit, with a gesture fallback when blocked. No third-party player. */
 (() => {
   'use strict';
   if (document.querySelector('#arirang-bgm')) return;
   const key = 'arirang-background-music-v1';
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch {}
-  let enabled = saved.enabled !== false;
+  let enabled = true; // Each new visit starts with music enabled; stop applies to this visit.
   const volume = typeof saved.volume === 'number' && Number.isFinite(saved.volume)
     ? Math.max(0, Math.min(1, saved.volume)) : 0.25;
   const audio = document.createElement('audio');
   audio.id = 'arirang-bgm';
   audio.src = '/assets/arirang-background-0825-v1.mp3';
   audio.loop = true;
-  audio.preload = 'none';
+  audio.preload = 'auto';
+  audio.autoplay = true;
   audio.volume = volume;
   audio.hidden = true;
   document.body.append(audio);
@@ -27,13 +28,13 @@
   range.value = String(Math.round(volume * 100));
   let pending = false, started = false, resume = false, attempt = 0;
   function save() {
-    try { localStorage.setItem(key, JSON.stringify({ enabled, volume: audio.volume })); } catch {}
+    try { localStorage.setItem(key, JSON.stringify({ volume: audio.volume })); } catch {}
   }
   function render(message = '') {
     const playing = !audio.paused && enabled;
     toggle.setAttribute('aria-pressed', String(playing));
-    toggle.setAttribute('aria-label', playing ? '배경음악 끄기' : '배경음악 켜기');
-    label.textContent = playing ? '음악 끄기' : pending ? '음악 준비 중' : '음악 켜기';
+    toggle.setAttribute('aria-label', playing || pending ? '배경음악 정지' : '배경음악 재생');
+    label.textContent = playing || pending ? '음악 정지' : '음악 재생';
     controls.dataset.playing = String(playing);
     status.textContent = message;
   }
@@ -53,8 +54,8 @@
     } catch (error) {
       if (thisAttempt !== attempt) return;
       render(error?.name === 'NotAllowedError'
-        ? '음악 켜기를 눌러 재생해 주세요.'
-        : '재생을 시작하지 못했습니다. 음악 켜기를 다시 눌러 주세요.');
+        ? '자동재생 대기 · 화면을 클릭하거나 음악 재생을 눌러 주세요.'
+        : '재생을 시작하지 못했습니다. 음악 재생을 다시 눌러 주세요.');
     } finally {
       if (thisAttempt === attempt) { pending = false; render(status.textContent); }
     }
@@ -110,4 +111,5 @@
   new MutationObserver(placeControls).observe(document.body, { childList: true });
   placeControls();
   render();
+  void start();
 })();
