@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>내 지역 아리랑마켓 | 지역 장보기·배달</title>
+    <link rel="icon" href="favicon.svg" />
+    <link rel="stylesheet" href="arirang-local.css" />
+  </head>
+  <body>
+    <header class="local-header">
+      <a href="/arirang-market.html" class="local-brand"
+        >아리랑마켓<small>우리 동네 장보기·배달</small></a
+      ><a href="/">더 아리랑 홈 ↗</a>
+    </header>
+    <nav class="local-tabs" aria-label="마켓 업무 선택">
+      <a href="#shop" data-view="shop">내 지역 장보기</a
+      ><a href="#orders" data-view="orders">내 주문</a
+      ><a href="#staff" data-view="staff">판매자·라이더</a
+      ><a href="#operations" data-view="operations">운영 관리</a>
+    </nav>
+    <main>
+      <aside id="serviceState" class="service-state" role="status">
+        주문 서비스 연결을 확인하고 있습니다.
+      </aside>
+      <div
+        id="marketFeedback"
+        class="feedback"
+        role="status"
+        aria-live="polite"
+      ></div>
+      <section id="localContent" aria-live="polite"></section>
+    </main>
+    <footer>
+      <a href="/arirang-market.html">← 아리랑마켓 안내</a
+      ><span>지역별 입점업체 · 업체별 주문 · 자체 라이더 배송</span>
+      <p>
+        외부 배달대행·실시간 위치 지도·온라인 PG는 아직 연결되지 않았습니다.
+        배송 완료는 결제 확인과 별도로 처리합니다.
+      </p>
+    </footer>
+    <script type="module" src="arirang-local.js"></script>
+  </body>
+</html>
