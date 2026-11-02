@@ -1,7 +1,7 @@
 const MAX_BYTES=3*1024*1024,KEY='floor1/current.pdf';
 const headers={'Cache-Control':'private, no-store','Netlify-CDN-Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Robots-Tag':'noindex, nofollow, noarchive','Vary':'Cookie'};
-type Dependencies={authorize:(req:Request)=>Promise<string>,store:()=>any,seed?:()=>Promise<Uint8Array|null>};
-export function createProposalHandler({authorize,store,seed}:Dependencies){return async(req:Request)=>{
+type Dependencies={authorize:(req:Request)=>Promise<string>,store:()=>any,seed?:()=>Promise<Uint8Array|null>,seedRevision?:string};
+export function createProposalHandler({authorize,store,seed,seedRevision='initial-v1'}:Dependencies){return async(req:Request)=>{
  const json=(value:unknown,status=200,extra:Record<string,string>={})=>Response.json(value,{status,headers:{...headers,...extra}});
  try{
   const actor=await authorize(req);if(!actor)return json({error:'총괄관리자 또는 1층 관리자 로그인이 필요합니다.'},403);
@@ -25,8 +25,10 @@ export function createProposalHandler({authorize,store,seed}:Dependencies){retur
    if(!result.modified)return json({error:'다른 관리자가 등록했습니다. 새로고침 후 확인하세요.'},409);
    return json({available:true,updated,size:bytes.length,etag:result.etag},201);
   }
-  // Only authorized reads can initialize the private store. Preview keys are separate.
-  if(seed&&!await blobs.getMetadata(KEY)){const initial=await seed();if(initial)await blobs.set(KEY,initial,{onlyIfNew:true,metadata:{updated:'2026-11-02T03:00:00.000Z',actor:'encrypted-initial-proposal',size:initial.byteLength}});}
+  // Refresh only the original generated seed; preserve administrator-uploaded PDFs.
+  if(seed){const existing=await blobs.getMetadata(KEY);const outdated=existing?.metadata.actor==='encrypted-initial-proposal'&&existing.metadata.seedRevision!==seedRevision;
+   if(!existing||outdated){const initial=await seed();if(initial)await blobs.set(KEY,initial,{...(existing?{onlyIfMatch:existing.etag}:{onlyIfNew:true}),metadata:{updated:new Date().toISOString(),actor:'encrypted-initial-proposal',seedRevision,size:initial.byteLength}});}
+  }
   const current=download?await blobs.getWithMetadata(KEY,{type:'arrayBuffer'}):await blobs.getMetadata(KEY);
   if(!current)return download?json({error:'아직 등록된 제안서가 없습니다.'},404):json({available:false});
   if(!download)return req.method==='HEAD'?new Response(null,{headers}):json({available:true,updated:current.metadata.updated,size:current.metadata.size,etag:current.etag});
