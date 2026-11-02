@@ -14,7 +14,8 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "same-origin"
-    X-Frame-Options = "DENY"
+    # Persistent music navigation uses same-origin content frames only.
+    X-Frame-Options = "SAMEORIGIN"
 
 [[headers]]
   for = "/assets/*"
