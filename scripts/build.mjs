@@ -12,3 +12,5 @@ await build({entryPoints:['src/cad-app.js'],outfile:'dist/cad-app.js',bundle:tru
 await build({entryPoints:['src/floor-admin-entry.js'],outfile:'dist/floor-admin.js',bundle:true,format:'esm',target:['es2022'],minify:true});
 
 await build({entryPoints:['src/market-entry.js'],outfile:'dist/arirang-local.js',bundle:true,format:'esm',target:['es2022'],minify:true});
+
+await build({entryPoints:['src/document-pdf.js'],outfile:'dist/document-pdf.js',bundle:true,format:'esm',target:['es2022'],minify:true});

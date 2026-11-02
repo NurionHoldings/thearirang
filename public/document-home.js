@@ -1,0 +1,5 @@
+let generation=0,previous;
+function remove(){document.getElementById('admin-document-entry')?.remove();}
+async function update(){const turn=++generation;try{const response=await fetch('/admin-documents/session',{credentials:'same-origin',cache:'no-store'});if(turn!==generation)return;if(!response.ok){remove();return;}if(document.getElementById('admin-document-entry'))return;const section=document.createElement('section');section.id='admin-document-entry';section.className='admin-proposal-panel';const label=document.createElement('p');label.textContent='관리자 전용 · 비공개 문서함';const link=document.createElement('a');link.href='/document-editor.html';link.className='primary document-editor-entry';link.textContent='전자문서 작성하기';section.append(label,link);document.querySelector('main')?.prepend(section);}catch{remove();}}
+document.addEventListener('arirang:session-changed',event=>{const allowed=event.detail?.documentsAllowed===true;if(previous===allowed)return;previous=allowed;if(allowed)void update();else{generation++;remove();}});
+window.addEventListener('pageshow',event=>{if(event.persisted)void update();});void update();

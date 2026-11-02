@@ -98,3 +98,5 @@ input,select,textarea{max-width:100%}button{min-height:44px}.tabs{gap:14px}.tabs
 .parking-system-preview{margin:0;min-width:0}.parking-system-image{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)}.parking-system-preview figcaption{font-size:14px;line-height:1.6;color:#455e61;margin:9px 2px 0}
 
 .admin-proposal-panel{margin:24px 0;padding:24px;border:1px solid #ced7e1;border-radius:16px;background:#f6f8fb;color:#243346}.admin-proposal-panel h2{font-size:23px}.admin-proposal-actions{display:flex;gap:10px;flex-wrap:wrap}.admin-proposal-panel form{display:grid;gap:12px;margin-top:18px}.admin-proposal-panel label{display:grid;gap:8px}.admin-proposal-panel button{min-height:44px;cursor:pointer;width:fit-content}.admin-proposal-panel [hidden]{display:none!important}.admin-proposal-panel small{line-height:1.6}@media print{.admin-proposal-panel{display:none!important}}
+
+.document-editor-entry{display:inline-flex;align-items:center;min-height:44px;padding:12px 20px;border-radius:7px;text-decoration:none}@media print{#admin-document-entry{display:none!important}}
