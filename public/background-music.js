@@ -1,6 +1,121 @@
+// Keep the audible media element in its original document while full HTML menus
+// load in an isolated same-origin content frame. Page scripts keep their own globals.
+function musicNavigationIsChild() {
+  try { return window.parent !== window && window.frameElement?.id === 'music-content-frame' && !!window.parent.__musicNavigation; } catch { return false; }
+}
+function installMusicNavigation({audio, controls, toggleSelector, stylesheet, focusEvent, resume}) {
+  if (window.__musicNavigation) return;
+  let frame, loading = false;
+  window.__musicNavigation = { audio };
+  const eligible = url => url.origin === location.origin && (url.pathname.endsWith('/') || /\.html$/.test(url.pathname));
+  const sameDocument = (a,b) => a.pathname === b.pathname && a.search === b.search;
+  function navigate(url, push = true) {
+    if (!eligible(url)) return;
+    if (!frame) {
+      frame = document.createElement('iframe');
+      frame.id = 'music-content-frame';
+      frame.title = '사이트 본문';
+      frame.allow = 'autoplay; fullscreen';
+      frame.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:0;background:white;z-index:2147483646';
+      const style = document.createElement('style');
+      style.textContent = 'html.music-navigation-host,html.music-navigation-host body{overflow:hidden!important}html.music-navigation-host body> :not(#music-content-frame){display:none!important}@media print{#music-content-frame{position:static!important;height:100vh!important}}';
+      document.head.append(style);
+      for (const dialog of document.querySelectorAll('dialog[open]')) dialog.close();
+      for (const video of document.querySelectorAll('video')) video.pause();
+      document.documentElement.classList.add('music-navigation-host');
+      frame.addEventListener('load', connect);
+      document.body.append(frame);
+    }
+    loading = true;
+    if (push) history.pushState({musicNavigation:true}, '', url.href);
+    frame.contentWindow.location.replace(url.href);
+  }
+  function intercept(event, win) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest?.('a[href]');
+    if (!link || link.hasAttribute('download') || (link.target && link.target !== '_self') || link.relList.contains('external')) return;
+    const url = new URL(link.href, win.location.href);
+    if (url.origin !== location.origin && win !== window) { link.target='_top'; return; }
+    if (!eligible(url) || sameDocument(url,new URL(win.location.href))) return;
+    event.preventDefault();
+    navigate(url);
+  }
+  function connect() {
+    let win, doc;
+    try { win = frame.contentWindow; doc = win.document; if (!doc.body || win.location.href === 'about:blank') return; } catch { return; }
+    loading = false;
+    document.title = doc.title;
+    history.replaceState({musicNavigation:true}, '', win.location.href);
+    // Child music scripts exit before constructing a second player. Pages that
+    // have no player receive the same controls and stylesheet here as well.
+    if (!doc.querySelector('link[data-music-navigation-style]')) {
+      const link = doc.createElement('link'); link.rel='stylesheet'; link.href=stylesheet; link.dataset.musicNavigationStyle=''; doc.head.append(link);
+    }
+    let proxy = doc.querySelector(controls);
+    if (!proxy) { proxy = document.querySelector(controls).cloneNode(true); delete proxy.dataset.disclosureReady; doc.body.append(proxy); }
+    setupMusicDisclosure(doc, proxy);
+    const source = document.querySelector(controls);
+    function render() {
+      const sourceToggle = source.querySelector(toggleSelector);
+      for (const button of doc.querySelectorAll(toggleSelector)) {
+        button.innerHTML=sourceToggle.innerHTML;button.removeAttribute('aria-controls');
+        for (const attr of ['aria-label','aria-pressed','title']) if(sourceToggle.hasAttribute(attr))button.setAttribute(attr,sourceToggle.getAttribute(attr));
+      }
+      proxy.dataset.playing=source.dataset.playing || String(!audio.paused);
+      const input=proxy.querySelector('input'); if(input)input.value=String(Math.round(audio.volume*100));
+      const status=proxy.querySelector('[role=status]'); if(status)status.textContent=source.querySelector('[role=status]')?.textContent||'';
+      const dialog=doc.querySelector('dialog[open]'); const target=dialog||doc.body;if(proxy.parentNode!==target)target.append(proxy);
+    }
+    doc.addEventListener('click', event => {
+      if(event.target.closest?.(toggleSelector)){event.preventDefault();source.querySelector(toggleSelector).click();render();return;}
+      intercept(event,win);
+    });
+    doc.addEventListener('input', event => {
+      if(proxy.contains(event.target) && event.target.matches('input[type=range]')) {
+        const input=source.querySelector('input');if(input){input.value=event.target.value;input.dispatchEvent(new Event('input',{bubbles:true}));}
+      }
+    });
+    // An interaction in the content frame can also unlock blocked autoplay.
+    function unlock(event) {
+      if (!audio.paused || event.target.closest?.(toggleSelector+', [data-music-disclosure], input, textarea, select, [contenteditable]')) return;
+      if (event.type==='keydown' && !['Enter',' '].includes(event.key)) return;
+      resume();
+    }
+    doc.addEventListener('pointerup',unlock);doc.addEventListener('keydown',unlock);
+    if(focusEvent)doc.addEventListener(focusEvent,()=>document.dispatchEvent(new CustomEvent(focusEvent)));
+    const observer=new MutationObserver(render);observer.observe(source,{attributes:true,childList:true,subtree:true,characterData:true});
+    const dialogs=new win.MutationObserver(()=>{const target=doc.querySelector('dialog[open]')||doc.body;if(proxy.parentNode!==target)target.append(proxy);});dialogs.observe(doc.body,{subtree:true,childList:true,attributes:true,attributeFilter:['open']});
+    function sync(){if(!loading)history.replaceState({musicNavigation:true},'',win.location.href);}
+    win.addEventListener('hashchange',sync);win.addEventListener('popstate',sync);
+    win.addEventListener('pagehide',()=>{observer.disconnect();dialogs.disconnect();},{once:true});
+    render();
+  }
+  setupMusicDisclosure(document, document.querySelector(controls));
+  document.addEventListener('click', event=>intercept(event,window));
+  window.addEventListener('popstate',()=>{
+    if(frame && frame.contentWindow.location.href !== location.href)navigate(new URL(location.href),false);
+  });
+}
+
+function setupMusicDisclosure(doc, controls) {
+  if (controls.dataset.disclosureReady) return;
+  controls.dataset.disclosureReady='true';
+  let launcher=controls.querySelector('[data-music-disclosure]');
+  if(!launcher){launcher=doc.createElement('button');launcher.type='button';launcher.dataset.musicDisclosure='';launcher.className='music-launcher';launcher.textContent='♫';controls.prepend(launcher);}
+  function expand(value){controls.dataset.expanded=String(value);launcher.setAttribute('aria-expanded',String(value));launcher.setAttribute('aria-label',value?'음악 조절 닫기':'음악 조절 열기');}
+  expand(false);
+  launcher.addEventListener('click',()=>expand(controls.dataset.expanded!=='true'));
+  doc.addEventListener('click',event=>{if(!controls.contains(event.target))expand(false);});
+  doc.addEventListener('keydown',event=>{if(event.key==='Escape'&&controls.dataset.expanded==='true'){expand(false);launcher.focus();}});
+}
+
 /* Uploaded soundtrack; attempt autoplay on every visit, with a gesture fallback when blocked. No third-party player. */
 (() => {
   'use strict';
+  if (musicNavigationIsChild()) {
+    if (/arirang-(market|local)(\.html)?$/.test(location.pathname)) document.body.classList.add('market-bgm-page');
+    return;
+  }
   if (document.querySelector('#arirang-bgm')) return;
   const key = 'arirang-background-music-v1';
   let saved = {};
@@ -141,4 +256,5 @@
   placeControls();
   render();
   void start();
+  installMusicNavigation({audio,controls:'.bgm-controls',toggleSelector:'.bgm-toggle',stylesheet:new URL('/background-music.css',location.origin).href,resume:start});
 })();
