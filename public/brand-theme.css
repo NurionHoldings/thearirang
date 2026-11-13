@@ -108,13 +108,19 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header .arirang-logo img{display:block;width:150%;height:150%;margin:-25%;filter:none}
  .brand-home>header .arirang-logo:after{display:none}
  .brand-home>header>nav>a{color:#dbe6f6}
- .brand-home>header>nav{gap:8px!important}
- .brand-home>header>nav>a:not(.online-market-nav){display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;color:#fff;background:#0b244773;border:1px solid #ffffff38;transition:background .25s,color .25s,border-color .25s,box-shadow .25s;animation:arirang-menu-breathe 4.2s ease-in-out infinite}
+ .brand-home>header>nav>a:not(.online-market-nav){display:inline-flex;align-items:center;border-radius:999px;color:#fff;background:#0b244773;border:1px solid #ffffff38;transition:background .25s,color .25s,border-color .25s,box-shadow .25s;animation:arirang-menu-breathe 4.2s ease-in-out infinite}
  .brand-home>header>nav>a:nth-child(3){animation-delay:.6s}
  .brand-home>header>nav>a:nth-child(4){animation-delay:1.2s}
  .brand-home>header>nav>a:nth-child(5){animation-delay:1.8s}
  .brand-home>header>nav>a:nth-child(6){animation-delay:2.4s}
- .brand-home>header>nav>a:nth-child(7){animation-delay:3s}
+ .brand-home>header{gap:12px!important}
+ .brand-home>header>.brand{font-size:19px;gap:10px}
+ .brand-home>header>.brand small{letter-spacing:.12em}
+ .brand-home>header>nav{gap:5px!important}
+ .brand-home>header>nav>a{font-size:13.5px!important;min-height:36px!important;white-space:nowrap}
+ .brand-home>header>nav>a:not(.online-market-nav){padding:4px 8px}
+ .brand-home>header>nav>.online-market-nav{padding:6px 10px}
+ .brand-home>header>#login{padding:8px 12px;font-size:14px!important;white-space:nowrap}
  .brand-home>header>nav>a:not(.online-market-nav):is(:hover,:focus-visible){animation:none;background:#fff;color:#163b70;border-color:#fff;box-shadow:0 4px 14px #0418354d;text-decoration:none}
  .brand-home>header>nav>a[href='/drawings.html']{color:#ffd6cf}
  .brand-home>header>nav>a[href='/drawings.html']:is(:hover,:focus-visible){color:#9a4237}
@@ -125,7 +131,16 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header :is(a,button):focus-visible{outline-color:#fff}
 }
 @keyframes arirang-rainbow-text{from{background-position:0% 50%}to{background-position:100% 50%}}
-@media screen and (max-width:1419px){.brand-home>header>nav{order:3;width:100%;justify-content:flex-start}.brand-home>header>#login{margin-left:auto}}
+@media screen and (max-width:1050px){.brand-home>header>nav>a{min-height:44px!important}}
+@media screen and (min-width:1051px) and (max-width:1279px){
+ html body.brand-home>header{padding-inline:14px!important;gap:8px!important}
+ .brand-home>header .arirang-logo{width:50px;height:50px}
+ .brand-home>header>.brand{font-size:18px}
+ .brand-home>header>nav{gap:4px!important}
+ .brand-home>header>nav>a:not(.online-market-nav){padding:4px 7px}
+ .brand-home>header>nav>.online-market-nav{padding:6px 9px}
+ .brand-home>header>#login{padding:8px 10px}
+}
 @keyframes arirang-menu-breathe{0%,100%{border-color:#ffffff38;box-shadow:0 0 0 #9fd4ff00}50%{border-color:#b9e0ffdd;box-shadow:0 0 16px #9fd4ff73,inset 0 0 10px #9fd4ff33}}
 /* Home sections sit on full-width bands that alternate white and soft blue below the header. */
 @media screen{
