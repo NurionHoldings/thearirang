@@ -102,6 +102,9 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header>.brand{color:#fff}
  .brand-home>header>.brand b{color:#c9dcf6}
  .brand-home>header>.brand small{color:#b8cdea}
+ .brand-home>header>.brand>span:not(.mark){display:inline-block;background-image:linear-gradient(90deg,#9fd4ff,#9ff0c4,#ffe39a,#ffb3a6,#d7c2ff,#9fd4ff,#9ff0c4,#ffe39a,#ffb3a6,#d7c2ff,#9fd4ff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px #020c1f8c);animation:arirang-rainbow-text 10s linear infinite}
+ .brand-home>header>.brand>span:not(.mark) :is(b,small){color:transparent}
+ .motion-off .brand-home>header>.brand>span:not(.mark){animation:none}
  .brand-home>header .arirang-logo{background:none;padding:0;box-shadow:none;border-radius:0;overflow:visible;filter:drop-shadow(0 -1px 0 #ffffffb3) drop-shadow(0 6px 5px #020c1fa6) drop-shadow(0 14px 16px #02102b73) drop-shadow(0 0 12px #8ab8ff47)}
  .brand-home>header .arirang-logo img{display:block;width:150%;height:150%;margin:-25%;filter:none}
  .brand-home>header .arirang-logo:after{display:none}
@@ -114,6 +117,8 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header>#login:hover{background:#e9f0fc}
  .brand-home>header :is(a,button):focus-visible{outline-color:#fff}
 }
+@keyframes arirang-rainbow-text{from{background-position:0% 50%}to{background-position:100% 50%}}
+@media (prefers-reduced-motion:reduce){.brand-home>header>.brand>span:not(.mark){animation:none}}
 /* Home sections sit on full-width bands that alternate white and soft blue below the header. */
 @media screen{
  .brand-home main{--main-pad:24px;padding:0 var(--main-pad)!important}
