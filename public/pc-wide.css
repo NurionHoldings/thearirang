@@ -1,7 +1,7 @@
 /* PC screens use the full browser width; tablet and mobile keep their own layouts. */
 @media screen and (min-width:1001px){
  :root{--pc-gutter:24px}
- body>header:not(.market-top),body>.voice-bar,body>main,body>div>main,body>#state,body>#cad-login,.market-top-inner,.market-footer,.corporate-footer,.online-market-main{max-width:none!important;margin-left:0!important;margin-right:0!important;padding-left:var(--pc-gutter)!important;padding-right:var(--pc-gutter)!important}
+ body>header:not(.market-top),body>main,body>div>main,body>#state,body>#cad-login,.market-top-inner,.market-footer,.corporate-footer,.online-market-main{max-width:none!important;margin-left:0!important;margin-right:0!important;padding-left:var(--pc-gutter)!important;padding-right:var(--pc-gutter)!important}
  body .market-customer-nav,.online-market-header,.local-header,.local-tabs{padding-left:var(--pc-gutter)!important;padding-right:var(--pc-gutter)!important}
  .corporate-footer{border-radius:0!important}
 }
