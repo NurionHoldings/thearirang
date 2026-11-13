@@ -108,7 +108,7 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header>nav>a:nth-child(4){animation-delay:1.2s}
  .brand-home>header>nav>a:nth-child(5){animation-delay:1.8s}
  .brand-home>header>nav>a:nth-child(6){animation-delay:2.4s}
- .brand-home>header{flex-wrap:wrap;gap:4px 12px!important;padding-block:8px 12px!important}
+ .brand-home>header{flex-wrap:wrap;gap:18px 12px!important;padding-block:16px 18px!important}
  .brand-home>header>.brand{font-size:20px;gap:12px}
  html body.brand-home>header>nav{order:3;width:100%;justify-content:flex-end;gap:6px!important}
  .brand-home>header>#login{margin-left:auto}
