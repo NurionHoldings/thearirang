@@ -112,3 +112,16 @@
 @keyframes entry-letter-land{0%{opacity:0;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(1);text-shadow:none}4%,18%{opacity:1;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(1);filter:brightness(1.45);text-shadow:0 0 6px var(--glyph-halo)}86%{opacity:1;transform:translate(0,0) rotate(0) scale(1.08);filter:brightness(1.1);text-shadow:0 2px 0 var(--glyph-depth),0 0 7px var(--glyph-halo),0 0 24px var(--glyph-aura)}94%{transform:translate(0,2px) scale(.98)}100%{opacity:1;transform:translate(0,0) scale(1);filter:brightness(1);text-shadow:0 2px 0 var(--glyph-depth),0 4px 8px #0009,0 0 7px var(--glyph-halo),0 0 20px var(--glyph-aura)}}
 @keyframes entry-glyph-light{0%,25%,100%{transform:scale(1);color:var(--glyph-base);filter:brightness(1);text-shadow:0 2px 0 var(--glyph-depth),0 4px 8px #0009,0 0 7px var(--glyph-halo),0 0 20px var(--glyph-aura)}7%,14%{transform:scale(1.1);color:var(--glyph-lit);filter:brightness(1.25);text-shadow:0 2px 0 var(--glyph-depth),0 0 4px #fff8,0 0 12px var(--glyph-halo),0 0 28px var(--glyph-halo),0 0 45px var(--glyph-aura)}22%{transform:scale(1);color:var(--glyph-base);filter:brightness(1.05);text-shadow:0 2px 0 var(--glyph-depth),0 0 10px var(--glyph-halo),0 0 26px var(--glyph-aura)}}
 @media(prefers-reduced-motion:reduce){.entry-letter-title>[data-entry-letter]{text-shadow:0 2px 0 var(--glyph-depth),0 0 10px var(--glyph-aura)}}
+
+/* Rainbow brand copy: each glyph cycles hue a step behind the previous one; the English line and tagline carry a flowing pastel gradient. */
+@property --rainbow-hue{syntax:'<number>';inherits:false;initial-value:200}
+.entry-letter-title>[data-entry-letter]{--glyph-base:hsl(var(--rainbow-hue) 85% 74%);--glyph-lit:hsl(var(--rainbow-hue) 100% 90%);--glyph-halo:hsl(var(--rainbow-hue) 95% 62%);--glyph-aura:hsl(var(--rainbow-hue) 90% 55% / .45);--glyph-depth:hsl(var(--rainbow-hue) 45% 28%)}
+.entry-letter-title>[data-entry-letter="1"]{--hue-delay:-.7s}
+.entry-letter-title>[data-entry-letter="2"]{--hue-delay:-1.4s}
+.entry-letter-title>[data-entry-letter="3"]{--hue-delay:-2.1s}
+.entry-letters-ready .entry-letter-title>[data-entry-letter]{animation:entry-letter-land 3.4s var(--letter-delay) cubic-bezier(.4,0,.3,1) both,entry-glyph-light 4s var(--letter-glow-delay) ease-in-out infinite,entry-rainbow-hue 6s var(--hue-delay,0s) linear infinite}
+@keyframes entry-rainbow-hue{from{--rainbow-hue:200}to{--rainbow-hue:560}}
+.entry-english,.entry-story{width:fit-content;margin-inline:auto;background-image:linear-gradient(90deg,#9fd4ff,#9ff0c4,#ffe39a,#ffb3a6,#d7c2ff,#9fd4ff,#9ff0c4,#ffe39a,#ffb3a6,#d7c2ff,#9fd4ff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.entry-english{animation:entry-rainbow-flow 8s linear infinite}
+.entry-story{animation:entry-rise 1.5s 1s both,entry-rainbow-flow 8s linear infinite}
+@keyframes entry-rainbow-flow{from{background-position:0% 50%}to{background-position:100% 50%}}
