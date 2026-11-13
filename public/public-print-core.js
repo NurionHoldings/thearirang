@@ -1,4 +1,4 @@
-export const groups=[['company','건물·회사 소개'],['spaces','층별 공간·예상도'],['haeon','해온 소개·공간 이미지 30장'],['photos','공사 전·현장 참고 사진'],['plans','공개 기본계획도'],['concepts','층별 개략 배치안'],['progress','공개 공사 현황·진행 중 업체']];
+export const groups=[['company','건물·회사 소개'],['spaces','층별 공간·예상도'],['photos','공사 전·현장 참고 사진'],['plans','공개 기본계획도'],['concepts','층별 개략 배치안'],['progress','공개 공사 현황·진행 중 업체']];
 export const publicOptions=Object.freeze({credentials:'omit',cache:'no-store'});
 export function safeAsset(path){return typeof path==='string'&&/^(assets\/[A-Za-z0-9_/-]+\.(jpg|png|webp|svg)|plans\/floor-[345]\.svg|(?:plans|reports)\/[A-Za-z0-9_-]+\.pdf)$/.test(path)&&!path.includes('..')?'/'+path:null}
 // Explicit public projection, even if an upstream response accidentally contains private fields.

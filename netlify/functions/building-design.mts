@@ -3,7 +3,7 @@ import {getStore,getDeployStore} from '@netlify/blobs';
 import type {Config} from '@netlify/functions';
 import {identityAdmin} from './_shared/floor-access.mjs';
 import {Problem,zoneIDs} from './_shared/project.mjs';
-export const defaultDesign=()=>({version:0,eyebrow:'대전 홍도동 · 구 아리랑백화점',title:'건물의 다음 장을 열다.',subtitle:'생활 · 유통 · 건강 · 돌봄을 연결하는 지상 5개 층과 지하 주차장',accent:'#073d42',background:'#f3f6f6',floorDescriptions:Object.fromEntries(zoneIDs().map(id=>[id,'']))});
+export const defaultDesign=()=>({version:0,eyebrow:'대전 홍도동 · 구 아리랑백화점',title:'건물의 다음 장을 열다.',subtitle:'생활 · 유통 · 건강 · 여가를 연결하는 지상 5개 층과 지하 주차장',accent:'#073d42',background:'#f3f6f6',floorDescriptions:Object.fromEntries(zoneIDs().map(id=>[id,'']))});
 const json=(v:unknown,status=200)=>new Response(JSON.stringify(v),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 export default async function handler(req:Request){try{if(!['GET','PUT'].includes(req.method))throw new Problem('요청 없음',404);let actor='';if(req.method==='PUT'){actor=await identityAdmin(req);if(!actor)throw new Problem('건물 디자인은 총괄관리자만 수정할 수 있습니다.',403);if(req.headers.get('origin')!==new URL(req.url).origin)throw new Problem('요청 출처 오류',403);}
 const options={name:'arirang-building-design',consistency:'strong' as const},store=productionContext()?getStore(options):getDeployStore(options),current=await store.getWithMetadata('settings',{type:'json'}),value=current?.data?.settings||defaultDesign();if(req.method==='GET')return json(value);

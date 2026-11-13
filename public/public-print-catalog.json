@@ -58,20 +58,18 @@
     {
       "id": "3",
       "floor": 3,
-      "name": "해온 요양원 · 49인 계획",
-      "area": "기존 표기 400평 · 인정 면적 확인 전",
-      "purpose": "어르신이 숙식하며 일상을 이어가는 입소형 생활공간. 좌우 생활침실과 중앙 공동 거실·식당을 나누고 사회복지사·요양보호사의 돌봄을 연결합니다.",
+      "name": "어르신무도관 · 콜라텍",
+      "area": "기존 표기 400평 · 실측 확인 전",
+      "purpose": "어르신이 음악에 맞춰 사교댄스를 즐기고 건강체조·기공으로 몸을 돌보는 복합 여가공간. 중앙 댄스홀과 무대를 중심으로 강습실·휴게 라운지·탈의실을 배치합니다.",
       "spaces": [
-        "22실·49명",
-        "개별 화장실 22개",
-        "조리실 15평",
-        "좌우 생활침실",
-        "중앙 공동 거실·식당",
-        "상담·돌봄 거점",
-        "간호·건강관리",
-        "목욕·위생·급식",
-        "직원 휴게실·탈의실",
-        "안전한 이동 동선"
+        "중앙 사교댄스 홀",
+        "무대·음향·밴드석",
+        "건강체조·기공 강습실",
+        "휴게 라운지·음료 카운터",
+        "입구·안내·신발장",
+        "남녀 탈의실·사물함",
+        "화장실·세면",
+        "안전한 이동·피난 동선"
       ]
     },
     {
@@ -120,12 +118,6 @@
       "src": "assets/arirang-symbol.png",
       "title": "더 아리랑 로고",
       "group": "company",
-      "note": "공개 브랜드 로고"
-    },
-    {
-      "src": "assets/haeon/logo-master.webp",
-      "title": "해온 요양원 로고",
-      "group": "haeon",
       "note": "공개 브랜드 로고"
     },
     {
@@ -291,190 +283,40 @@
       "note": "공사 전 현장 참고 사진"
     },
     {
-      "src": "assets/haeon/entrance.webp",
-      "title": "해온 · 입구·접수·가족 대기",
-      "group": "haeon",
-      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+      "src": "assets/colatec/dance-floor.jpg",
+      "title": "3층 어르신무도관 · 중앙 사교댄스 홀",
+      "group": "spaces",
+      "note": "AI 공사 후 가상 이미지 · 실제 준공 사진 아님"
     },
     {
-      "src": "assets/haeon/living-left.webp",
-      "title": "해온 · 좌측 생활 거실",
-      "group": "haeon",
-      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+      "src": "assets/colatec/stage.jpg",
+      "title": "3층 어르신무도관 · 무대·음향·밴드석",
+      "group": "spaces",
+      "note": "AI 공사 후 가상 이미지 · 실제 준공 사진 아님"
     },
     {
-      "src": "assets/haeon/living-right.webp",
-      "title": "해온 · 우측 생활 거실",
-      "group": "haeon",
-      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+      "src": "assets/colatec/exercise.jpg",
+      "title": "3층 어르신무도관 · 건강체조·기공 강습실",
+      "group": "spaces",
+      "note": "AI 공사 후 가상 이미지 · 실제 준공 사진 아님"
     },
     {
-      "src": "assets/haeon/single-bedroom.webp",
-      "title": "해온 · 1인실",
-      "group": "haeon",
-      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+      "src": "assets/colatec/lounge.jpg",
+      "title": "3층 어르신무도관 · 휴게 라운지·음료 카운터",
+      "group": "spaces",
+      "note": "AI 공사 후 가상 이미지 · 실제 준공 사진 아님"
     },
     {
-      "src": "assets/haeon/double-bedroom.webp",
-      "title": "해온 · 2인실",
-      "group": "haeon",
-      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
+      "src": "assets/colatec/entrance.jpg",
+      "title": "3층 어르신무도관 · 입구·안내·신발장",
+      "group": "spaces",
+      "note": "AI 공사 후 가상 이미지 · 실제 준공 사진 아님"
     },
     {
-      "src": "assets/haeon/triple-bedroom.webp",
-      "title": "해온 · 3인실",
-      "group": "haeon",
-      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/quad-bedroom.webp",
-      "title": "해온 · 4인실",
-      "group": "haeon",
-      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/ensuite.webp",
-      "title": "해온 · 침실 전용 화장실",
-      "group": "haeon",
-      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/dining.webp",
-      "title": "해온 · 공용 식당",
-      "group": "haeon",
-      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/kitchen.webp",
-      "title": "해온 · 15평 조리실 구상",
-      "group": "haeon",
-      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/program.webp",
-      "title": "해온 · 프로그램·인지활동실",
-      "group": "haeon",
-      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/therapy.webp",
-      "title": "해온 · 물리·작업치료실",
-      "group": "haeon",
-      "note": "식사·활동 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/nursing.webp",
-      "title": "해온 · 간호사실",
-      "group": "haeon",
-      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/caregiver.webp",
-      "title": "해온 · 요양보호사실",
-      "group": "haeon",
-      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/office.webp",
-      "title": "해온 · 사회복지사·행정 사무실",
-      "group": "haeon",
-      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/counseling.webp",
-      "title": "해온 · 가족 상담실",
-      "group": "haeon",
-      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/staff-rest.webp",
-      "title": "해온 · 직원 휴게실",
-      "group": "haeon",
-      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/staff-changing.webp",
-      "title": "해온 · 직원 탈의실·사물함",
-      "group": "haeon",
-      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/male-bathing.webp",
-      "title": "해온 · 남성 목욕·탈의실",
-      "group": "haeon",
-      "note": "목욕·위생 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/female-bathing.webp",
-      "title": "해온 · 여성 목욕·탈의실",
-      "group": "haeon",
-      "note": "목욕·위생 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/corridor.webp",
-      "title": "해온 · 생활실 복도",
-      "group": "haeon",
-      "note": "공용 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/volunteer.webp",
-      "title": "해온 · 자원봉사자실",
-      "group": "haeon",
-      "note": "돌봄·직원 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/laundry.webp",
-      "title": "해온 · 세탁·건조실",
-      "group": "haeon",
-      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/linen.webp",
-      "title": "해온 · 청결 린넨실",
-      "group": "haeon",
-      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/dirty-utility.webp",
-      "title": "해온 · 오염물 처리실",
-      "group": "haeon",
-      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/food-storage.webp",
-      "title": "해온 · 식자재 창고",
-      "group": "haeon",
-      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/clean-supplies.webp",
-      "title": "해온 · 청결 물품실",
-      "group": "haeon",
-      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/public-toilet.webp",
-      "title": "해온 · 공용 화장실",
-      "group": "haeon",
-      "note": "목욕·위생 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/quiet-bedroom.webp",
-      "title": "해온 · 안정형 1인실 활용안",
-      "group": "haeon",
-      "note": "개인 생활 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "assets/haeon/equipment.webp",
-      "title": "해온 · 휠체어·보행기 보관실",
-      "group": "haeon",
-      "note": "운영·보관 · 공사 후 가상 이미지 · 실제 준공 사진 아님"
-    },
-    {
-      "src": "plans/floor-3.svg",
-      "title": "3층 공개 기본계획도",
-      "group": "plans",
-      "note": "실측 전 기본계획 · 시공·인허가 도면 아님"
+      "src": "assets/colatec/locker.jpg",
+      "title": "3층 어르신무도관 · 탈의실·사물함",
+      "group": "spaces",
+      "note": "AI 공사 후 가상 이미지 · 실제 준공 사진 아님"
     },
     {
       "src": "plans/floor-4.svg",
@@ -489,18 +331,5 @@
       "note": "실측 전 기본계획 · 시공·인허가 도면 아님"
     }
   ],
-  "documents": [
-    {
-      "src": "plans/thearirang-interior-plans.pdf",
-      "title": "3·4·5층 기본계획도 PDF"
-    },
-    {
-      "src": "reports/nursing-home-22-room-design.pdf",
-      "title": "해온 22실 공간계획 보고서"
-    },
-    {
-      "src": "reports/nursing-home-49-review.pdf",
-      "title": "해온 49인 개설 검토 보고서"
-    }
-  ]
+  "documents": []
 }
