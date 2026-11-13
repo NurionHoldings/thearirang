@@ -112,3 +112,20 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header>#login:hover{background:#e9f0fc}
  .brand-home>header :is(a,button):focus-visible{outline-color:#fff}
 }
+/* Home sections sit on full-width bands that alternate white and soft blue below the header. */
+@media screen{
+ .brand-home main{--main-pad:24px;padding:0 var(--main-pad)!important}
+ .home-band{--band:#fff;margin-inline:calc(var(--main-pad)*-1);padding:44px var(--main-pad);background:var(--band)}
+ .home-band>:first-child{margin-top:0!important}
+ .home-band>:last-child{margin-bottom:0!important}
+ .band-hero{--band:linear-gradient(180deg,#f7faff 0%,#e7eff9 100%);padding-top:28px}
+ .band-workspace{--band:#e9eff8;border-block:1px solid #dbe5f2}
+ .band-overview{--band:#f1f5fa;border-block:1px solid #e1e8f2}
+ .band-gallery{--band:#f1f5fa;border-top:1px solid #e1e8f2}
+ .brand-home main>.corporate-footer{margin:0 calc(var(--main-pad)*-1)!important;padding-inline:var(--main-pad)!important;border-radius:0!important}
+}
+@media screen and (max-width:720px){
+ .brand-home main{--main-pad:16px}
+ .home-band{padding-block:30px}
+ .band-hero{padding-top:20px}
+}
