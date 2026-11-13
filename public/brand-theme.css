@@ -110,11 +110,11 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header>nav>a:nth-child(6){animation-delay:2.4s}
  .brand-home>header{flex-wrap:wrap;gap:4px 12px!important;padding-block:8px 12px!important}
  .brand-home>header>.brand{font-size:20px;gap:12px}
- .brand-home>header>nav{order:3;width:100%;justify-content:flex-start;gap:6px!important}
+ html body.brand-home>header>nav{order:3;width:100%;justify-content:flex-end;gap:6px!important}
  .brand-home>header>#login{margin-left:auto}
  .brand-home>header>nav>a{font-size:14px!important;min-height:36px!important;white-space:nowrap}
  .brand-home>header>nav>a:not(.online-market-nav){padding:4px 11px}
- .brand-home>header>nav>.online-market-nav{padding:6px 12px;margin-right:16px}
+ .brand-home>header>nav>.online-market-nav{padding:6px 12px;margin-right:auto}
  .brand-home>header>#login{padding:5px 11px;min-height:32px;font-size:12.5px!important;font-weight:500;line-height:1.4;white-space:nowrap;background:#0e2a52;color:#e6efff;border:1px solid #ffffff4d;border-radius:8px;box-shadow:none}
  .brand-home>header>nav>a:not(.online-market-nav):is(:hover,:focus-visible){animation:none;background:#fff;color:#163b70;border-color:#fff;box-shadow:0 4px 14px #0418354d;text-decoration:none}
  .brand-home>header>nav>a[href='/drawings.html']{color:#ffd6cf}
