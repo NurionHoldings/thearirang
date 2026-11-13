@@ -119,6 +119,8 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .home-band>:first-child{margin-top:0!important}
  .home-band>:last-child{margin-bottom:0!important}
  .band-hero{--band:linear-gradient(180deg,#f7faff 0%,#e7eff9 100%);padding-top:28px}
+ .band-audience{--band:#f4efe5;border-top:1px solid #e6dfd0}
+ .band-audience .audience-card{box-shadow:0 8px 22px #5a4a2a14}
  .band-workspace{--band:#e9eff8;border-block:1px solid #dbe5f2}
  .band-overview{--band:#f1f5fa;border-block:1px solid #e1e8f2}
  .band-gallery{--band:#f1f5fa;border-top:1px solid #e1e8f2}
