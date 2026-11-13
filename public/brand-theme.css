@@ -102,7 +102,9 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header>.brand{color:#fff}
  .brand-home>header>.brand b{color:#c9dcf6}
  .brand-home>header>.brand small{color:#b8cdea}
- .brand-home>header .arirang-logo{background:#fff;padding:5px;box-shadow:0 0 0 3px #ffffff26,0 6px 14px #04183533}
+ .brand-home>header .arirang-logo{background:none;padding:0;box-shadow:none;border-radius:0;overflow:visible;filter:drop-shadow(0 -1px 0 #ffffffb3) drop-shadow(0 6px 5px #020c1fa6) drop-shadow(0 14px 16px #02102b73) drop-shadow(0 0 12px #8ab8ff47)}
+ .brand-home>header .arirang-logo img{display:block;width:150%;height:150%;margin:-25%;filter:none}
+ .brand-home>header .arirang-logo:after{display:none}
  .brand-home>header>nav>a{color:#dbe6f6}
  .brand-home>header>nav>a:hover{color:#fff;text-decoration:underline;text-underline-offset:5px}
  .brand-home>header>nav>a[href='/drawings.html']{color:#ffc9bf}
