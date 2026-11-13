@@ -110,8 +110,8 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
  .brand-home>header>nav>a{color:#dbe6f6}
  .brand-home>header>nav>a:hover{color:#fff;text-decoration:underline;text-underline-offset:5px}
  .brand-home>header>nav>a[href='/drawings.html']{color:#ffc9bf}
- .brand-home>header>nav>.online-market-nav{background:#2e7d55;border:1px solid #8fd1ac59;box-shadow:0 4px 12px #04183540}
- .brand-home>header>nav>.online-market-nav:hover{background:#358f61;text-decoration:none}
+ .brand-home>header>nav>.online-market-nav{background:linear-gradient(90deg,#1f5fbf,#1d7a4f,#a8520c,#b8323f,#6a3fb5,#1f5fbf,#1d7a4f,#a8520c,#b8323f,#6a3fb5,#1f5fbf) 0 50%/200% 100%;border:1px solid #ffffff59;box-shadow:0 4px 14px #04183559;font-weight:600;text-shadow:0 1px 1px #0000004d;animation:arirang-rainbow-text 8s linear infinite}
+ .brand-home>header>nav>.online-market-nav:hover{filter:brightness(1.08);text-decoration:none}
  .brand-home>header>#login{background:#fff;color:#163b70;border-color:#fff;font-weight:600}
  .brand-home>header>#login:hover{background:#e9f0fc}
  .brand-home>header :is(a,button):focus-visible{outline-color:#fff}
