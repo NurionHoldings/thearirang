@@ -96,3 +96,19 @@ body.brand-home{font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans
 @media screen{body.partner-documents :is(button,.button){background:var(--brand-strong);border-color:var(--brand-strong);color:#fff}body.partner-documents :is(button,.button):hover{background:var(--brand-deep)}body.partner-documents form{background:#fff4ee;border-color:var(--brand-line)}}
 @media(max-width:720px){.market-top-inner>.market-context-chip{display:none}}
 @media screen{body[data-brand] :is(input,select,textarea){color:var(--brand-ink)}body[data-brand] .feedback:not(.error){background:var(--brand-tint);border-color:var(--brand-line);color:var(--brand-strong)}}
+/* Home header: deep navy from the hero gradient with the logo's three-color rule; all text keeps at least 4.5:1 contrast. */
+@media screen{
+ body.brand-home>header{background:linear-gradient(100deg,#0f2d57 0%,#163b70 55%,#204f91 100%);color:#fff;border:0;border-bottom:4px solid;border-image:linear-gradient(90deg,#408fca 0 33.333%,#3c9a69 33.333% 66.666%,#dc635a 66.666%) 1;box-shadow:0 6px 20px #0b234514}
+ .brand-home>header>.brand{color:#fff}
+ .brand-home>header>.brand b{color:#c9dcf6}
+ .brand-home>header>.brand small{color:#b8cdea}
+ .brand-home>header .arirang-logo{background:#fff;padding:5px;box-shadow:0 0 0 3px #ffffff26,0 6px 14px #04183533}
+ .brand-home>header>nav>a{color:#dbe6f6}
+ .brand-home>header>nav>a:hover{color:#fff;text-decoration:underline;text-underline-offset:5px}
+ .brand-home>header>nav>a[href='/drawings.html']{color:#ffc9bf}
+ .brand-home>header>nav>.online-market-nav{background:#2e7d55;border:1px solid #8fd1ac59;box-shadow:0 4px 12px #04183540}
+ .brand-home>header>nav>.online-market-nav:hover{background:#358f61;text-decoration:none}
+ .brand-home>header>#login{background:#fff;color:#163b70;border-color:#fff;font-weight:600}
+ .brand-home>header>#login:hover{background:#e9f0fc}
+ .brand-home>header :is(a,button):focus-visible{outline-color:#fff}
+}
