@@ -138,7 +138,7 @@ test("every public HTML page includes readability overrides and the home spotlig
   const home = readFileSync("public/index.html", "utf8");
   assert.equal((home.match(/id="online-market"/g) || []).length, 1);
   assert(home.indexOf('id="online-market"') < home.indexOf('id="workspace"'));
-  assert(home.includes("아리랑마켓 바로가기"));
+  assert(home.includes("아리랑마켓(배달) 바로가기"));
   assert(
     readFileSync("public/readability.css", "utf8").includes("@media screen"),
   );
