@@ -16,7 +16,6 @@ body[data-brand=coral]{--brand-strong:#a4473b;--brand-deep:#80352d;--brand-tint:
  body[data-brand=blue] .floor{background:#183d77e8;border-color:#b9d0f06b}
  body[data-brand=blue] .floor:is(.active,:hover){background:#e4edfc;color:#163b70;border-color:#c6d8f2}
  body[data-brand=blue] :is(.badge,.floor-resource-links a,.panel-top,.summary-grid article){background:#edf3fc;color:#284d7b;border-color:#d5e1f3}
- body[data-brand=blue] .image-label{background:#163b70e8}
  body[data-brand=blue] .tabs .active{border-color:#204f91;color:#204f91}
  body[data-brand=coral] :is(.local-basket,.store-status-form,.credential,#addressBookForm){border-color:var(--brand-line);background:#fff9f5}
  body[data-brand=coral] :is(.service-state,.order-progress li,.payment-note,.capacity){background:#f9e9e2;color:#72483f}
