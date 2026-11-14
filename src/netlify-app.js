@@ -10,5 +10,5 @@ try{
  const dialog=document.createElement('dialog');dialog.innerHTML='<form><h2>관리자 비밀번호 설정</h2><label>새 비밀번호<input type="password" minlength="10" required autocomplete="new-password"></label><button>설정</button><p role="status"></p></form>';document.body.append(dialog);dialog.showModal();
  await new Promise(resolve=>{dialog.querySelector('form').onsubmit=async e=>{e.preventDefault();try{const password=dialog.querySelector('input').value;if(result.type==='invite')await acceptInvite(result.token,password);else await updateUser({password});dialog.close();resolve()}catch(error){dialog.querySelector('p').textContent=error.message}}});
  }
-}catch(error){document.querySelector('#mode').textContent='계정 확인: '+error.message}
+}catch(error){const toast=document.querySelector('#toast');toast.textContent='계정 확인: '+error.message;toast.style.display='block'}
 await import('../public/app.js');
