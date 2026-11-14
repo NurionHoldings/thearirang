@@ -29,7 +29,6 @@
       .muted,
       .eyebrow,
       .level,
-      .building-foot,
       .product-category,
       .browse-crumb,
       .service-state
@@ -43,7 +42,6 @@
       .detail-sub,
       .step small,
       .project-state small,
-      .building-foot,
       .level
     ) {
     color: #455e61 !important;
